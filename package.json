@@ -1,0 +1,11 @@
+{
+  "name": "monsort",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build && npx serve dist",
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/validate.mjs"
+  }
+}

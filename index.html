@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MonSort — Daily Pokémon Sorting Puzzle</title>
+  <meta name="description" content="Play a free daily Pokémon grouping puzzle. Sort 16 Pokémon into four hidden connections, then keep playing in unlimited mode. No login, no download.">
+  <link rel="canonical" href="https://monsort.com/">
+  <meta property="og:title" content="MonSort — Can you find all four connections?">
+  <meta property="og:description" content="A fast daily Pokémon sorting puzzle with unlimited play and automatic progress saving.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://monsort.com/">
+  <meta property="og:image" content="https://monsort.com/assets/social-card.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#14223b">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"MonSort","applicationCategory":"GameApplication","operatingSystem":"Any","url":"https://monsort.com/","description":"A free daily Pokémon grouping and sorting puzzle with unlimited mode.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="MonSort home"><span class="brand-mark" aria-hidden="true"></span>MonSort</a>
+    <nav aria-label="Main navigation"><a href="#how">How it works</a><a href="/pokesort-alternative/">Alternative</a><a href="/pokesort-down/">Status guide</a><a class="nav-play" href="#play">Play today</a></nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">A fresh board every day</p>
+        <h1>Sort the mons.<br><span class="scribble">Spot the link.</span></h1>
+        <p class="hero-copy">Sixteen Pokémon. Four hidden connections. One tidy grid. Find every group before your four mistakes run out.</p>
+        <div class="actions"><a class="btn btn-primary" href="#play">Play today’s puzzle →</a><a class="btn" href="#how">See how it works</a></div>
+        <p class="fine">Free forever · No account · Progress saved on your device</p>
+      </div>
+      <div class="hero-board" aria-hidden="true">
+        <div class="mini-grid">
+          <span class="mini-card">Jolteon</span><span class="mini-card">Togepi</span><span class="mini-card">Kabuto</span><span class="mini-card">Espeon</span>
+          <span class="mini-card">Pichu</span><span class="mini-card">Xurkitree</span><span class="mini-card">Vaporeon</span><span class="mini-card">Cleffa</span>
+          <span class="mini-card">Omanyte</span><span class="mini-card">Buzzwole</span><span class="mini-card">Flareon</span><span class="mini-card">Aerodactyl</span>
+          <span class="mini-card">Pheromosa</span><span class="mini-card">Igglybuff</span><span class="mini-card">Cranidos</span><span class="mini-card">Nihilego</span>
+        </div>
+        <div class="board-caption"><span>4 groups are hiding</span><span>● ● ● ●</span></div>
+      </div>
+    </section>
+    <section class="strip" aria-label="Game benefits"><div class="strip-inner"><div class="stat"><strong>16 Pokémon</strong><span>on every board</span></div><div class="stat"><strong>4 connections</strong><span>to discover</span></div><div class="stat"><strong>Daily + Infinite</strong><span>play your way</span></div><div class="stat"><strong>0 sign-ups</strong><span>jump straight in</span></div></div></section>
+    <section class="game-section" id="play">
+      <div class="section-head"><p class="eyebrow">Playable right here</p><h2>Today’s pocket-sized brain teaser</h2><p>Select four Pokémon that share one precise trait. Correct groups lock into place.</p></div>
+      <div class="game-shell">
+        <div class="game-top"><div><h2>Find the four groups</h2><p id="game-kicker">Daily puzzle</p></div><div class="mode-switch" aria-label="Puzzle mode"><button class="active" data-mode="daily">Daily</button><button data-mode="infinite">Infinite</button></div></div>
+        <div class="solved-groups" id="solved-groups" aria-live="polite"></div>
+        <div class="puzzle-grid" id="puzzle-grid" aria-label="Pokémon puzzle grid"></div>
+        <div class="game-status" id="game-status" aria-live="polite">Select four cards to make a group.</div>
+        <div class="mistakes" id="mistakes"></div>
+        <div class="game-controls"><button class="btn" id="shuffle-board">Shuffle</button><button class="btn" id="deselect-all">Clear</button><button class="btn btn-primary" id="submit-selection">Submit</button><button class="btn" id="reveal-board">Reveal</button><button class="btn" id="new-infinite">New infinite</button></div>
+      </div>
+    </section>
+    <section class="features" id="how"><div class="section-head"><p class="eyebrow">Built for quick play</p><h2>A puzzle that respects your streak</h2></div><div class="feature-grid"><article class="feature"><span class="feature-no">01 / NOTICE</span><h3>Look for exact links</h3><p>A group might share a type, evolution method, region, status, or another Pokédex trait. Watch for tempting overlaps.</p></article><article class="feature"><span class="feature-no">02 / SELECT</span><h3>Choose four cards</h3><p>Tap, click, or use your keyboard. Submit your guess; correct groups lock while near misses get a gentle nudge.</p></article><article class="feature"><span class="feature-no">03 / RETURN</span><h3>Never lose progress</h3><p>Your board and mistakes are stored locally. Close the tab, come back later, and continue exactly where you stopped.</p></article></div></section>
+  </main>
+  <footer><div class="footer-inner"><div><a class="brand" href="/"><span class="brand-mark"></span>MonSort</a><p>An independent, unofficial fan-made puzzle. Pokémon names and related marks belong to Nintendo, Game Freak, and The Pokémon Company.</p></div><div class="footer-links"><a href="/pokesort-alternative/">PokeSort alternative</a><a href="/pokesort-down/">Loading guide</a><a href="/privacy/">Privacy</a></div></div></footer>
+  <script type="module" src="/assets/game.js"></script>
+</body>
+</html>

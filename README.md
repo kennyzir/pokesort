@@ -1,6 +1,6 @@
-# MonSort
+# PokeSort
 
-A static, no-login Pokémon grouping puzzle built as a resilient alternative for daily puzzle players. The working brand is **MonSort** and should be changed before launch if a final brand already exists.
+A static, no-login daily Pokémon grouping puzzle designed to put the playable board before marketing copy.
 
 ## Local preview
 
@@ -23,6 +23,7 @@ Deploy the generated `dist/` directory to Cloudflare Pages, Vercel, Netlify, or 
 
 - Daily and infinite 4×4 grouping game
 - Local progress saving and keyboard/touch controls
+- 30-day archive and complete how-to-play guide
 - `/pokesort-alternative/` comparison landing page
 - `/pokesort-down/` troubleshooting/search-intent page
 - FAQ and WebApplication structured data

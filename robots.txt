@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://monsort.com/sitemap.xml
+Sitemap: https://pokesort.example/sitemap.xml

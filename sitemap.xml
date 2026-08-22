@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://monsort.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://monsort.com/pokesort-alternative/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://monsort.com/pokesort-down/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://monsort.com/privacy/</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://pokesort.example/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://pokesort.example/archive/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://pokesort.example/how-to-play/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://pokesort.example/pokesort-alternative/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://pokesort.example/pokesort-down/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://pokesort.example/privacy/</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>

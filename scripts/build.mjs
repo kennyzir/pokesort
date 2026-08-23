@@ -3,7 +3,7 @@ const output = new URL("../dist/", import.meta.url);
 const siteUrl = (process.env.SITE_URL || "https://pokesort.example").replace(/\/$/, "");
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-for (const path of ["index.html", "404.html", "assets", "archive", "how-to-play", "pokesort-alternative", "pokesort-down", "privacy", "manifest.webmanifest", "robots.txt", "sitemap.xml"]) {
+for (const path of ["index.html", "404.html", "assets", "archive", "how-to-play", "pokesort-alternative", "pokesort-down", "privacy", "favicon.ico", "manifest.webmanifest", "robots.txt", "sitemap.xml"]) {
   try { await cp(new URL(`../${path}`, import.meta.url), new URL(path, output), { recursive: true }); } catch (error) { if (path !== "404.html") throw error; }
 }
 async function replaceBaseUrl(directory) {

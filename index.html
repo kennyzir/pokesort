@@ -1,51 +1,262 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PokeSort — Daily Pokémon Sorting Puzzle</title>
-  <meta name="description" content="Play today's free PokeSort puzzle. Find four hidden connections between 16 Pokémon, protect your streak, or switch to unlimited mode.">
-  <link rel="canonical" href="https://pokesort.example/">
-  <meta property="og:title" content="PokeSort — Daily Pokémon Sorting Puzzle">
-  <meta property="og:description" content="Sort 16 Pokémon into four hidden groups. A new puzzle every day, plus unlimited play.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://pokesort.example/">
-  <meta property="og:image" content="https://pokesort.example/assets/social-card.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#151c35">
-  <link rel="manifest" href="/manifest.webmanifest">
-  <link rel="stylesheet" href="/assets/styles.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PokeSort","applicationCategory":"GameApplication","operatingSystem":"Any","url":"https://pokesort.example/","description":"A free daily Pokémon sorting and grouping puzzle with unlimited mode.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
-</head>
-<body>
-  <header class="site-header">
-    <a class="brand" href="/" aria-label="PokeSort home"><span class="brand-ball" aria-hidden="true"></span><span>POKE<strong>SORT</strong></span></a>
-    <nav aria-label="Main navigation"><a aria-current="page" href="/">Daily</a><a href="/?mode=infinite#game">Infinite</a><a href="/archive/">Archive</a><a href="/how-to-play/">How to play</a></nav>
-  </header>
-  <main>
-    <section class="play-area" id="game">
-      <div class="game-heading"><div><p class="puzzle-number" id="puzzle-number">POKESORT · DAILY</p><h1>Find the four Pokémon groups</h1><p>Select four Pokémon connected by one exact Pokédex trait.</p></div><div class="streak-card" title="Daily streak"><span>🔥</span><div><strong id="streak-count">0</strong><small>day streak</small></div></div></div>
-      <div class="mode-tabs" aria-label="Puzzle mode"><button class="active" data-mode="daily"><span>☀️</span> Daily</button><button data-mode="infinite"><span>∞</span> Infinite</button></div>
-      <div class="game-shell">
-        <div class="game-meta"><span id="game-kicker">Today’s puzzle</span><span id="progress-label">0 of 4 groups</span></div>
-        <div class="solved-groups" id="solved-groups" aria-live="polite"></div>
-        <div class="puzzle-grid" id="puzzle-grid" aria-label="Pokémon puzzle grid"></div>
-        <div class="game-status" id="game-status" aria-live="polite">Tap four Pokémon that share a connection.</div>
-        <div class="mistakes" id="mistakes"></div>
-        <div class="game-controls"><button class="control secondary" id="shuffle-board">⇄ <span>Shuffle</span></button><button class="control secondary" id="deselect-all">Clear</button><button class="control submit" id="submit-selection">Submit group</button><button class="control secondary" id="hint-button">Hint</button><button class="control secondary" id="reveal-board">Reveal</button><button class="control secondary hidden" id="share-result">Share</button><button class="control secondary" id="new-infinite">New puzzle</button></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PokeSort — Daily Pokémon Sorting Puzzle</title>
+    <meta
+      name="description"
+      content="Play today's free PokeSort puzzle. Find four hidden connections between 16 Pokémon, protect your streak, or switch to unlimited mode."
+    />
+    <link rel="canonical" href="https://pokesort.example/" />
+    <meta
+      property="og:title"
+      content="PokeSort — Daily Pokémon Sorting Puzzle"
+    />
+    <meta
+      property="og:description"
+      content="Sort 16 Pokémon into four hidden groups. A new puzzle every day, plus unlimited play."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pokesort.example/" />
+    <meta
+      property="og:image"
+      content="https://pokesort.example/assets/social-card.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="PokeSort daily Pokémon puzzle" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://pokesort.example/assets/social-card.png"
+    />
+    <meta name="theme-color" content="#151c35" />
+    <meta name="application-name" content="PokeSort" />
+    <meta name="apple-mobile-web-app-title" content="PokeSort" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/assets/favicon.ico" sizes="any" />
+    <link
+      rel="icon"
+      href="/assets/favicon-32x32.png"
+      type="image/png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      href="/assets/favicon-16x16.png"
+      type="image/png"
+      sizes="16x16"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/assets/apple-touch-icon.png"
+      sizes="180x180"
+    />
+    <link
+      rel="mask-icon"
+      href="/assets/safari-pinned-tab.svg"
+      color="#151c35"
+    />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PokeSort",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Any",
+        "url": "https://pokesort.example/",
+        "description": "A free daily Pokémon sorting and grouping puzzle with unlimited mode.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="PokeSort home"
+        ><img
+          class="brand-mark"
+          src="/assets/logo-mark.svg"
+          width="34"
+          height="34"
+          alt=""
+        />
+        ><span>POKE<strong>SORT</strong></span></a
+      >
+      <nav aria-label="Main navigation">
+        <a aria-current="page" href="/">Daily</a
+        ><a href="/?mode=infinite#game">Infinite</a
+        ><a href="/archive/">Archive</a><a href="/how-to-play/">How to play</a>
+      </nav>
+    </header>
+    <main>
+      <section class="play-area" id="game">
+        <div class="game-heading">
+          <div>
+            <p class="puzzle-number" id="puzzle-number">POKESORT · DAILY</p>
+            <h1>Find the four Pokémon groups</h1>
+            <p>Select four Pokémon connected by one exact Pokédex trait.</p>
+          </div>
+          <div class="streak-card" title="Daily streak">
+            <span>🔥</span>
+            <div>
+              <strong id="streak-count">0</strong><small>day streak</small>
+            </div>
+          </div>
+        </div>
+        <div class="mode-tabs" aria-label="Puzzle mode">
+          <button class="active" data-mode="daily"><span>☀️</span> Daily</button
+          ><button data-mode="infinite"><span>∞</span> Infinite</button>
+        </div>
+        <div class="game-shell">
+          <div class="game-meta">
+            <span id="game-kicker">Today’s puzzle</span
+            ><span id="progress-label">0 of 4 groups</span>
+          </div>
+          <div
+            class="solved-groups"
+            id="solved-groups"
+            aria-live="polite"
+          ></div>
+          <div
+            class="puzzle-grid"
+            id="puzzle-grid"
+            aria-label="Pokémon puzzle grid"
+          ></div>
+          <div class="game-status" id="game-status" aria-live="polite">
+            Tap four Pokémon that share a connection.
+          </div>
+          <div class="mistakes" id="mistakes"></div>
+          <div class="game-controls">
+            <button class="control secondary" id="shuffle-board">
+              ⇄ <span>Shuffle</span></button
+            ><button class="control secondary" id="deselect-all">Clear</button
+            ><button class="control submit" id="submit-selection">
+              Submit group</button
+            ><button class="control secondary" id="hint-button">Hint</button
+            ><button class="control secondary" id="reveal-board">Reveal</button
+            ><button class="control secondary hidden" id="share-result">
+              Share</button
+            ><button class="control secondary" id="new-infinite">
+              New puzzle
+            </button>
+          </div>
+        </div>
+        <p class="save-note">
+          ● Progress saves automatically on this device · New daily board at
+          midnight UTC
+        </p>
+      </section>
+      <section class="below-game">
+        <div class="daily-note">
+          <span class="note-icon">?</span>
+          <div>
+            <p class="section-label">TODAY’S STARTING HINT</p>
+            <h2>Look for the most specific connection first.</h2>
+            <p>
+              Types can overlap. Evolution method, region, or special status may
+              reveal the cleaner group.
+            </p>
+          </div>
+        </div>
+        <div class="content-grid">
+          <article>
+            <p class="section-label">HOW TO PLAY</p>
+            <h2>Four groups. Four mistakes.</h2>
+            <ol class="steps">
+              <li>
+                <b>Scan all 16 Pokémon.</b
+                ><span
+                  >Look for shared types, regions, evolution methods, forms, or
+                  status.</span
+                >
+              </li>
+              <li>
+                <b>Select exactly four.</b
+                ><span
+                  >A correct connection locks into place. A near miss tells you
+                  that you are one away.</span
+                >
+              </li>
+              <li>
+                <b>Solve before four misses.</b
+                ><span
+                  >Your daily result and streak remain saved in this
+                  browser.</span
+                >
+              </li>
+            </ol>
+            <a class="text-link" href="/how-to-play/"
+              >Read the complete PokeSort guide →</a
+            >
+          </article>
+          <aside class="return-card">
+            <span class="pixel-stars">✦ ✦ ✦</span>
+            <h2>One board isn’t enough?</h2>
+            <p>
+              Infinite mode creates another Pokémon sorting puzzle whenever you
+              want it.
+            </p>
+            <a class="big-link" href="/?mode=infinite#game"
+              >Play Infinite <span>→</span></a
+            ><a class="quiet-link" href="/archive/"
+              >Browse previous daily puzzles</a
+            >
+          </aside>
+        </div>
+        <section class="seo-copy">
+          <p class="section-label">DAILY POKÉMON PUZZLE</p>
+          <h2>What is PokeSort?</h2>
+          <p>
+            PokeSort is a free daily Pokémon sorting puzzle. Each board gives
+            you 16 Pokémon and four hidden categories. Your task is to identify
+            the exact four groups before you use all four mistakes. Categories
+            draw on familiar Pokédex knowledge such as elemental typing,
+            generation, evolution, regional origin, and special classifications.
+          </p>
+          <p>
+            The Daily puzzle is shared by every player and changes once per day.
+            Infinite mode is available for practice without affecting your daily
+            result. No account or download is required.
+          </p>
+          <div class="topic-links">
+            <a href="/pokesort-alternative/">PokeSort alternatives</a
+            ><a href="/pokesort-down/">PokeSort not loading?</a
+            ><a href="/how-to-play/">Strategy guide</a
+            ><a href="/archive/">Daily archive</a>
+          </div>
+        </section>
+      </section>
+    </main>
+    <footer>
+      <div>
+        <a class="brand footer-brand" href="/"
+          ><img
+            class="brand-mark"
+            src="/assets/logo-mark.svg"
+            width="34"
+            height="34"
+            alt=""
+          />
+          ><span>POKE<strong>SORT</strong></span></a
+        >
+        <p>
+          Unofficial fan-made Pokémon puzzle. Pokémon and related marks belong
+          to Nintendo, Game Freak, and The Pokémon Company.
+        </p>
       </div>
-      <p class="save-note">● Progress saves automatically on this device · New daily board at midnight UTC</p>
-    </section>
-    <section class="below-game">
-      <div class="daily-note"><span class="note-icon">?</span><div><p class="section-label">TODAY’S STARTING HINT</p><h2>Look for the most specific connection first.</h2><p>Types can overlap. Evolution method, region, or special status may reveal the cleaner group.</p></div></div>
-      <div class="content-grid">
-        <article><p class="section-label">HOW TO PLAY</p><h2>Four groups. Four mistakes.</h2><ol class="steps"><li><b>Scan all 16 Pokémon.</b><span>Look for shared types, regions, evolution methods, forms, or status.</span></li><li><b>Select exactly four.</b><span>A correct connection locks into place. A near miss tells you that you are one away.</span></li><li><b>Solve before four misses.</b><span>Your daily result and streak remain saved in this browser.</span></li></ol><a class="text-link" href="/how-to-play/">Read the complete PokeSort guide →</a></article>
-        <aside class="return-card"><span class="pixel-stars">✦ ✦ ✦</span><h2>One board isn’t enough?</h2><p>Infinite mode creates another Pokémon sorting puzzle whenever you want it.</p><a class="big-link" href="/?mode=infinite#game">Play Infinite <span>→</span></a><a class="quiet-link" href="/archive/">Browse previous daily puzzles</a></aside>
+      <div class="footer-links">
+        <a href="/">Daily</a><a href="/?mode=infinite#game">Infinite</a
+        ><a href="/archive/">Archive</a><a href="/privacy/">Privacy</a>
       </div>
-      <section class="seo-copy"><p class="section-label">DAILY POKÉMON PUZZLE</p><h2>What is PokeSort?</h2><p>PokeSort is a free daily Pokémon sorting puzzle. Each board gives you 16 Pokémon and four hidden categories. Your task is to identify the exact four groups before you use all four mistakes. Categories draw on familiar Pokédex knowledge such as elemental typing, generation, evolution, regional origin, and special classifications.</p><p>The Daily puzzle is shared by every player and changes once per day. Infinite mode is available for practice without affecting your daily result. No account or download is required.</p><div class="topic-links"><a href="/pokesort-alternative/">PokeSort alternatives</a><a href="/pokesort-down/">PokeSort not loading?</a><a href="/how-to-play/">Strategy guide</a><a href="/archive/">Daily archive</a></div></section>
-    </section>
-  </main>
-  <footer><div><a class="brand footer-brand" href="/"><span class="brand-ball"></span><span>POKE<strong>SORT</strong></span></a><p>Unofficial fan-made Pokémon puzzle. Pokémon and related marks belong to Nintendo, Game Freak, and The Pokémon Company.</p></div><div class="footer-links"><a href="/">Daily</a><a href="/?mode=infinite#game">Infinite</a><a href="/archive/">Archive</a><a href="/privacy/">Privacy</a></div></footer>
-  <script type="module" src="/assets/game.js"></script>
-</body>
+    </footer>
+    <script type="module" src="/assets/game.js"></script>
+  </body>
 </html>

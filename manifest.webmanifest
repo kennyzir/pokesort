@@ -1,1 +1,33 @@
-{"name":"PokeSort — Daily Pokémon Sorting Puzzle","short_name":"PokeSort","start_url":"/","display":"standalone","background_color":"#f7f3e8","theme_color":"#151c35","description":"A daily Pokémon sorting puzzle with unlimited play."}
+{
+  "name": "PokeSort — Daily Pokémon Sorting Puzzle",
+  "short_name": "PokeSort",
+  "description": "A daily Pokémon sorting puzzle with unlimited play.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f7f3e8",
+  "theme_color": "#151c35",
+  "categories": ["games", "entertainment", "puzzle"],
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

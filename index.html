@@ -92,7 +92,7 @@
       >
       <nav aria-label="Main navigation">
         <a aria-current="page" href="/">Daily</a
-        ><a href="/?mode=infinite#game">Infinite</a
+        ><a href="/infinite/#game">Infinite</a
         ><a href="/archive/">Archive</a><a href="/how-to-play/">How to play</a>
       </nav>
     </header>
@@ -102,7 +102,7 @@
           <div>
             <p class="puzzle-number" id="puzzle-number">POKESORT · DAILY</p>
             <h1>Find the four Pokémon groups</h1>
-            <p>Select four Pokémon connected by one exact Pokédex trait.</p>
+            <p>Select four Pokémon connected by one exact Pokémon fact.</p>
           </div>
           <div class="streak-card" title="Daily streak">
             <span>🔥</span>
@@ -144,7 +144,7 @@
             ><button class="control secondary" id="reveal-board">Reveal</button
             ><button class="control secondary hidden" id="share-result">
               Share</button
-            ><button class="control secondary" id="new-infinite">
+            ><button class="control secondary hidden" id="new-infinite">
               New puzzle
             </button>
           </div>
@@ -174,8 +174,8 @@
               <li>
                 <b>Scan all 16 Pokémon.</b
                 ><span
-                  >Look for shared types, regions, evolution methods, forms, or
-                  status.</span
+                  >Look for shared types, debut regions, evolution methods,
+                  family stages, fossils, or special classifications.</span
                 >
               </li>
               <li>
@@ -204,7 +204,7 @@
               Infinite mode creates another Pokémon sorting puzzle whenever you
               want it.
             </p>
-            <a class="big-link" href="/?mode=infinite#game"
+            <a class="big-link" href="/infinite/#game"
               >Play Infinite <span>→</span></a
             ><a class="quiet-link" href="/archive/"
               >Browse previous daily puzzles</a
@@ -226,11 +226,20 @@
             Infinite mode is available for practice without affecting your daily
             result. No account or download is required.
           </p>
+          <div class="notice">
+            <strong>Looking for Pokelike’s Daily Pokésort?</strong> That is the
+            six-Pokémon ordering minigame inside Pokelike, not this 4×4 board.
+            Read the <a href="/pokelike-pokesort/">Pokelike Pokésort rules and
+            use the spoiler-free worksheet</a>.
+          </div>
           <div class="topic-links">
             <a href="/pokesort-alternative/">PokeSort alternatives</a
             ><a href="/pokesort-down/">PokeSort not loading?</a
             ><a href="/how-to-play/">Strategy guide</a
-            ><a href="/archive/">Daily archive</a>
+            ><a href="/archive/">Daily archive</a
+            ><a href="/categories/">Category reference</a
+            ><a href="/pokelike-pokesort/">Pokelike Pokésort guide</a
+            ><a href="/about/">Data methodology</a>
           </div>
         </section>
       </section>
@@ -253,8 +262,9 @@
         </p>
       </div>
       <div class="footer-links">
-        <a href="/">Daily</a><a href="/?mode=infinite#game">Infinite</a
-        ><a href="/archive/">Archive</a><a href="/privacy/">Privacy</a>
+        <a href="/">Daily</a><a href="/infinite/#game">Infinite</a
+        ><a href="/archive/">Archive</a><a href="/categories/">Categories</a
+        ><a href="/about/">About</a><a href="/privacy/">Privacy</a>
       </div>
     </footer>
     <script type="module" src="/assets/game.js"></script>

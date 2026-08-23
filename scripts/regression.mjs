@@ -1,0 +1,89 @@
+import { access, readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { ARCHIVE_HISTORY_DAYS, GROUPS, PACK_NOTES, puzzleFor } from "../assets/puzzle-data.js";
+import edgeWorker, { ARCHIVE_NEWEST_DATE, ARCHIVE_OLDEST_DATE } from "../dist/_worker.js";
+
+const root = new URL("../", import.meta.url);
+const dist = new URL("../dist/", import.meta.url);
+const readRoot = (path) => readFile(new URL(path, root), "utf8");
+const readDist = (path) => readFile(new URL(path, dist), "utf8");
+const count = (text, pattern) => (text.match(pattern) || []).length;
+const fail = (message) => { throw new Error(`Product regression: ${message}`); };
+
+const assetPass = new Response("asset-pass", { status: 209 });
+const edgeEnv = { ASSETS: { fetch: async () => assetPass } };
+const edgeFetch = (url) => edgeWorker.fetch(new Request(url), edgeEnv);
+const wwwRedirect = await edgeFetch("https://www.pokesort.org/archive/?ref=test");
+if (wwwRedirect.status !== 308 || wwwRedirect.headers.get("location") !== "https://pokesort.org/archive/?ref=test") fail("www host must permanently redirect to apex while preserving the path and query");
+const infiniteRedirect = await edgeFetch("https://pokesort.org/?mode=infinite&utm_source=test");
+if (infiniteRedirect.status !== 308 || infiniteRedirect.headers.get("location") !== "https://pokesort.org/infinite/") fail("legacy Infinite query must permanently redirect to its clean route");
+const shiftDate = (value, days) => { const date = new Date(`${value}T00:00:00Z`); date.setUTCDate(date.getUTCDate() + days); return date.toISOString().slice(0, 10); };
+const dateRedirect = await edgeFetch(`https://pokesort.org/?date=${ARCHIVE_NEWEST_DATE}`);
+if (dateRedirect.status !== 308 || dateRedirect.headers.get("location") !== `https://pokesort.org/daily/${ARCHIVE_NEWEST_DATE}/`) fail("in-window date query must permanently redirect to its static route");
+const oldForEdge = shiftDate(ARCHIVE_OLDEST_DATE, -1), afterBuildForEdge = shiftDate(ARCHIVE_NEWEST_DATE, 1);
+const oldDateResponse = await edgeFetch(`https://pokesort.org/?date=${oldForEdge}`);
+if (oldDateResponse !== assetPass) fail("out-of-window date query must remain browser-compatible instead of redirecting to a missing route");
+const afterBuildResponse = await edgeFetch(`https://pokesort.org/?date=${afterBuildForEdge}`);
+if (afterBuildResponse !== assetPass) fail("a request after the build window must not redirect to a static date route that was never generated");
+for (const invalidDate of ["2026-07-32", "2026-08-00", "2026-02-29"]) {
+  const invalidDateResponse = await edgeFetch(`https://pokesort.org/?date=${invalidDate}`);
+  if (invalidDateResponse !== assetPass) fail(`invalid calendar date must pass through instead of redirecting to a missing route: ${invalidDate}`);
+}
+const ordinaryResponse = await edgeFetch("https://pokesort.org/categories/");
+if (ordinaryResponse !== assetPass) fail("ordinary requests must pass through to Pages static assets");
+
+// Protected product baseline: routes, home depth, controls, and authored data.
+const protectedRoutes = ["index.html", "archive/index.html", "how-to-play/index.html", "pokesort-alternative/index.html", "pokesort-down/index.html", "privacy/index.html"];
+for (const route of protectedRoutes) await access(new URL(route, dist));
+const home = await readRoot("index.html");
+if (count(home, /<section\b/g) !== 3) fail("homepage must retain its three primary sections");
+if (count(home, /<button\b/g) !== 9) fail("homepage must retain nine mode/game controls");
+for (const id of ["puzzle-grid", "shuffle-board", "deselect-all", "submit-selection", "hint-button", "reveal-board", "share-result", "new-infinite"]) if (!home.includes(`id="${id}"`)) fail(`missing control ${id}`);
+if (GROUPS.length !== 3 || GROUPS.flat().length !== 12 || GROUPS.flatMap((pack) => pack.flatMap((group) => group.mons)).length !== 48) fail("authored puzzle baseline must remain 3 packs / 12 groups / 48 Pokémon");
+
+// Browser behavior invariants caught during Phase 3.
+const game = await readRoot("assets/game.js");
+for (const marker of ["pokesort-daily-", "pokesort-infinite-", "pokesort-infinite-round", "pokesort-wins"]) if (!game.includes(marker)) fail(`missing localStorage key family ${marker}`);
+for (const fragment of [
+  'location.assign(button.dataset.mode === "infinite" ? "/infinite/#game" : "/#game")',
+  'if (revealed) { $("#game-status").textContent = "Board revealed."; save(); return; }',
+  'mode === "daily" && dateKey === today && mistakes < 4',
+  'gameOver = mistakes >= 4; selected = []; save(); render();',
+  'revealed = true; gameOver = true; solved = pack.map((group) => group.name)',
+  'gameOver ? " disabled" : ""',
+]) if (!game.includes(fragment)) fail(`missing runtime safety invariant: ${fragment}`);
+
+// Source and emitted game/data assets must be byte-identical.
+for (const asset of ["assets/game.js", "assets/puzzle-data.js", "assets/pokelike-worksheet.js", "assets/styles.css", "assets/logo-mark.svg", "assets/social-card.png", "manifest.webmanifest"]) {
+  const source = await readFile(new URL(asset, root));
+  const emitted = await readFile(new URL(asset, dist));
+  const digest = (value) => createHash("sha256").update(value).digest("hex");
+  if (digest(source) !== digest(emitted)) fail(`${asset} differs between source and dist`);
+}
+
+// Every Archive choice must have exact data, publication policy, and navigation.
+const archive = await readDist("archive/index.html");
+const dates = [...archive.matchAll(/href="\/daily\/(\d{4}-\d{2}-\d{2})\//g)].map((match) => match[1]);
+if (dates.length !== ARCHIVE_HISTORY_DAYS + 1 || new Set(dates).size !== dates.length) fail("Archive must expose 31 unique static dates");
+const expectedDates = []; const cursor = new Date();
+for (let offset = 0; offset <= ARCHIVE_HISTORY_DAYS; offset++) { expectedDates.push(cursor.toISOString().slice(0, 10)); cursor.setUTCDate(cursor.getUTCDate() - 1); }
+if (dates.join("|") !== expectedDates.join("|")) fail("Archive must be the exact continuous UTC today-plus-30 range in newest-first order");
+const builtHome = await readDist("index.html");
+if (!builtHome.includes('legacyParams.get("mode")==="infinite"') || !builtHome.includes(`legacyDate>=\"${dates.at(-1)}\"`) || !builtHome.includes(`legacyDate<=\"${dates[0]}\"`)) fail("legacy query fallback must cover Infinite and only the generated date window");
+for (const [index, date] of dates.entries()) {
+  const html = await readDist(`daily/${date}/index.html`);
+  const pack = puzzleFor(date);
+  for (const group of pack) {
+    for (const value of [group.name, group.hint, group.explanation, ...group.mons.map(([name]) => name)]) if (!html.includes(value)) fail(`${date} is missing exact puzzle value: ${value}`);
+  }
+  if (!html.includes(PACK_NOTES[GROUPS.indexOf(pack)])) fail(`${date} is missing its pack overlap note`);
+  if (!html.includes(`Puzzle #`) || !html.includes(`UTC date ${date}`)) fail(`${date} is missing its date-specific playable-board introduction`);
+  if (!html.includes('name="robots" content="noindex,follow"')) fail(`${date} must remain playable but held from index while packs repeat`);
+  if (index > 0 && !html.includes(`/daily/${dates[index - 1]}/`)) fail(`${date} is missing previous-date navigation`);
+  if (index < dates.length - 1 && !html.includes(`/daily/${dates[index + 1]}/`)) fail(`${date} is missing next-date navigation`);
+  for (const path of ["/archive/", "/how-to-play/", "/categories/"]) if (!html.includes(`href="${path}"`)) fail(`${date} is missing supporting link ${path}`);
+}
+
+const sitemap = await readDist("sitemap.xml");
+if (sitemap.includes("/daily/")) fail("dated sitemap release must remain held while only three packs repeat");
+console.log("Product regression validation passed: protected routes/tasks, runtime safety, 31 exact dated boards, and publication policy.");

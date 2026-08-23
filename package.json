@@ -7,6 +7,11 @@
     "icons": "python scripts/generate-icons.py",
     "dev": "npm run build && npx serve dist",
     "build": "node scripts/build.mjs",
-    "test": "node scripts/validate.mjs"
+    "test:static": "node scripts/validate.mjs && node scripts/regression.mjs",
+    "test:runtime": "node scripts/runtime-test.mjs",
+    "test": "npm run test:static && npm run test:runtime"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
   }
 }

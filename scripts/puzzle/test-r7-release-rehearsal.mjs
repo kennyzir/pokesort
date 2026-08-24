@@ -7,7 +7,7 @@ import { join, resolve } from "node:path";
 import edgeWorker from "../edge-worker.js";
 import { canonicalJson, createDailyEnvelope, dailyKey, sha256Hex } from "../../functions/_lib/daily-contract.js";
 import { handleDailyRequest } from "../../functions/_lib/daily-handler.js";
-import { CloudflareDailyKv, MemoryDailyKv, putImmutable } from "./daily-kv-upload.mjs";
+import { CloudflareDailyKv, MemoryDailyKv, prepareAndUploadDaily, putImmutable } from "./daily-kv-upload.mjs";
 import { assessDailyReadiness } from "./monitor-daily-readiness.mjs";
 import { publishElapsedHistory } from "./publish-elapsed-history.mjs";
 import { stageCurrentDaily } from "./stage-current-daily.mjs";
@@ -45,6 +45,10 @@ assert.equal((await edgeWorker.fetch(new Request("https://pokesort.org/api/daily
 assert.strictEqual(await edgeWorker.fetch(new Request("https://pokesort.org/categories/"), disabledEnvironment), assetPass, "default-off worker must retain static delivery");
 const missingBinding = await edgeWorker.fetch(new Request("https://pokesort.org/api/daily/current"), { ASSETS: disabledEnvironment.ASSETS, DAILY_API_ENABLED: "true", DAILY_ENVIRONMENT: "preview" });
 assert.equal(missingBinding.status, 503, "enabled API without KV must fail closed");
+const missingEnvelopeKey = await edgeWorker.fetch(new Request("https://pokesort.org/api/daily/current"), { ASSETS: disabledEnvironment.ASSETS, DAILY_API_ENABLED: "true", DAILY_MANIFESTS: kv, DAILY_ENVIRONMENT: "preview" });
+assert.equal(missingEnvelopeKey.status, 503, "enabled API without its HMAC key must fail closed");
+const wrongEnvironment = await handleDailyRequest({ request: new Request("https://production.test/api/daily/current"), env: { DAILY_MANIFESTS: kv, DAILY_ENVIRONMENT: "production", DAILY_ENVELOPE_HMAC_KEY: signingKey }, now });
+assert.equal(wrongEnvironment.status, 503, "preview envelopes must not cross into production even if a key is accidentally reused");
 assert.throws(() => new CloudflareDailyKv({}), /CLOUDFLARE_ADMIN_CONFIGURATION_REQUIRED/, "missing admin secret/configuration must fail closed");
 await assert.rejects(() => putImmutable(kv, dailyKey(today), "different bytes"), /IMMUTABLE_KEY_CONFLICT/, "duplicate date replacement must fail");
 const tamperedKv = new MemoryDailyKv({ [dailyKey(today)]: (await kv.get(dailyKey(today))).replace("Pokemon 1-1", "tampered") });
@@ -109,6 +113,8 @@ try {
   const nextDaySeed = "r7-deterministic-next-day-seed-with-32-bytes";
   const staged = await stageCurrentDaily({ strategy: "seed", publicDirectory, privateDirectory, asOfDate: "2026-08-25", privateSeed: nextDaySeed });
   assert.equal(staged.result, "created");
+  const noOp = await stageCurrentDaily({ strategy: "seed", publicDirectory, privateDirectory: join(nextDayRoot, "unused-no-op-private"), asOfDate: "2026-08-25" });
+  assert.equal(noOp.result, "unchanged", "rerunning an already-published date must not require a seed or mutate history");
   const afterFiles = await snapshots(publicDirectory);
   const changed = [...afterFiles].filter(([name, hash]) => beforeFiles.get(name) !== hash).map(([name]) => name).sort();
   assert.deepEqual(changed, ["2026-08-25.json", "index.json"], "next-day publication must change only the current manifest and index");
@@ -116,6 +122,26 @@ try {
   const npm = process.platform === "win32" ? "npm.cmd" : "npm";
   const gate = spawnSync(`${npm} run release:gate`, [], { cwd: resolve("."), shell: true, encoding: "utf8", timeout: 120_000, env: { ...process.env, POKESORT_DAILY_DIR: publicDirectory, POKESORT_BUILD_OUTPUT: outputDirectory, POKESORT_BUILD_UTC_DATE: "2026-08-25" } });
   assert.equal(gate.status, 0, `next-day release Gate failed:\n${gate.stdout}\n${gate.stderr}`);
+
+  const uploadManifests = [];
+  for (let offset = 7; offset < 14; offset += 1) uploadManifests.push(JSON.parse(await readFile(join(privateDirectory, `${addDays("2026-08-25", offset)}.json`), "utf8")));
+  const uploadLog = [];
+  const uploadKv = new MemoryDailyKv();
+  await prepareAndUploadDaily({ manifests: uploadManifests, adapter: uploadKv, environment: "preview", signingKey, preparedAt: "2026-08-25T00:00:00.000Z", logger: (entry) => uploadLog.push(entry) });
+  assert.equal(uploadLog.length, 7);
+  for (const entry of uploadLog) {
+    assert.deepEqual(Object.keys(entry).sort(), ["contentHash", "date", "environment", "event", "puzzleId", "result"].sort(), "upload diagnostics must not include future cards/groups or credentials");
+  }
+  const failedUploadKv = { get: async () => null, put: async () => { throw new Error("simulated KV failure"); } };
+  await assert.rejects(() => prepareAndUploadDaily({ manifests: uploadManifests, adapter: failedUploadKv, environment: "preview", signingKey, preparedAt: "2026-08-25T00:00:00.000Z" }), /simulated KV failure/, "KV upload failure must reject before the dependent publication job can start");
+
+  const nextManifest = JSON.parse(await readFile(join(publicDirectory, "2026-08-25.json"), "utf8"));
+  const nextPayload = { schemaVersion: 1, status: "ready", utcDate: nextManifest.date, puzzleId: nextManifest.puzzleId, contentHash: nextManifest.contentHash, manifest: nextManifest };
+  const orphanDirectory = join(nextDayRoot, "orphan-public");
+  await cp(resolve("data/puzzles/public-daily"), orphanDirectory, { recursive: true });
+  await writeFile(join(orphanDirectory, "2026-08-25.json"), await readFile(join(publicDirectory, "2026-08-25.json")));
+  const recovered = await publishElapsedHistory({ payload: nextPayload, publicDirectory: orphanDirectory, asOfDate: "2026-08-25" });
+  assert.equal(recovered.result, "created", "an exact next-date manifest orphan must resume by rebuilding the index, never by overwriting history");
 
   const repeatRoot = join(nextDayRoot, "repeat-public"), repeatPrivate = join(nextDayRoot, "repeat-private");
   await cp(resolve("data/puzzles/public-daily"), repeatRoot, { recursive: true });
@@ -132,4 +158,4 @@ try {
   assert.equal((await snapshots(apiFailureRoot)).has("2026-08-25.json"), false);
 } finally { await rm(nextDayRoot, { recursive: true, force: true }); }
 
-console.log(JSON.stringify({ gate: "PASS", advancedWorkerDefaultOff: true, nextDayCheckoutAppendBuildCommitScope: "PASS", failureDrills: ["tampered value", "missing seed", "missing secret", "missing binding", "empty buffer", "duplicate date", "API failure", "deployment delay", "future public success", "candidate rollback"], currentAvailableDuringArchiveLag: true, immutableRollback: true, privateAppend }));
+console.log(JSON.stringify({ gate: "PASS", advancedWorkerDefaultOff: true, nextDayCheckoutAppendBuildCommitScope: "PASS", failureDrills: ["tampered value", "missing seed", "missing HMAC key", "missing binding", "wrong environment", "empty buffer", "duplicate/conflict", "orphan recovery", "KV upload failure", "API failure", "deployment delay", "future public success", "candidate rollback", "idempotent no-op"], currentAvailableDuringArchiveLag: true, immutableRollback: true, privateAppend }));

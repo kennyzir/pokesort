@@ -26,9 +26,9 @@ At least seven consecutive explicit manifests are required. Because KV is eventu
 
 ## Local private-input evidence
 
-The ignored local buffer was regenerated with process-only random seed material after the v2 category-model change. It contains 30 R1/quality-validated v2 manifests for `2026-08-25` through `2026-09-23`; receipt hash `200880a787b10abc6febfc89177fafe8b129a124d58f39ca3b3e4a093858fc77`. The rejected v1-labelled buffer was preserved at `data/puzzles/private/daily-pre-r4-legacy-model-backup-20260824`; it must never be uploaded.
+The ignored local buffer was regenerated after reciprocal Daily/Infinite exclusions and the capacity-aware scheduler correction. It contains 30 R1/quality-validated v2 manifests for `2026-08-25` through `2026-09-23`; receipt hash `b2f6f1eae6016187c94aae9c6a263d39a2f1d421ef5a8ab941643694d803267e`. The rejected v1-labelled buffer was preserved at `data/puzzles/private/daily-pre-r4-legacy-model-backup-20260824`; the pre-correction v2 buffer was also retained locally. Neither backup may be uploaded.
 
-With an honest preparation time of `2026-08-24T00:00:00Z`, only the 24 manifests from `2026-08-31` through `2026-09-23` satisfy the seven-day upload Gate. A local in-memory upload of those explicit paths passed full R1 validation and envelope signing. The first six dates are intentionally rejected as too late to preload; do not backdate `preparedAt`. Therefore the API flag must remain off before the first genuinely preloaded activation date, and the rolling private buffer must be regenerated if external setup happens too late for this window.
+With a preparation time of exactly `2026-08-24T00:00:00Z`, the 24 manifests from `2026-08-31` through `2026-09-23` satisfy the exact seven-day Gate. The scheduled workflow runs at 00:10 UTC, so it conservatively starts uploads at UTC date +8; for this local buffer that would be `2026-09-01`, not `2026-08-31`. A local in-memory upload of eligible explicit paths passed full R1 validation and envelope signing. Ineligible dates are intentionally rejected; never backdate `preparedAt`. Keep the API flag off before the first genuinely preloaded activation date, and regenerate the rolling buffer if external setup happens too late for the current window.
 
 ## Remaining production evidence
 

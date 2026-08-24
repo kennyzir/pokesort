@@ -2,7 +2,7 @@
 
 Drafted: 2026-08-24
 Approved for repository-local execution: 2026-08-24
-Status: Roadmap Controller active; R0–R7 PASS locally, R8 static rollout in progress; target-account KV activation blocked
+Status: R0–R7 PASS locally; R8 static production PASS, target-account KV/edge activation BLOCKED
 Execution ledger after approval: `docs/roadmap/EXECUTION_LEDGER.md`
 
 ## 1. Outcome

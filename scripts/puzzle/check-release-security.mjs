@@ -6,14 +6,32 @@ import { checkPublicationLeaks } from "./check-publication-leaks.mjs";
 
 const normalize = (value) => value.split(sep).join("/").replace(/^\.\//, "");
 const publicSurface = /^(?:assets\/|functions\/|[^/]+\.html$|[^/]+\/index\.html$|data\/puzzles\/public-daily\/|\.github\/workflows\/)/;
-const allowedPlaceholder = (value) => !value || /(?:REPLACE_|example|dummy|test|\$\{\{|process\.env)/i.test(value) || /^(?:key|signingKey|hmacKey)[,;)]?$/.test(value);
+export const RELEASE_SENSITIVE_ENV_NAMES = Object.freeze([
+  "POKESORT_DAILY_SEED",
+  "CLOUDFLARE_DAILY_KV_API_TOKEN",
+  "CLOUDFLARE_ACCOUNT_ID",
+  "EXPECTED_CLOUDFLARE_ACCOUNT_ID",
+  "POKESORT_CLOUDFLARE_ACCOUNT_ID",
+  "POKESORT_PREVIEW_DAILY_KV_NAMESPACE_ID",
+  "POKESORT_PRODUCTION_DAILY_KV_NAMESPACE_ID",
+  "DAILY_ADMIN_SECRET",
+  "DAILY_ENVELOPE_HMAC_KEY",
+  "POKESORT_PREVIEW_DAILY_ENVELOPE_HMAC_KEY",
+  "POKESORT_PRODUCTION_DAILY_ENVELOPE_HMAC_KEY",
+]);
+const sensitiveNamesPattern = [...RELEASE_SENSITIVE_ENV_NAMES].sort((left, right) => right.length - left.length).join("|");
+const sensitiveAssignment = new RegExp(`(?<![A-Z0-9_$-])(?:["']?)(${sensitiveNamesPattern})(?:["']?)[ \\t]*[:=][ \\t]*(?:"([^"\\r\\n]*)"|'([^'\\r\\n]*)'|([^\\s,\\r\\n}]+))`, "g");
+const allowedPlaceholder = (value) => !value
+  || /^(?:REPLACE_WITH_[A-Z0-9_]+|\$\{\{|\$[A-Z_][A-Z0-9_]*$|process\.env(?:\.|\[))/i.test(value)
+  || /^(?:key|signingKey|hmacKey)[,;)]?$/.test(value);
 
 export function inspectReleaseSecurityCandidate({ path, content, asOfDate }) {
   const findings = [];
   const normalizedPath = normalize(path);
   if (/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(content)) findings.push({ path: normalizedPath, kind: "private-key-material" });
-  for (const match of content.matchAll(/(?:CLOUDFLARE_DAILY_KV_API_TOKEN|POKESORT_DAILY_SEED|DAILY_ADMIN_SECRET|(?:POKESORT_(?:PREVIEW|PRODUCTION)_)?DAILY_ENVELOPE_HMAC_KEY)\s*[:=]\s*["']?([^\s"'\r\n}]+)/g)) {
-    if (!allowedPlaceholder(match[1])) findings.push({ path: normalizedPath, kind: "literal-release-secret" });
+  for (const match of content.matchAll(sensitiveAssignment)) {
+    const value = match[2] ?? match[3] ?? match[4] ?? "";
+    if (!allowedPlaceholder(value)) findings.push({ path: normalizedPath, kind: "literal-release-secret", name: match[1] });
   }
   if (publicSurface.test(normalizedPath)) {
     for (const match of content.matchAll(/daily-(\d{4}-\d{2}-\d{2})-[a-f0-9]{16,64}/g)) if (match[1] > asOfDate) findings.push({ path: normalizedPath, kind: "future-puzzle-id" });

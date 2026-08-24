@@ -194,8 +194,13 @@ try {
 
   await page.goto(`${base}/archive/`);
   assert(await page.locator("#archive-grid .archive-card").count() === 31, "Archive must keep the latest 31 puzzles as its primary recent view");
+  const yearHref = await page.locator('a[href^="/archive/20"]').filter({ hasText: "archive" }).first().getAttribute("href");
+  assert(/^\/archive\/\d{4}\/$/.test(yearHref || ""), "Archive must expose a year discovery link on mobile");
   const monthHref = await page.locator('a[href^="/archive/20"]').filter({ hasText: "Browse month" }).first().getAttribute("href");
   assert(/^\/archive\/\d{4}\/\d{2}\/$/.test(monthHref || ""), "Archive must expose mobile month discovery links");
+  await page.goto(`${base}${yearHref}`);
+  assert(await page.locator('a[href^="/archive/"][href$="/"]').filter({ hasText: /2026/ }).count() > 0, "year Archive must render an elapsed month link on mobile");
+  assert(!await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), "year Archive must not overflow the 390px mobile viewport");
   await page.goto(`${base}${monthHref}`);
   assert(await page.locator(".archive-card").count() > 0, "monthly Archive must render elapsed date cards on mobile");
   const bodyOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
@@ -203,10 +208,19 @@ try {
   const datedHref = await page.locator('.archive-card[href^="/daily/"]').first().getAttribute("href");
   assert(/^\/daily\/\d{4}-\d{2}-\d{2}\/$/.test(datedHref || ""), "monthly Archive must link to real dated pages");
 
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(`${base}/archive/`);
+  assert(await page.locator("#archive-grid .archive-card").count() === 31, "desktop Archive must preserve the same latest-31 primary view");
+  await page.goto(`${base}${yearHref}`);
+  assert(await page.locator(`a[href="${monthHref}"]`).count() === 1, "desktop year Archive must link its published month");
+  await page.goto(`${base}${monthHref}`);
+  assert(await page.locator('.archive-card[href^="/daily/"]').count() > 0, "desktop month Archive must expose dated pages");
+  assert(!await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), "desktop month Archive must not overflow its viewport");
+
   const missing = await page.goto(`${base}/not-a-real-route/`);
   assert(missing.status() === 404, "unknown routes must return HTTP 404 in the smoke server");
   assert(pageErrors.length === 0, `page errors occurred: ${pageErrors.join("; ")}`);
-  console.log("Browser runtime validation passed in Chrome at 390×844: intended, one-away, valid-overlap, invalid, win, reveal, failure, Infinite, storage, share, keyboard, legacy dates, Archive/month discovery, Pokelike worksheet, and 404.");
+  console.log("Browser runtime validation passed in Chrome: gameplay at 390×844 plus mobile/desktop Archive year/month discovery, Pokelike worksheet, and 404.");
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

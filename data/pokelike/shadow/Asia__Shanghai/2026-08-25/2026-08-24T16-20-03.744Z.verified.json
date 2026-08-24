@@ -1,0 +1,465 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-08-24T16:20:03.744Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-08-24T16:20:10.708Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-08-24T16:20:10.708Z"
+    }
+  ],
+  "consistencySha256": "bfef022dad41d6bf59df38c4eec05b093c0144e7f25aaa16515b738d50b77f5d",
+  "samples": [
+    {
+      "capturedAt": "2026-08-24T16:20:06.664Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Mon, 24 Aug 2026 16:20:05 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+        "capturedAt": "2026-08-24T16:20:06.664Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Mon, 24 Aug 2026 16:20:05 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-24T16:20:06.664Z"
+      },
+      "snapshot": {
+        "day": 20690,
+        "puzzleNumber": 55,
+        "state": {
+          "slots": [
+            260,
+            6,
+            654,
+            713,
+            299,
+            592
+          ],
+          "conds": [
+            "stage_eq",
+            "gen_eq",
+            "se",
+            "type",
+            "gen_lt"
+          ],
+          "solution": [
+            592,
+            299,
+            260,
+            654,
+            6,
+            713
+          ]
+        },
+        "candidates": [
+          {
+            "id": 260,
+            "name": "Swampert",
+            "types": [
+              "Water",
+              "Ground"
+            ],
+            "color": "blue",
+            "gen": 3,
+            "stage": 2
+          },
+          {
+            "id": 6,
+            "name": "Charizard",
+            "types": [
+              "Fire",
+              "Flying"
+            ],
+            "color": "red",
+            "gen": 1,
+            "stage": 2
+          },
+          {
+            "id": 654,
+            "name": "Braixen",
+            "types": [
+              "Fire"
+            ],
+            "color": "red",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 713,
+            "name": "Avalugg",
+            "types": [
+              "Ice"
+            ],
+            "color": "blue",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 299,
+            "name": "Nosepass",
+            "types": [
+              "Rock"
+            ],
+            "color": "gray",
+            "gen": 3,
+            "stage": 0
+          },
+          {
+            "id": 592,
+            "name": "Frillish",
+            "types": [
+              "Water",
+              "Ghost"
+            ],
+            "color": "white",
+            "gen": 5,
+            "stage": 0
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "stage_eq",
+            "label": "Stage",
+            "cmp": "=",
+            "desc": "Same evolution stage (unevolved, 1st or 2nd evolution)."
+          },
+          {
+            "key": "gen_eq",
+            "label": "Gen",
+            "cmp": "=",
+            "desc": "Both were introduced in the same generation."
+          },
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type is super-effective against the right."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-08-24T16:20:10.431Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Mon, 24 Aug 2026 16:20:09 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+        "capturedAt": "2026-08-24T16:20:10.431Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Mon, 24 Aug 2026 16:20:09 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-24T16:20:10.431Z"
+      },
+      "snapshot": {
+        "day": 20690,
+        "puzzleNumber": 55,
+        "state": {
+          "slots": [
+            260,
+            6,
+            654,
+            713,
+            299,
+            592
+          ],
+          "conds": [
+            "stage_eq",
+            "gen_eq",
+            "se",
+            "type",
+            "gen_lt"
+          ],
+          "solution": [
+            592,
+            299,
+            260,
+            654,
+            6,
+            713
+          ]
+        },
+        "candidates": [
+          {
+            "id": 260,
+            "name": "Swampert",
+            "types": [
+              "Water",
+              "Ground"
+            ],
+            "color": "blue",
+            "gen": 3,
+            "stage": 2
+          },
+          {
+            "id": 6,
+            "name": "Charizard",
+            "types": [
+              "Fire",
+              "Flying"
+            ],
+            "color": "red",
+            "gen": 1,
+            "stage": 2
+          },
+          {
+            "id": 654,
+            "name": "Braixen",
+            "types": [
+              "Fire"
+            ],
+            "color": "red",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 713,
+            "name": "Avalugg",
+            "types": [
+              "Ice"
+            ],
+            "color": "blue",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 299,
+            "name": "Nosepass",
+            "types": [
+              "Rock"
+            ],
+            "color": "gray",
+            "gen": 3,
+            "stage": 0
+          },
+          {
+            "id": 592,
+            "name": "Frillish",
+            "types": [
+              "Water",
+              "Ghost"
+            ],
+            "color": "white",
+            "gen": 5,
+            "stage": 0
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "stage_eq",
+            "label": "Stage",
+            "cmp": "=",
+            "desc": "Same evolution stage (unevolved, 1st or 2nd evolution)."
+          },
+          {
+            "key": "gen_eq",
+            "label": "Gen",
+            "cmp": "=",
+            "desc": "Both were introduced in the same generation."
+          },
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type is super-effective against the right."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-08-25",
+    "timezone": "Asia/Shanghai",
+    "day": 20690,
+    "puzzleNumber": 55,
+    "observedAt": "2026-08-24T16:20:05.000Z",
+    "verifiedAt": "2026-08-24T16:20:10.708Z",
+    "candidates": [
+      {
+        "id": 260,
+        "name": "Swampert",
+        "generation": 3,
+        "stage": 2,
+        "color": "blue",
+        "types": [
+          "water",
+          "ground"
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Charizard",
+        "generation": 1,
+        "stage": 2,
+        "color": "red",
+        "types": [
+          "fire",
+          "flying"
+        ]
+      },
+      {
+        "id": 654,
+        "name": "Braixen",
+        "generation": 6,
+        "stage": 1,
+        "color": "red",
+        "types": [
+          "fire"
+        ]
+      },
+      {
+        "id": 713,
+        "name": "Avalugg",
+        "generation": 6,
+        "stage": 1,
+        "color": "blue",
+        "types": [
+          "ice"
+        ]
+      },
+      {
+        "id": 299,
+        "name": "Nosepass",
+        "generation": 3,
+        "stage": 0,
+        "color": "gray",
+        "types": [
+          "rock"
+        ]
+      },
+      {
+        "id": 592,
+        "name": "Frillish",
+        "generation": 5,
+        "stage": 0,
+        "color": "white",
+        "types": [
+          "water",
+          "ghost"
+        ]
+      }
+    ],
+    "startOrder": [
+      260,
+      6,
+      654,
+      713,
+      299,
+      592
+    ],
+    "links": [
+      {
+        "relation": "stage_eq",
+        "leftId": 592,
+        "rightId": 299,
+        "explanation": "Frillish and Nosepass are both evolution stage 0."
+      },
+      {
+        "relation": "gen_eq",
+        "leftId": 299,
+        "rightId": 260,
+        "explanation": "Nosepass and Swampert were introduced in generation 3."
+      },
+      {
+        "relation": "se",
+        "leftId": 260,
+        "rightId": 654,
+        "explanation": "Swampert's primary type is super-effective against Braixen's primary type."
+      },
+      {
+        "relation": "type",
+        "leftId": 654,
+        "rightId": 6,
+        "explanation": "Braixen and Charizard share at least one type."
+      },
+      {
+        "relation": "gen_lt",
+        "leftId": 6,
+        "rightId": 713,
+        "explanation": "Charizard is generation 1; Avalugg is generation 6."
+      }
+    ],
+    "solutionOrder": [
+      592,
+      299,
+      260,
+      654,
+      6,
+      713
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: Same evolution stage (unevolved, 1st or 2nd evolution).",
+        "Link 2: Both were introduced in the same generation.",
+        "Link 3: The LEFT Pokémon's primary type is super-effective against the right.",
+        "Link 4: They share at least one type.",
+        "Link 5: The LEFT Pokémon is from an earlier generation than the right."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+      "bundleSha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+      "stateSha256": "b32a471fe12fd31719d353bc5b7a7378fb1b8855381496c359fc620af610cc44",
+      "contentSha256": "232375e950a0ac6026b3d80983268122fdaf95042e080b86c68d3896108e5dc1"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

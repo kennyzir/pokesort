@@ -29,10 +29,19 @@ export async function publishElapsedHistory({
   logger = () => {},
 }) {
   const manifest = await validateElapsedApiPayload(payload, { asOfDate });
-  const history = await validatePublicDailyHistory({ directory: publicDirectory, asOfDate, verifySolver: true });
+  // A process can stop after the immutable manifest is created but before the
+  // index rename.  Treat that one exact next-date file as a resumable append;
+  // unrelated or conflicting orphans remain fail-closed and are never deleted.
+  const history = await validatePublicDailyHistory({ directory: publicDirectory, asOfDate, verifySolver: true, allowUnindexedFiles: true });
   const existing = history.index.entries.find(({ date }) => date === manifest.date);
   const bytes = `${JSON.stringify(manifest, null, 2)}\n`;
+  if (history.unindexedFiles.length) {
+    if (history.unindexedFiles.length !== 1 || history.unindexedFiles[0] !== `${manifest.date}.json`) throw new Error(`PUBLIC_HISTORY_ORPHAN_CONFLICT:${history.unindexedFiles.join(",")}`);
+    const orphanBytes = await readFile(resolve(publicDirectory, history.unindexedFiles[0]), "utf8");
+    if (orphanBytes !== bytes) throw new Error(`IMMUTABLE_HISTORY_CONFLICT:${manifest.date}`);
+  }
   if (existing) {
+    if (history.unindexedFiles.length) throw new Error(`PUBLIC_HISTORY_ORPHAN_CONFLICT:${history.unindexedFiles.join(",")}`);
     if (existing.puzzleId !== manifest.puzzleId || existing.contentHash !== manifest.contentHash || await readFile(resolve(publicDirectory, existing.file), "utf8") !== bytes) throw new Error(`IMMUTABLE_HISTORY_CONFLICT:${manifest.date}`);
     logger({ event: "publish_elapsed_history", ...safeFields(manifest), result: "unchanged" });
     return { result: "unchanged", manifest: safeFields(manifest), historyDates: history.dates.length };

@@ -19,6 +19,8 @@ for (const required of [
   "--existing-receipt",
   "has_new_evidence=false",
   "has_new_evidence=true",
+  'realpath --relative-to="$GITHUB_WORKSPACE"',
+  'data/pokelike/shadow/Asia__Shanghai/*',
   "git diff --quiet --exit-code",
   "git diff --cached --quiet --exit-code",
   'git add -- "$CAPTURE_PATH" "$RECEIPT_PATH"',

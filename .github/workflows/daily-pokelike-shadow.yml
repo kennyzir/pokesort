@@ -63,6 +63,12 @@ jobs:
             exit 1
           fi
 
+          capture_path="$(realpath --relative-to="$GITHUB_WORKSPACE" "$capture_path")"
+          [[ "$capture_path" == data/pokelike/shadow/Asia__Shanghai/* && "$capture_path" != *".."* ]] || {
+            echo "Capture path escaped the expected evidence directory." >&2
+            exit 1
+          }
+
           node scripts/pokelike/validate-shadow-evidence.mjs \
             --input "$capture_path" \
             --timezone Asia/Shanghai \

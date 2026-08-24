@@ -97,8 +97,12 @@ const leadKv = new MemoryDailyKv({
   [dailyKey(leadSource.date)]: canonicalJson(await createDailyEnvelope(leadSource, { environment: "preview", preparedAt: "2029-12-20T00:00:00.000Z", signingKey })),
 });
 const leadEnvironment = { ...environment(leadKv), DAILY_STORAGE_LEAD_DAYS: "7" };
+const preActivationEnvironment = { ...leadEnvironment, POKESORT_EDGE_DAILY_ACTIVATION_DATE: "2030-01-02" };
+assert.equal((await handleDailyRequest({ request: request(), env: preActivationEnvironment, now: "2030-01-01T23:59:59.999Z" })).status, 404, "the edge API must stay unpublished before its UTC activation date");
+assert.equal((await handleDailyRequest({ request: request(), env: { ...leadEnvironment, POKESORT_EDGE_DAILY_ACTIVATION_DATE: "not-a-date" }, now: "2030-01-01T00:00:00.000Z" })).status, 503, "an invalid activation date must fail closed");
 const leadResponse = await handleDailyRequest({ request: request(), env: leadEnvironment, now: "2030-01-01T00:00:00.000Z" });
 assert.equal(leadResponse.status, 200);
+assert.equal((await handleDailyRequest({ request: request(), env: { ...leadEnvironment, POKESORT_EDGE_DAILY_ACTIVATION_DATE: "2030-01-01" }, now: "2030-01-01T00:00:00.000Z" })).status, 200, "the edge API must become available on its UTC activation date");
 const leadBody = await leadResponse.json();
 assert.equal(leadBody.utcDate, "2030-01-01");
 assert.equal(leadBody.manifest.date, "2030-01-01");

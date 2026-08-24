@@ -38,6 +38,9 @@ export async function handleDailyRequest({ request, env, requestedDate = null, n
   if (requestedDate !== null && !isUtcDate(requestedDate)) return notFound(authoritativeDate);
   const targetDate = requestedDate ?? authoritativeDate;
   if (targetDate > authoritativeDate) return notFound(authoritativeDate);
+  const activationDate = env?.POKESORT_EDGE_DAILY_ACTIVATION_DATE;
+  if (activationDate !== undefined && !isUtcDate(activationDate)) return unavailable(authoritativeDate, "configuration_unavailable");
+  if (activationDate && authoritativeDate < activationDate) return notFound(authoritativeDate);
   const storageLeadDays = env?.DAILY_STORAGE_LEAD_DAYS === undefined ? 0 : Number(env.DAILY_STORAGE_LEAD_DAYS);
   if (!env?.DAILY_MANIFESTS
     || !["preview", "production"].includes(env.DAILY_ENVIRONMENT)

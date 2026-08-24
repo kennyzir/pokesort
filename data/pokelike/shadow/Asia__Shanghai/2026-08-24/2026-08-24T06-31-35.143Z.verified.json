@@ -1,0 +1,465 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-08-24T06:31:35.143Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-08-24T06:31:43.501Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-08-24T06:31:43.502Z"
+    }
+  ],
+  "consistencySha256": "45323766e31e52f8d6ee73c7458f5514cae4b5a530a547c639e88e72519bebd7",
+  "samples": [
+    {
+      "capturedAt": "2026-08-24T06:31:39.171Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Mon, 24 Aug 2026 06:31:37 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+        "capturedAt": "2026-08-24T06:31:39.171Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Mon, 24 Aug 2026 06:31:37 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-24T06:31:39.171Z"
+      },
+      "snapshot": {
+        "day": 20689,
+        "puzzleNumber": 54,
+        "state": {
+          "slots": [
+            299,
+            562,
+            679,
+            330,
+            107,
+            536
+          ],
+          "conds": [
+            "stage_lt",
+            "stage_gt",
+            "color",
+            "stage_lt",
+            "gen_gt"
+          ],
+          "solution": [
+            562,
+            330,
+            107,
+            679,
+            536,
+            299
+          ]
+        },
+        "candidates": [
+          {
+            "id": 299,
+            "name": "Nosepass",
+            "types": [
+              "Rock"
+            ],
+            "color": "gray",
+            "gen": 3,
+            "stage": 0
+          },
+          {
+            "id": 562,
+            "name": "Yamask",
+            "types": [
+              "Ghost"
+            ],
+            "color": "black",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 679,
+            "name": "Honedge",
+            "types": [
+              "Steel",
+              "Ghost"
+            ],
+            "color": "brown",
+            "gen": 6,
+            "stage": 0
+          },
+          {
+            "id": 330,
+            "name": "Flygon",
+            "types": [
+              "Ground",
+              "Dragon"
+            ],
+            "color": "green",
+            "gen": 3,
+            "stage": 2
+          },
+          {
+            "id": 107,
+            "name": "Hitmonchan",
+            "types": [
+              "Fighting"
+            ],
+            "color": "brown",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 536,
+            "name": "Palpitoad",
+            "types": [
+              "Water",
+              "Ground"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 1
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "stage_lt",
+            "label": "Stage",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is less evolved than the right."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "color",
+            "label": "Colour",
+            "cmp": "=",
+            "desc": "Both Pokémon share the same body colour."
+          },
+          {
+            "key": "stage_lt",
+            "label": "Stage",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is less evolved than the right."
+          },
+          {
+            "key": "gen_gt",
+            "label": "Gen",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is from a later generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-08-24T06:31:43.264Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Mon, 24 Aug 2026 06:31:41 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+        "capturedAt": "2026-08-24T06:31:43.264Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Mon, 24 Aug 2026 06:31:41 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-24T06:31:43.264Z"
+      },
+      "snapshot": {
+        "day": 20689,
+        "puzzleNumber": 54,
+        "state": {
+          "slots": [
+            299,
+            562,
+            679,
+            330,
+            107,
+            536
+          ],
+          "conds": [
+            "stage_lt",
+            "stage_gt",
+            "color",
+            "stage_lt",
+            "gen_gt"
+          ],
+          "solution": [
+            562,
+            330,
+            107,
+            679,
+            536,
+            299
+          ]
+        },
+        "candidates": [
+          {
+            "id": 299,
+            "name": "Nosepass",
+            "types": [
+              "Rock"
+            ],
+            "color": "gray",
+            "gen": 3,
+            "stage": 0
+          },
+          {
+            "id": 562,
+            "name": "Yamask",
+            "types": [
+              "Ghost"
+            ],
+            "color": "black",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 679,
+            "name": "Honedge",
+            "types": [
+              "Steel",
+              "Ghost"
+            ],
+            "color": "brown",
+            "gen": 6,
+            "stage": 0
+          },
+          {
+            "id": 330,
+            "name": "Flygon",
+            "types": [
+              "Ground",
+              "Dragon"
+            ],
+            "color": "green",
+            "gen": 3,
+            "stage": 2
+          },
+          {
+            "id": 107,
+            "name": "Hitmonchan",
+            "types": [
+              "Fighting"
+            ],
+            "color": "brown",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 536,
+            "name": "Palpitoad",
+            "types": [
+              "Water",
+              "Ground"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 1
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "stage_lt",
+            "label": "Stage",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is less evolved than the right."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "color",
+            "label": "Colour",
+            "cmp": "=",
+            "desc": "Both Pokémon share the same body colour."
+          },
+          {
+            "key": "stage_lt",
+            "label": "Stage",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is less evolved than the right."
+          },
+          {
+            "key": "gen_gt",
+            "label": "Gen",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is from a later generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-08-24",
+    "timezone": "Asia/Shanghai",
+    "day": 20689,
+    "puzzleNumber": 54,
+    "observedAt": "2026-08-24T06:31:37.000Z",
+    "verifiedAt": "2026-08-24T06:31:43.502Z",
+    "candidates": [
+      {
+        "id": 299,
+        "name": "Nosepass",
+        "generation": 3,
+        "stage": 0,
+        "color": "gray",
+        "types": [
+          "rock"
+        ]
+      },
+      {
+        "id": 562,
+        "name": "Yamask",
+        "generation": 5,
+        "stage": 0,
+        "color": "black",
+        "types": [
+          "ghost"
+        ]
+      },
+      {
+        "id": 679,
+        "name": "Honedge",
+        "generation": 6,
+        "stage": 0,
+        "color": "brown",
+        "types": [
+          "steel",
+          "ghost"
+        ]
+      },
+      {
+        "id": 330,
+        "name": "Flygon",
+        "generation": 3,
+        "stage": 2,
+        "color": "green",
+        "types": [
+          "ground",
+          "dragon"
+        ]
+      },
+      {
+        "id": 107,
+        "name": "Hitmonchan",
+        "generation": 1,
+        "stage": 1,
+        "color": "brown",
+        "types": [
+          "fighting"
+        ]
+      },
+      {
+        "id": 536,
+        "name": "Palpitoad",
+        "generation": 5,
+        "stage": 1,
+        "color": "blue",
+        "types": [
+          "water",
+          "ground"
+        ]
+      }
+    ],
+    "startOrder": [
+      299,
+      562,
+      679,
+      330,
+      107,
+      536
+    ],
+    "links": [
+      {
+        "relation": "stage_lt",
+        "leftId": 562,
+        "rightId": 330,
+        "explanation": "Yamask is stage 0; Flygon is stage 2."
+      },
+      {
+        "relation": "stage_gt",
+        "leftId": 330,
+        "rightId": 107,
+        "explanation": "Flygon is stage 2; Hitmonchan is stage 1."
+      },
+      {
+        "relation": "color",
+        "leftId": 107,
+        "rightId": 679,
+        "explanation": "Hitmonchan and Honedge share the brown body colour."
+      },
+      {
+        "relation": "stage_lt",
+        "leftId": 679,
+        "rightId": 536,
+        "explanation": "Honedge is stage 0; Palpitoad is stage 1."
+      },
+      {
+        "relation": "gen_gt",
+        "leftId": 536,
+        "rightId": 299,
+        "explanation": "Palpitoad is generation 5; Nosepass is generation 3."
+      }
+    ],
+    "solutionOrder": [
+      562,
+      330,
+      107,
+      679,
+      536,
+      299
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: The LEFT Pokémon is less evolved than the right.",
+        "Link 2: The LEFT Pokémon is further evolved than the right.",
+        "Link 3: Both Pokémon share the same body colour.",
+        "Link 4: The LEFT Pokémon is less evolved than the right.",
+        "Link 5: The LEFT Pokémon is from a later generation than the right."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+      "bundleSha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+      "stateSha256": "4ea39e98844c6157521c1d6542582b409f15df27ab334fbc51e26068f8d59812",
+      "contentSha256": "4423a11fc9e20b81eecbdf1f73d28a5764ec0b91724548a71737c48ae52f2b21"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

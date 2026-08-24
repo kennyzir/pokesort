@@ -1,0 +1,47 @@
+name: Refresh daily PokeSort archive
+
+on:
+  schedule:
+    - cron: "5 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-pokesort-archive-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Build and validate static release
+        run: npm run test:static
+        env:
+          SITE_URL: https://pokesort.org
+
+      - name: Trigger the Cloudflare Pages Git deployment
+        shell: bash
+        run: |
+          refresh_date="$(date -u +%F)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "chore: refresh daily archive ${refresh_date}"
+          git push origin HEAD:main

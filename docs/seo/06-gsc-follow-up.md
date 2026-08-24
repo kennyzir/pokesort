@@ -12,7 +12,7 @@ GSC data was unavailable during implementation. After deployment:
 8. Keep dated 4×4 pages out of the sitemap until the generator has reviewed, materially unique daily packs and a stable retention policy. Never retitle them as Pokelike answers. Track Pokelike six-link demand against `/pokelike-pokesort/`; create `/pokelike-pokesort/today/` only after the verified daily-data Gate is met.
 9. Expand or release held pages only when evidence crosses these gates: at least one relevant query has repeat impressions, its mechanic is confirmed from the top results, the page has unique data or interaction, and it will not duplicate an existing task.
 10. Keep the rolling 30-day Archive unless a separately approved retention decision changes it. Add `/pokelike-pokesort/solver/` only after a complete, sourceable six-position relation model and working permutation engine are available; never relabel the worksheet as a solver.
-11. Rebuild after UTC midnight whenever a fresh rolling Archive is required. The Worker uses build-injected oldest/newest constants and will not redirect to a date route absent from the deployed artifact.
+11. The scheduled GitHub workflow rebuilds after UTC midnight by validating the project and pushing a dated refresh commit at 00:05 UTC. Confirm both the GitHub workflow and the resulting Cloudflare Pages check remain green. The Worker uses build-injected oldest/newest constants and will not redirect to a date route absent from the deployed artifact.
 
 ## Deployment Gate
 

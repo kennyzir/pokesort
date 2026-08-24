@@ -19,8 +19,18 @@ for (const query of ["pokelike pokesort", "what is pokesort", "how to play pokel
 const keywordNarrative = await readFile(new URL("../docs/seo/02-keyword-intent-map.md", import.meta.url), "utf8");
 if (keywordNarrative.includes("6-link-sequence:** do not target") || keywordNarrative.includes("Pokelike answer pages") || !keywordNarrative.includes("Pokésort is a Daily six-Pokémon minigame inside the parent game Pokelike")) throw new Error("Keyword narrative reintroduced the corrected Pokelike entity error");
 if (GROUPS.length < 3 || PACK_NOTES.length !== GROUPS.length || GROUPS.some((pack) => pack.length !== 4 || pack.some((group) => group.mons.length !== 4 || !group.explanation))) throw new Error("Puzzle data must contain complete four-by-four packs, explanations, and overlap notes");
-const required = ["index.html", "infinite/index.html", "archive/index.html", "how-to-play/index.html", "categories/index.html", "pokelike-pokesort/index.html", "about/index.html", "pokesort-alternative/index.html", "pokesort-down/index.html", "privacy/index.html", "404.html", "assets/styles.css", "assets/game.js", "assets/puzzle-data.js", "assets/pokelike-worksheet.js", "sitemap.xml", "robots.txt", "_redirects", "_worker.js"];
+const required = ["index.html", "infinite/index.html", "archive/index.html", "how-to-play/index.html", "categories/index.html", "pokelike-pokesort/index.html", "about/index.html", "pokesort-alternative/index.html", "pokesort-down/index.html", "privacy/index.html", "404.html", "favicon.ico", "assets/favicon-96x96.png", "assets/styles.css", "assets/game.js", "assets/puzzle-data.js", "assets/pokelike-worksheet.js", "sitemap.xml", "robots.txt", "_redirects", "_worker.js"];
 for (const file of required) await access(new URL(file, dist));
+const favicon = await readFile(new URL("favicon.ico", dist));
+const faviconCount = favicon.readUInt16LE(4);
+const faviconSizes = Array.from({ length: faviconCount }, (_, index) => {
+  const width = favicon[6 + index * 16] || 256;
+  const height = favicon[7 + index * 16] || 256;
+  return `${width}x${height}`;
+});
+if (favicon.readUInt16LE(0) !== 0 || favicon.readUInt16LE(2) !== 1 || !faviconSizes.includes("48x48") || !faviconSizes.includes("96x96")) throw new Error(`Root favicon.ico must contain valid 48px and 96px square icon frames; found ${faviconSizes.join(", ")}`);
+const faviconPng = await readFile(new URL("assets/favicon-96x96.png", dist));
+if (faviconPng.toString("ascii", 1, 4) !== "PNG" || faviconPng.readUInt32BE(16) !== 96 || faviconPng.readUInt32BE(20) !== 96) throw new Error("Search favicon must include a valid 96x96 PNG fallback");
 const notFound = await readFile(new URL("404.html", dist), "utf8");
 if (!notFound.includes('name="robots" content="noindex,follow"') || notFound.includes('rel="canonical"') || notFound.includes('WebApplication') || notFound.includes("URLSearchParams") || !/name="description"\s+content="The requested PokeSort page was not found\./s.test(notFound) || !/property="og:title"\s+content="Page not found – PokeSort"/s.test(notFound) || !/property="og:url"\s+content="https:\/\/pokesort\.org\/404\.html"/s.test(notFound) || !/name="twitter:title"\s+content="Page not found – PokeSort"/s.test(notFound)) throw new Error("404 metadata, robots, or schema is misleading");
 const redirects = await readFile(new URL("_redirects", dist), "utf8");
@@ -84,6 +94,7 @@ for (const url of urls) {
   const pathname = new URL(url).pathname;
   const file = pathname === "/" ? "index.html" : `${pathname.slice(1)}index.html`;
   const html = await readFile(new URL(file, dist), "utf8");
+  if (!html.includes('rel="icon" href="/favicon.ico"')) throw new Error(`${pathname} must declare the stable root favicon URL`);
   const title = html.match(/<title>(.*?)<\/title>/s)?.[1]?.trim();
   const description = html.match(/<meta\s+name="description"\s+content="([^"]+)"/s)?.[1]?.trim();
   const canonical = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/s)?.[1];
@@ -107,7 +118,7 @@ for (const url of urls) {
   for (const image of html.matchAll(/<img\s+([^>]+)>/g)) { const attrs = image[1]; if (!/\bwidth="\d+"/.test(attrs) || !/\bheight="\d+"/.test(attrs) || !/\balt="[^"]*"/.test(attrs)) throw new Error(`${pathname} has an image without width, height, or alt`); }
   const links = [...html.matchAll(/href="(\/[^"#?]*)/g)].map((match) => match[1]);
   if (!links.length) throw new Error(`${pathname} has no internal links`);
-  for (const link of links) if (!link.startsWith("/assets/") && !knownPaths.has(link) && link !== "/manifest.webmanifest") throw new Error(`${pathname} links to missing route ${link}`);
+  for (const link of links) if (!link.startsWith("/assets/") && !knownPaths.has(link) && link !== "/manifest.webmanifest" && link !== "/favicon.ico") throw new Error(`${pathname} links to missing route ${link}`);
   if (pathname.startsWith("/daily/") && (!html.includes("<details>") || !html.includes("Puzzle #"))) throw new Error(`${pathname} is an empty daily template`);
   if (pathname.startsWith("/daily/") && ((html.match(/<details>/g) || []).length !== 6 || (html.match(/<summary>Reveal group \d<\/summary>/g) || []).length !== 4 || !html.includes("<h2>Likely overlap</h2>"))) throw new Error(`${pathname} lacks progressive hints, four group reveals, or overlap guidance`);
   if (pathname.startsWith("/daily/") && !html.match(/property="og:title"\s+content="PokeSort 4×4 Daily Puzzle for \d{4}-\d{2}-\d{2}/s)) throw new Error(`${pathname} has inherited non-date OG metadata`);

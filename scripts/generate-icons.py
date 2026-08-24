@@ -46,14 +46,17 @@ def font(size: int, bold: bool = False):
     return ImageFont.load_default()
 
 
-for size, name in [(16, "favicon-16x16.png"), (32, "favicon-32x32.png"), (48, "favicon-48x48.png"), (180, "apple-touch-icon.png"), (192, "icon-192.png"), (512, "icon-512.png")]:
+for size, name in [(16, "favicon-16x16.png"), (32, "favicon-32x32.png"), (48, "favicon-48x48.png"), (96, "favicon-96x96.png"), (180, "apple-touch-icon.png"), (192, "icon-192.png"), (512, "icon-512.png")]:
     draw_mark(size).save(ASSETS / name, optimize=True)
 
 draw_mark(512, safe=0.1).save(ASSETS / "icon-maskable-512.png", optimize=True)
 
-ico_frames = [draw_mark(size) for size in (16, 32, 48)]
-ico_frames[0].save(ASSETS / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)], append_images=ico_frames[1:])
-ico_frames[0].save(ROOT / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)], append_images=ico_frames[1:])
+# Pillow creates the requested ICO directory entries by downscaling the source
+# image. Saving the former 16px source silently produced a one-frame 16px ICO.
+ico_sizes = [(16, 16), (32, 32), (48, 48), (96, 96)]
+ico_source = draw_mark(96)
+ico_source.save(ASSETS / "favicon.ico", format="ICO", sizes=ico_sizes)
+ico_source.save(ROOT / "favicon.ico", format="ICO", sizes=ico_sizes)
 
 card = Image.new("RGB", (1200, 630), NAVY)
 draw = ImageDraw.Draw(card)

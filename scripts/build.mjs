@@ -16,6 +16,8 @@ const gaMeasurementId = (process.env.PUBLIC_GA_MEASUREMENT_ID ?? "G-JEJ6WJ88P3")
 if (gaMeasurementId && !/^G-[A-Z0-9]+$/.test(gaMeasurementId)) throw new Error("PUBLIC_GA_MEASUREMENT_ID must be a GA4 measurement ID such as G-XXXXXXXXXX");
 const today = process.env.POKESORT_BUILD_UTC_DATE || new Date().toISOString().slice(0, 10);
 if (!/^\d{4}-\d{2}-\d{2}$/.test(today) || new Date(`${today}T00:00:00.000Z`).toISOString().slice(0, 10) !== today) throw new Error("POKESORT_BUILD_UTC_DATE must be a valid UTC date");
+const edgeDailyActivationDate = process.env.POKESORT_EDGE_DAILY_ACTIVATION_DATE || "2026-08-25";
+if (process.env.POKESORT_EDGE_DAILY === "1" && (!/^\d{4}-\d{2}-\d{2}$/.test(edgeDailyActivationDate) || new Date(`${edgeDailyActivationDate}T00:00:00.000Z`).toISOString().slice(0, 10) !== edgeDailyActivationDate)) throw new Error("POKESORT_EDGE_DAILY_ACTIVATION_DATE must be a valid UTC date");
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll('"', "&quot;");
 const archiveDateRange = (end, historyDays) => { const dates = []; const date = new Date(`${end}T00:00:00Z`); for (let offset = 0; offset <= historyDays; offset++) { dates.push(date.toISOString().slice(0, 10)); date.setUTCDate(date.getUTCDate() - 1); } return dates; };
 const archiveDates = archiveDateRange(today, ARCHIVE_HISTORY_DAYS);
@@ -83,7 +85,7 @@ await writeFile(new URL("_worker.js", output), composedWorker);
 let home = await readFile(new URL("../index.html", import.meta.url), "utf8");
 home = home.replaceAll("/?mode=infinite#game", "/infinite/#game").replace("</head>", `  <script>const legacyParams=new URLSearchParams(location.search),legacyDate=legacyParams.get("date");if(legacyParams.get("mode")==="infinite")location.replace("/infinite/");else if(/^\\d{4}-\\d{2}-\\d{2}$/.test(legacyDate||"")&&legacyDate>="${archiveDates.at(-1)}"&&legacyDate<="${today}")location.replace("/daily/"+legacyDate+"/");</script>\n  </head>`);
 home = embedPuzzle(home, dailyManifests.get(today));
-if (process.env.POKESORT_EDGE_DAILY === "1") home = home.replace("</head>", '<meta name="pokesort-edge-daily" content="enabled">\n</head>');
+if (process.env.POKESORT_EDGE_DAILY === "1") home = home.replace("</head>", `<meta name="pokesort-edge-daily" content="enabled">\n<meta name="pokesort-edge-daily-activation-date" content="${edgeDailyActivationDate}">\n</head>`);
 await writeFile(new URL("index.html", output), home);
 
 const categoryFile = new URL("categories/index.html", output);

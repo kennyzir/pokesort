@@ -1,0 +1,9 @@
+name = "pokesort-daily-refresh"
+main = "worker.js"
+compatibility_date = "2026-08-24"
+
+[triggers]
+crons = ["10 0 * * *"]
+
+# PAGES_DEPLOY_HOOK_URL must be configured with `wrangler secret put`.
+# Never commit the hook URL or expose it through the Worker's fetch handler.

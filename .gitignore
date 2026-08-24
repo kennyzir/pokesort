@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .wrangler/
+.cloudflare-build/
 .dev.vars
 .env
 .env.*

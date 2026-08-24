@@ -61,7 +61,7 @@ const localFetch = async (url) => {
 const diagnostics = await assessDailyReadiness({ apiBaseUrl: "https://preview.test/api/daily", kv, environment: "preview", signingKey, now, fetchImplementation: localFetch });
 assert.equal(diagnostics.bufferCount, 7);
 assert.equal(diagnostics.archiveLagDays, 1);
-assert.deepEqual(Object.keys(diagnostics).sort(), ["activeContentHash", "activePuzzleId", "archiveLagDays", "bufferCount", "gate", "newestArchiveDate", "newestPrivateDate", "oldestPrivateDate", "utcDate", "validationStatus"].sort(), "diagnostics must contain non-sensitive metadata only");
+assert.deepEqual(Object.keys(diagnostics).sort(), ["activeContentHash", "activePuzzleId", "archiveLagDays", "bufferCount", "gate", "newestArchiveDate", "newestPrivateDate", "newestStorageDate", "oldestPrivateDate", "oldestStorageDate", "storageLeadDays", "utcDate", "validationStatus"].sort(), "diagnostics must contain non-sensitive metadata only");
 
 await assert.rejects(() => assessDailyReadiness({ apiBaseUrl: "https://preview.test/api/daily", kv: new MemoryDailyKv(), environment: "preview", signingKey, now, fetchImplementation: localFetch }), /PRIVATE_BUFFER_DATE_MISSING/);
 await assert.rejects(() => assessDailyReadiness({ apiBaseUrl: "https://preview.test/api/daily", kv, environment: "preview", signingKey, now, fetchImplementation: async (url) => url.endsWith(`/daily/${addDays(today, 1)}`) ? new Response("future leak", { status: 200 }) : localFetch(url) }), /FUTURE_PUBLIC_RESPONSE_SUCCEEDED/);

@@ -18,6 +18,7 @@ export const RELEASE_SENSITIVE_ENV_NAMES = Object.freeze([
   "DAILY_ENVELOPE_HMAC_KEY",
   "POKESORT_PREVIEW_DAILY_ENVELOPE_HMAC_KEY",
   "POKESORT_PRODUCTION_DAILY_ENVELOPE_HMAC_KEY",
+  "PAGES_DEPLOY_HOOK_URL",
 ]);
 const sensitiveNamesPattern = [...RELEASE_SENSITIVE_ENV_NAMES].sort((left, right) => right.length - left.length).join("|");
 const sensitiveAssignment = new RegExp(`(?<![A-Z0-9_$-])(?:["']?)(${sensitiveNamesPattern})(?:["']?)[ \\t]*[:=][ \\t]*(?:"([^"\\r\\n]*)"|'([^'\\r\\n]*)'|([^\\s,\\r\\n}]+))`, "g");

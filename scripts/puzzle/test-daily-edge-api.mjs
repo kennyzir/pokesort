@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { canonicalJson, createDailyEnvelope, dailyKey, inspectDailyEnvelope, sha256Hex } from "../../functions/_lib/daily-contract.js";
 import { handleDailyRequest } from "../../functions/_lib/daily-handler.js";
-import { CloudflareDailyKv, KV_IMMUTABILITY_MODEL, MemoryDailyKv, prepareAndUploadDaily, putImmutable, validateManifestForUpload } from "./daily-kv-upload.mjs";
+import { CloudflareDailyKv, KV_IMMUTABILITY_MODEL, KV_VERIFICATION_RETRY_DELAYS_MS, MemoryDailyKv, prepareAndUploadDaily, putImmutable, validateManifestForUpload } from "./daily-kv-upload.mjs";
 
 const signingKey = "r4-test-only-envelope-signing-key-32-bytes";
 const productionSigningKey = "r4-production-only-test-signing-key-32-bytes";
@@ -92,12 +92,30 @@ assert.equal((await handleDailyRequest({ request: request(), env: environment(kv
 assert.equal((await handleDailyRequest({ request: request(), env: {}, now: "2030-01-01T00:00:00.000Z" })).status, 503);
 assert.equal((await handleDailyRequest({ request: request("/api/daily/current", { method: "POST" }), env: environment(kv), now: "2030-01-01T00:00:00.000Z" })).status, 405);
 
+const leadSource = await manifestFor("2030-01-08");
+const leadKv = new MemoryDailyKv({
+  [dailyKey(leadSource.date)]: canonicalJson(await createDailyEnvelope(leadSource, { environment: "preview", preparedAt: "2029-12-20T00:00:00.000Z", signingKey })),
+});
+const leadEnvironment = { ...environment(leadKv), DAILY_STORAGE_LEAD_DAYS: "7" };
+const leadResponse = await handleDailyRequest({ request: request(), env: leadEnvironment, now: "2030-01-01T00:00:00.000Z" });
+assert.equal(leadResponse.status, 200);
+const leadBody = await leadResponse.json();
+assert.equal(leadBody.utcDate, "2030-01-01");
+assert.equal(leadBody.manifest.date, "2030-01-01");
+assert.equal(leadBody.manifest.publishAtUtc, "2030-01-01T00:00:00Z");
+assert.notEqual(leadBody.puzzleId, leadSource.puzzleId);
+assert.equal(leadBody.manifest.boardContentHash, leadSource.boardContentHash, "storage lead rebinding must preserve the authenticated board");
+assert.equal((await handleDailyRequest({ request: request("/api/daily/2030-01-02"), env: leadEnvironment, requestedDate: "2030-01-02", now: "2030-01-01T00:00:00.000Z" })).status, 404);
+assert.equal((await handleDailyRequest({ request: request(), env: { ...leadEnvironment, DAILY_STORAGE_LEAD_DAYS: "31" }, now: "2030-01-01T00:00:00.000Z" })).status, 503);
+
 const preloadKv = new MemoryDailyKv(), logs = [];
 const preloaded = await Promise.all(Array.from({ length: 8 }, (_, index) => manifestFor(addDays("2030-01-01", index + 7))));
 const receipt = await prepareAndUploadDaily({ manifests: preloaded, adapter: preloadKv, environment: "preview", signingKey, preparedAt: "2030-01-01T00:00:00.000Z", logger: (entry) => logs.push(entry) });
 assert.equal(receipt.count, 8); assert.equal(preloadKv.values.size, 8); assert.equal(logs.some((entry) => JSON.stringify(entry).includes("manifest")), false);
 assert.equal(receipt.immutabilityModel, KV_IMMUTABILITY_MODEL);
 assert.equal(logs.some((entry) => JSON.stringify(entry).includes(signingKey)), false);
+const idempotentReceipt = await prepareAndUploadDaily({ manifests: preloaded, adapter: preloadKv, environment: "preview", signingKey, preparedAt: "2029-12-31T23:59:00.000Z" });
+assert.equal(idempotentReceipt.results.every(({ result }) => result === "unchanged"), true, "an authenticated identical manifest must remain idempotent when only preparedAt differs");
 const rejectedBatchKv = new MemoryDailyKv();
 const invalidBatch = structuredClone(preloaded);
 invalidBatch[1].groups[0].label = "Fabricated category";
@@ -109,6 +127,31 @@ await assert.rejects(() => prepareAndUploadDaily({ manifests: preloaded, adapter
 await assert.rejects(() => prepareAndUploadDaily({ manifests: preloaded, adapter: new MemoryDailyKv(), environment: "preview", signingKey, preparedAt: "2030-01-01T00:00:00.000Z", minimumPreloadDays: 0 }), /MINIMUM_PRELOAD_POLICY_VIOLATION/);
 await assert.rejects(() => prepareAndUploadDaily({ manifests: preloaded.slice(0, 1), adapter: new MemoryDailyKv(), environment: "preview", signingKey, preparedAt: "2030-01-01T00:00:00.000Z", minimumCount: 1 }), /MINIMUM_BUFFER_POLICY_VIOLATION/);
 await assert.rejects(() => putImmutable(preloadKv, dailyKey(preloaded[0].date), "different"), /IMMUTABLE_KEY_CONFLICT/);
+const eventuallyConsistentKv = {
+  value: null,
+  readsAfterWrite: 0,
+  async get() {
+    if (this.value === null) return null;
+    this.readsAfterWrite += 1;
+    return this.readsAfterWrite >= 3 ? this.value : null;
+  },
+  async put(_key, value) { this.value = value; },
+};
+const retryDelays = [];
+assert.equal(await putImmutable(eventuallyConsistentKv, "eventual-key", "eventual-value", {
+  verificationRetryDelaysMs: KV_VERIFICATION_RETRY_DELAYS_MS,
+  waitImplementation: async (milliseconds) => retryDelays.push(milliseconds),
+}), "created");
+assert.deepEqual(retryDelays, KV_VERIFICATION_RETRY_DELAYS_MS.slice(0, 2), "a temporarily invisible Cloudflare KV write must be retried with bounded backoff");
+await assert.rejects(() => putImmutable({ get: async () => "other", put: async () => {} }, "conflict-key", "wanted"), /IMMUTABLE_KEY_CONFLICT/, "a visible conflicting value must never be retried or overwritten");
+const batchVisibilityKv = {
+  values: new Map(),
+  writes: 0,
+  async get(key) { return this.writes >= preloaded.length ? this.values.get(key) ?? null : null; },
+  async put(key, value) { this.values.set(key, value); this.writes += 1; },
+};
+const batchVisibilityReceipt = await prepareAndUploadDaily({ manifests: preloaded, adapter: batchVisibilityKv, environment: "preview", signingKey, preparedAt: "2030-01-01T00:00:00.000Z" });
+assert.equal(batchVisibilityReceipt.count, preloaded.length, "all writes must complete before the propagation verification pass");
 const backdatedCli = spawnSync(process.execPath, ["scripts/puzzle/daily-kv-upload.mjs", "--environment", "preview", "--manifest", "not-read.json", "--prepared-at", "2000-01-01T00:00:00.000Z", "--write"], { cwd: process.cwd(), encoding: "utf8" });
 assert.notEqual(backdatedCli.status, 0);
 assert.match(`${backdatedCli.stdout}${backdatedCli.stderr}`, /CLI_PREPARED_AT_OUTSIDE_TOLERANCE/);

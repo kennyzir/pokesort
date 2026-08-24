@@ -3,8 +3,10 @@ const sprite = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master
 
 if ($("#puzzle-grid")) {
   const params = new URLSearchParams(location.search);
-  const edgeDailyEnabled = document.querySelector('meta[name="pokesort-edge-daily"]')?.content === "enabled";
+  const edgeDailyConfigured = document.querySelector('meta[name="pokesort-edge-daily"]')?.content === "enabled";
+  const edgeDailyActivationDate = document.querySelector('meta[name="pokesort-edge-daily-activation-date"]')?.content || "0000-01-01";
   const browserUtcDate = () => new Date().toISOString().slice(0, 10);
+  const edgeDailyEnabled = () => edgeDailyConfigured && browserUtcDate() >= edgeDailyActivationDate;
   const today = browserUtcDate();
   const embeddedPuzzle = (() => {
     try {
@@ -153,7 +155,7 @@ if ($("#puzzle-grid")) {
     resetLoadedPuzzle();
     try {
       let active;
-      if (mode === "daily" && (pathDate || !edgeDailyEnabled)) {
+      if (mode === "daily" && (pathDate || !edgeDailyEnabled())) {
         const embeddedDate = pathDate || embeddedPuzzle?.date;
         if (!embeddedDate || embeddedPuzzle?.date !== embeddedDate) throw new Error("Embedded Daily puzzle is unavailable");
         if (!pathDate && embeddedDate !== browserUtcDate()) throw new Error("Embedded Daily puzzle is stale");
@@ -290,7 +292,7 @@ if ($("#puzzle-grid")) {
     if (event.key === "Enter" && selected.length === 4) { event.preventDefault(); submit(); }
   });
   globalThis.__pokesortRuntime = { reload: load, newInfinite, state: () => ({ loadState, mode, dateKey, round, puzzleId: activePuzzleId, contentHash: activeContentHash, solved: [...solved], cards: cards.length, mistakes, revealed, gameOver, completionRecorded }) };
-  if (edgeDailyEnabled && mode === "daily" && !pathDate) {
+  if (edgeDailyConfigured && mode === "daily" && !pathDate) {
     const scheduleUtcRefresh = () => {
       const now = new Date(), nextUtc = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 1);
       setTimeout(async () => { await load(); scheduleUtcRefresh(); }, Math.min(2_147_000_000, Math.max(0, nextUtc - now.getTime())));

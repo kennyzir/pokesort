@@ -16,7 +16,9 @@ export async function assessDailyReadiness({
   now = new Date(),
   fetchImplementation = fetch,
   minimumBufferDays = MINIMUM_PRELOAD_DAYS,
+  storageLeadDays = 0,
 }) {
+  if (!Number.isSafeInteger(storageLeadDays) || storageLeadDays < 0 || storageLeadDays > 30) throw new Error("DAILY_STORAGE_LEAD_DAYS_INVALID");
   const utcDate = new Date(now).toISOString().slice(0, 10);
   const currentResponse = await fetchImplementation(`${apiBaseUrl.replace(/\/$/, "")}/current`, { headers: { "cache-control": "no-cache", accept: "application/json" } });
   if (!currentResponse.ok) throw new Error(`CURRENT_API_UNAVAILABLE:${currentResponse.status}`);
@@ -26,18 +28,21 @@ export async function assessDailyReadiness({
   const futureResponse = await fetchImplementation(`${apiBaseUrl.replace(/\/$/, "")}/${tomorrow}`, { headers: { "cache-control": "no-cache", accept: "application/json" } });
   if (futureResponse.status !== 404) throw new Error(`FUTURE_PUBLIC_RESPONSE_SUCCEEDED:${futureResponse.status}`);
   const bufferDates = [];
+  const storageDates = [];
   for (let offset = 1; offset <= minimumBufferDays; offset += 1) {
     const date = addDays(utcDate, offset);
+    const storageDate = addDays(date, storageLeadDays);
     let raw;
-    try { raw = await kv.get(dailyKey(date)); }
+    try { raw = await kv.get(dailyKey(storageDate)); }
     catch { throw new Error("PRIVATE_BUFFER_STORAGE_UNAVAILABLE"); }
     if (!raw) throw new Error(`PRIVATE_BUFFER_DATE_MISSING:${date}`);
     let envelope;
     try { envelope = JSON.parse(raw); }
     catch { throw new Error(`PRIVATE_BUFFER_DATE_INVALID:${date}`); }
-    const inspected = await inspectDailyEnvelope(envelope, { expectedDate: date, environment, signingKey });
+    const inspected = await inspectDailyEnvelope(envelope, { expectedDate: storageDate, environment, signingKey });
     if (!inspected.valid) throw new Error(`PRIVATE_BUFFER_DATE_INVALID:${date}:${inspected.issues.join(",")}`);
     bufferDates.push(date);
+    storageDates.push(storageDate);
   }
   const index = JSON.parse(await readFile(resolve(publicDirectory, "index.json"), "utf8"));
   const newestArchiveDate = index.entries.at(-1)?.date;
@@ -51,6 +56,9 @@ export async function assessDailyReadiness({
     bufferCount: bufferDates.length,
     oldestPrivateDate: bufferDates[0],
     newestPrivateDate: bufferDates.at(-1),
+    storageLeadDays,
+    oldestStorageDate: storageDates[0],
+    newestStorageDate: storageDates.at(-1),
     validationStatus: "PASS",
     newestArchiveDate,
     archiveLagDays,
@@ -66,6 +74,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     kv,
     environment,
     signingKey: process.env[`${prefix}_DAILY_ENVELOPE_HMAC_KEY`],
+    storageLeadDays: Number(process.env.DAILY_STORAGE_LEAD_DAYS || 0),
   });
   console.log(JSON.stringify(result));
 }

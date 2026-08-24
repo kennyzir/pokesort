@@ -1,8 +1,6 @@
 name: PokeSort Daily release automation
 
 on:
-  schedule:
-    - cron: "10 0 * * *"
   workflow_dispatch:
 
 permissions:

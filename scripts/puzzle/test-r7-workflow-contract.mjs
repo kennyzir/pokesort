@@ -7,8 +7,8 @@ const workflow = await readFile(resolve(".github/workflows/daily-archive-refresh
 const handoff = await readFile(resolve("docs/roadmap/R4_CLOUDFLARE_HANDOFF.md"), "utf8");
 const rehearsal = await readFile(resolve("docs/roadmap/R7_RELEASE_REHEARSAL.md"), "utf8");
 
-assert.match(workflow, /schedule:\s*\n\s+- cron: "10 0 \* \* \*"/);
 assert.match(workflow, /workflow_dispatch:/);
+assert.doesNotMatch(workflow, /^\s*schedule:\s*$/m, "GitHub Actions must remain a manual fallback; Cloudflare Cron owns the schedule");
 assert.match(workflow, /^permissions:\s*\n\s+contents: read\s*$/m, "workflow default token must be read-only");
 assert.equal((workflow.match(/contents: write/g) ?? []).length, 1, "only elapsed-history publisher may write repository contents");
 assert.match(workflow, /concurrency:\s*\n\s+group: daily-pokesort-release-main\s*\n\s+cancel-in-progress: false/, "the complete release must be a non-cancelling single writer");
@@ -56,4 +56,4 @@ for (const name of [
 assert.match(handoff, /preview and production keys must never be shared/i);
 assert.match(rehearsal, /quota.*unverified|cost.*unverified|unverified.*quota|unverified.*cost/i, "cost/quota assumptions must remain explicitly unverified");
 
-console.log(JSON.stringify({ gate: "PASS", schedule: "00:10 UTC + manual", permissions: "least privilege", concurrency: "single writer, non-cancelling", privateArtifacts: "none", commitScope: "one exact date + index", externalActivation: "default off" }));
+console.log(JSON.stringify({ gate: "PASS", schedule: "manual fallback only", permissions: "least privilege", concurrency: "single writer, non-cancelling", privateArtifacts: "none", commitScope: "one exact date + index", externalActivation: "default off" }));

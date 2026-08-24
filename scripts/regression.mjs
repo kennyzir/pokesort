@@ -55,7 +55,8 @@ for (const marker of ["pokesort-daily-", "pokesort-infinite-", "pokesort-infinit
 for (const fragment of [
   'location.assign(button.dataset.mode === "infinite" ? "/infinite/#game" : "/#game")',
   'fetchJson("/assets/infinite/index.json", { signal })',
-  'document.querySelector(\'meta[name="pokesort-edge-daily"]\')?.content === "enabled"',
+  'const edgeDailyConfigured = document.querySelector(\'meta[name="pokesort-edge-daily"]\')?.content === "enabled"',
+  'const edgeDailyEnabled = () => edgeDailyConfigured && browserUtcDate() >= edgeDailyActivationDate',
   'fetchJson("/api/daily/current", { signal: controller.signal, cache: "no-store" })',
   'activeLoadController?.abort()',
   'stored.mode !== mode || stored.puzzleId !== activePuzzleId || stored.contentHash !== activeContentHash',

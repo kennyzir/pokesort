@@ -1,11 +1,37 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { canonicalJson, createDailyEnvelope, dailyKey, isUtcDate, MINIMUM_PRELOAD_DAYS } from "../../functions/_lib/daily-contract.js";
+import { canonicalJson, createDailyEnvelope, dailyKey, inspectDailyEnvelope, isUtcDate, MINIMUM_PRELOAD_DAYS } from "../../functions/_lib/daily-contract.js";
 import { loadCategoryModel } from "./category-model.mjs";
 import { buildCanonicalRuleEvidence, verifyCanonicalHash, verifyPuzzleSemantics } from "./semantic-verifier.mjs";
 
 export const KV_IMMUTABILITY_MODEL = "single-writer read-before-write guard; Cloudflare KV does not provide atomic compare-and-swap";
+export const KV_VERIFICATION_RETRY_DELAYS_MS = Object.freeze([250, 500, 1_000, 2_000, 4_000, 8_000]);
+
+const wait = (milliseconds) => new Promise((resolveWait) => setTimeout(resolveWait, milliseconds));
+
+async function valuesAreEquivalent(existing, value, equivalentImplementation) {
+  return existing === value || await equivalentImplementation(existing, value);
+}
+
+async function verifyWrittenBatch(adapter, pending, {
+  verificationRetryDelaysMs = KV_VERIFICATION_RETRY_DELAYS_MS,
+  waitImplementation = wait,
+} = {}) {
+  let unresolved = [...pending];
+  for (let attempt = 0; attempt <= verificationRetryDelaysMs.length; attempt += 1) {
+    const observations = await Promise.all(unresolved.map(async (entry) => ({ entry, observed: await adapter.get(entry.key) })));
+    const next = [];
+    for (const { entry, observed } of observations) {
+      if (observed === null || observed === undefined) next.push(entry);
+      else if (!await valuesAreEquivalent(observed, entry.value, entry.equivalentImplementation)) throw new Error(`IMMUTABLE_KEY_CONFLICT:${entry.key}`);
+    }
+    if (next.length === 0) return;
+    unresolved = next;
+    if (attempt < verificationRetryDelaysMs.length) await waitImplementation(verificationRetryDelaysMs[attempt]);
+  }
+  throw new Error(`KV_WRITE_VERIFICATION_FAILED:${unresolved.map(({ key }) => key).join(",")}`);
+}
 
 const addDays = (date, days) => {
   const value = new Date(`${date}T00:00:00.000Z`);
@@ -40,15 +66,20 @@ export class CloudflareDailyKv {
   async put(key, value) { await this.request(key, "PUT", value); }
 }
 
-export async function putImmutable(adapter, key, value) {
+export async function putImmutable(adapter, key, value, {
+  equivalentImplementation = async () => false,
+  verifyAfterPut = true,
+  verificationRetryDelaysMs = KV_VERIFICATION_RETRY_DELAYS_MS,
+  waitImplementation = wait,
+} = {}) {
   const existing = await adapter.get(key);
   if (existing !== null && existing !== undefined) {
-    if (existing !== value) throw new Error(`IMMUTABLE_KEY_CONFLICT:${key}`);
+    if (!await valuesAreEquivalent(existing, value, equivalentImplementation)) throw new Error(`IMMUTABLE_KEY_CONFLICT:${key}`);
     return "unchanged";
   }
   await adapter.put(key, value);
-  const observed = await adapter.get(key);
-  if (observed !== value) throw new Error(`KV_WRITE_VERIFICATION_FAILED:${key}`);
+  if (!verifyAfterPut) return "created";
+  await verifyWrittenBatch(adapter, [{ key, value, equivalentImplementation }], { verificationRetryDelaysMs, waitImplementation });
   return "created";
 }
 
@@ -89,20 +120,36 @@ export async function prepareAndUploadDaily({
     const envelope = await createDailyEnvelope(manifestSnapshot, { environment, preparedAt, signingKey });
     prepared.push({ manifest: manifestSnapshot, value: canonicalJson(envelope) });
   }
-  const results = [];
+  const stagedResults = [];
+  const pendingVerification = [];
   for (const { manifest, value } of prepared) {
-    const result = await putImmutable(adapter, dailyKey(manifest.date), value);
-    results.push({ date: manifest.date, puzzleId: manifest.puzzleId, contentHash: manifest.contentHash, result });
-    logger({ event: "daily_kv_upload", environment, date: manifest.date, puzzleId: manifest.puzzleId, contentHash: manifest.contentHash, result });
+    const equivalentImplementation = async (existingValue) => {
+      try {
+        const existingEnvelope = JSON.parse(existingValue);
+        const inspection = await inspectDailyEnvelope(existingEnvelope, { expectedDate: manifest.date, environment, signingKey });
+        return inspection.valid && canonicalJson(existingEnvelope.manifest) === canonicalJson(manifest);
+      } catch {
+        return false;
+      }
+    };
+    const key = dailyKey(manifest.date);
+    const result = await putImmutable(adapter, key, value, {
+      equivalentImplementation,
+      verifyAfterPut: false,
+    });
+    if (result === "created") pendingVerification.push({ key, value, equivalentImplementation });
+    stagedResults.push({ date: manifest.date, puzzleId: manifest.puzzleId, contentHash: manifest.contentHash, result });
   }
+  await verifyWrittenBatch(adapter, pendingVerification);
+  for (const result of stagedResults) logger({ event: "daily_kv_upload", environment, ...result });
   return {
     schemaVersion: 1,
     environment,
     preparedAt: new Date(preparedAt).toISOString(),
     minimumPreloadDays,
     immutabilityModel: KV_IMMUTABILITY_MODEL,
-    count: results.length,
-    results,
+    count: stagedResults.length,
+    results: stagedResults,
   };
 }
 

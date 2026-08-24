@@ -1,0 +1,118 @@
+name: Capture daily Pokelike shadow evidence
+
+on:
+  schedule:
+    # GitHub cron is UTC. 16:10 UTC is 00:10 on the next Asia/Shanghai date.
+    - cron: "10 16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-pokelike-shadow-main
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Capture and validate immutable shadow evidence
+        id: shadow
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_local_date="$(TZ=Asia/Shanghai date +%F)"
+          receipt_path="data/pokelike/readiness/Asia__Shanghai/${expected_local_date}.json"
+
+          if [[ -e "$receipt_path" ]]; then
+            node scripts/pokelike/validate-shadow-evidence.mjs \
+              --existing-receipt "$receipt_path" \
+              --timezone Asia/Shanghai \
+              --expected-local-date "$expected_local_date"
+            {
+              echo "has_new_evidence=false"
+              echo "expected_local_date=$expected_local_date"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          capture_path="$(timeout 8m npm run --silent capture:pokelike-shadow -- --timezone Asia/Shanghai --samples 2 --interval-ms 2000 --retries 3 --retry-delay-ms 1000 --write)"
+
+          if [[ "$capture_path" == *$'\n'* ]] || [[ ! -f "$capture_path" ]]; then
+            echo "Capture did not return exactly one evidence path." >&2
+            exit 1
+          fi
+
+          node scripts/pokelike/validate-shadow-evidence.mjs \
+            --input "$capture_path" \
+            --timezone Asia/Shanghai \
+            --expected-local-date "$expected_local_date" \
+            --receipt "$receipt_path"
+
+          {
+            echo "has_new_evidence=true"
+            echo "capture_path=$capture_path"
+            echo "receipt_path=$receipt_path"
+            echo "expected_local_date=$expected_local_date"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Confirm the commit contains evidence only
+        if: steps.shadow.outputs.has_new_evidence == 'true'
+        shell: bash
+        env:
+          CAPTURE_PATH: ${{ steps.shadow.outputs.capture_path }}
+          RECEIPT_PATH: ${{ steps.shadow.outputs.receipt_path }}
+        run: |
+          set -euo pipefail
+          mapfile -t changed_paths < <(git status --porcelain=v1 --untracked-files=all | sed -E 's/^...//')
+          if [[ ${#changed_paths[@]} -ne 2 ]]; then
+            printf 'Expected exactly two new audit files; found:\n%s\n' "${changed_paths[*]}" >&2
+            exit 1
+          fi
+          for changed_path in "${changed_paths[@]}"; do
+            if [[ "$changed_path" != "$CAPTURE_PATH" && "$changed_path" != "$RECEIPT_PATH" ]]; then
+              echo "Unexpected changed path: $changed_path" >&2
+              exit 1
+            fi
+          done
+          git diff --quiet --exit-code
+          git diff --cached --quiet --exit-code
+
+      - name: Commit the new shadow evidence and readiness receipt
+        if: steps.shadow.outputs.has_new_evidence == 'true'
+        shell: bash
+        env:
+          CAPTURE_PATH: ${{ steps.shadow.outputs.capture_path }}
+          RECEIPT_PATH: ${{ steps.shadow.outputs.receipt_path }}
+          EXPECTED_LOCAL_DATE: ${{ steps.shadow.outputs.expected_local_date }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "$CAPTURE_PATH" "$RECEIPT_PATH"
+          git diff --cached --quiet && {
+            echo "No new shadow evidence to commit."
+            exit 0
+          }
+          git commit -m "chore: retain Pokelike shadow evidence ${EXPECTED_LOCAL_DATE}"
+          git push origin HEAD:main

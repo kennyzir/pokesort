@@ -1,0 +1,728 @@
+{
+  "boardContentHash": "0741317c282f44cb87e689459fc154aedce68dde34f1e967987a8f1611788e1a",
+  "boardSignature": "3-87-89-134-182-304-305-411-450-460-615-743-805-810-866-873",
+  "calendarGeneratorVersion": "qb3-calendar-v1",
+  "calendarSchemaVersion": 1,
+  "cards": [
+    {
+      "id": 134,
+      "identifier": "vaporeon",
+      "name": "Vaporeon",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 866,
+      "identifier": "mr-rime",
+      "name": "Mr. Rime",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 304,
+      "identifier": "aron",
+      "name": "Aron",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 305,
+      "identifier": "lairon",
+      "name": "Lairon",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 805,
+      "identifier": "stakataka",
+      "name": "Stakataka",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 87,
+      "identifier": "dewgong",
+      "name": "Dewgong",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 3,
+      "identifier": "venusaur",
+      "name": "Venusaur",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 810,
+      "identifier": "grookey",
+      "name": "Grookey",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 450,
+      "identifier": "hippowdon",
+      "name": "Hippowdon",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 460,
+      "identifier": "abomasnow",
+      "name": "Abomasnow",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 182,
+      "identifier": "bellossom",
+      "name": "Bellossom",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 411,
+      "identifier": "bastiodon",
+      "name": "Bastiodon",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 89,
+      "identifier": "muk",
+      "name": "Muk",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 615,
+      "identifier": "cryogonal",
+      "name": "Cryogonal",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 743,
+      "identifier": "ribombee",
+      "name": "Ribombee",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    },
+    {
+      "id": 873,
+      "identifier": "frosmoth",
+      "name": "Frosmoth",
+      "provenanceRefs": [
+        "species",
+        "englishName",
+        "defaultFormTypes",
+        "evolutionTopology"
+      ]
+    }
+  ],
+  "categoryModelId": "pokesort-source-backed-categories-v1",
+  "contentHash": "bae6a6c6b2cd28e5f575d7728f2fe73303f9aa43df002c3b54e4dae508073b14",
+  "datasetId": "pokeapi-national-species-f15414790832",
+  "date": "2026-08-11",
+  "difficulty": {
+    "inducedValidQuartets": 336,
+    "solutionLabelOverlaps": [
+      1,
+      4,
+      1,
+      1
+    ]
+  },
+  "factsSchemaVersion": 1,
+  "generationAudit": {
+    "acceptedOnAttempt": 4,
+    "calendar": {
+      "candidateAttempt": 4,
+      "dayIndex": 17,
+      "predicateCooldownDays": 14,
+      "ruleSetAttempt": 19
+    }
+  },
+  "generatorVersion": "qb2-generator-v1",
+  "groups": [
+    {
+      "explanation": "All four are Grass Type in the versioned PokéAPI default-form typing snapshot.",
+      "hint": "Focus on the types shown for each species' default form.",
+      "label": "Grass type",
+      "matchingRuleEvidence": [
+        {
+          "explanation": "All four are Grass Type in the versioned PokéAPI default-form typing snapshot.",
+          "hint": "Focus on the types shown for each species' default form.",
+          "label": "Grass type",
+          "parameters": {
+            "type": "grass"
+          },
+          "provenance": {
+            "boundary": {
+              "entity": "National Pokédex species",
+              "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+              "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+              "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+            },
+            "datasetId": "pokeapi-national-species-f15414790832",
+            "factField": "defaultFormTypes",
+            "provider": "PokéAPI",
+            "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+            "sourceFiles": [
+              "data/v2/csv/pokemon.csv",
+              "data/v2/csv/pokemon_types.csv",
+              "data/v2/csv/types.csv"
+            ]
+          },
+          "qualifyingSpeciesCount": 127,
+          "ruleId": "type",
+          "signature": "type:{\"type\":\"grass\"}"
+        }
+      ],
+      "memberIds": [
+        3,
+        182,
+        460,
+        810
+      ],
+      "memberSignature": "3-182-460-810",
+      "members": [
+        {
+          "id": 3,
+          "identifier": "venusaur",
+          "name": "Venusaur",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 182,
+          "identifier": "bellossom",
+          "name": "Bellossom",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 460,
+          "identifier": "abomasnow",
+          "name": "Abomasnow",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 810,
+          "identifier": "grookey",
+          "name": "Grookey",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        }
+      ],
+      "predicateSignature": "type:{\"type\":\"grass\"}",
+      "provenance": {
+        "boundary": {
+          "entity": "National Pokédex species",
+          "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+          "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+          "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+        },
+        "datasetId": "pokeapi-national-species-f15414790832",
+        "factField": "defaultFormTypes",
+        "provider": "PokéAPI",
+        "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+        "sourceFiles": [
+          "data/v2/csv/pokemon.csv",
+          "data/v2/csv/pokemon_types.csv",
+          "data/v2/csv/types.csv"
+        ]
+      },
+      "signature": "type:{\"type\":\"grass\"}#3-182-460-810"
+    },
+    {
+      "explanation": "All four have the exact default-form type pair Rock / Steel in the versioned PokéAPI snapshot.",
+      "hint": "Look for one exact pair of default-form types.",
+      "label": "Rock / Steel",
+      "matchingRuleEvidence": [
+        {
+          "explanation": "All four have the exact default-form type pair Rock / Steel in the versioned PokéAPI snapshot.",
+          "hint": "Look for one exact pair of default-form types.",
+          "label": "Rock / Steel",
+          "parameters": {
+            "typeA": "rock",
+            "typeB": "steel"
+          },
+          "provenance": {
+            "boundary": {
+              "entity": "National Pokédex species",
+              "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+              "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+              "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+            },
+            "datasetId": "pokeapi-national-species-f15414790832",
+            "factField": "defaultFormTypes",
+            "provider": "PokéAPI",
+            "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+            "sourceFiles": [
+              "data/v2/csv/pokemon.csv",
+              "data/v2/csv/pokemon_types.csv",
+              "data/v2/csv/types.csv"
+            ]
+          },
+          "qualifyingSpeciesCount": 7,
+          "ruleId": "dual_type",
+          "signature": "dual_type:{\"typeA\":\"rock\",\"typeB\":\"steel\"}"
+        },
+        {
+          "explanation": "All four are Steel Type in the versioned PokéAPI default-form typing snapshot.",
+          "hint": "Focus on the types shown for each species' default form.",
+          "label": "Steel type",
+          "parameters": {
+            "type": "steel"
+          },
+          "provenance": {
+            "boundary": {
+              "entity": "National Pokédex species",
+              "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+              "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+              "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+            },
+            "datasetId": "pokeapi-national-species-f15414790832",
+            "factField": "defaultFormTypes",
+            "provider": "PokéAPI",
+            "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+            "sourceFiles": [
+              "data/v2/csv/pokemon.csv",
+              "data/v2/csv/pokemon_types.csv",
+              "data/v2/csv/types.csv"
+            ]
+          },
+          "qualifyingSpeciesCount": 65,
+          "ruleId": "type",
+          "signature": "type:{\"type\":\"steel\"}"
+        },
+        {
+          "explanation": "All four are Rock Type in the versioned PokéAPI default-form typing snapshot.",
+          "hint": "Focus on the types shown for each species' default form.",
+          "label": "Rock type",
+          "parameters": {
+            "type": "rock"
+          },
+          "provenance": {
+            "boundary": {
+              "entity": "National Pokédex species",
+              "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+              "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+              "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+            },
+            "datasetId": "pokeapi-national-species-f15414790832",
+            "factField": "defaultFormTypes",
+            "provider": "PokéAPI",
+            "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+            "sourceFiles": [
+              "data/v2/csv/pokemon.csv",
+              "data/v2/csv/pokemon_types.csv",
+              "data/v2/csv/types.csv"
+            ]
+          },
+          "qualifyingSpeciesCount": 74,
+          "ruleId": "type",
+          "signature": "type:{\"type\":\"rock\"}"
+        },
+        {
+          "explanation": "All four share the PokéDex Color: Gray classification in the versioned PokéAPI species data.",
+          "hint": "Compare the Pokédex color classification, not the sprite's every visible color.",
+          "label": "Pokédex color: Gray",
+          "parameters": {
+            "color": "gray"
+          },
+          "provenance": {
+            "boundary": {
+              "entity": "National Pokédex species",
+              "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+              "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+              "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+            },
+            "datasetId": "pokeapi-national-species-f15414790832",
+            "factField": "species",
+            "provider": "PokéAPI",
+            "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+            "sourceFiles": [
+              "data/v2/csv/pokemon_species.csv"
+            ]
+          },
+          "qualifyingSpeciesCount": 107,
+          "ruleId": "color",
+          "signature": "color:{\"color\":\"gray\"}"
+        }
+      ],
+      "memberIds": [
+        304,
+        305,
+        411,
+        805
+      ],
+      "memberSignature": "304-305-411-805",
+      "members": [
+        {
+          "id": 304,
+          "identifier": "aron",
+          "name": "Aron",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 305,
+          "identifier": "lairon",
+          "name": "Lairon",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 411,
+          "identifier": "bastiodon",
+          "name": "Bastiodon",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 805,
+          "identifier": "stakataka",
+          "name": "Stakataka",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        }
+      ],
+      "predicateSignature": "dual_type:{\"typeA\":\"rock\",\"typeB\":\"steel\"}",
+      "provenance": {
+        "boundary": {
+          "entity": "National Pokédex species",
+          "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+          "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+          "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+        },
+        "datasetId": "pokeapi-national-species-f15414790832",
+        "factField": "defaultFormTypes",
+        "provider": "PokéAPI",
+        "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+        "sourceFiles": [
+          "data/v2/csv/pokemon.csv",
+          "data/v2/csv/pokemon_types.csv",
+          "data/v2/csv/types.csv"
+        ]
+      },
+      "signature": "dual_type:{\"typeA\":\"rock\",\"typeB\":\"steel\"}#304-305-411-805"
+    },
+    {
+      "explanation": "All four are Ice Type in the versioned PokéAPI default-form typing snapshot.",
+      "hint": "Focus on the types shown for each species' default form.",
+      "label": "Ice type",
+      "matchingRuleEvidence": [
+        {
+          "explanation": "All four are Ice Type in the versioned PokéAPI default-form typing snapshot.",
+          "hint": "Focus on the types shown for each species' default form.",
+          "label": "Ice type",
+          "parameters": {
+            "type": "ice"
+          },
+          "provenance": {
+            "boundary": {
+              "entity": "National Pokédex species",
+              "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+              "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+              "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+            },
+            "datasetId": "pokeapi-national-species-f15414790832",
+            "factField": "defaultFormTypes",
+            "provider": "PokéAPI",
+            "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+            "sourceFiles": [
+              "data/v2/csv/pokemon.csv",
+              "data/v2/csv/pokemon_types.csv",
+              "data/v2/csv/types.csv"
+            ]
+          },
+          "qualifyingSpeciesCount": 48,
+          "ruleId": "type",
+          "signature": "type:{\"type\":\"ice\"}"
+        }
+      ],
+      "memberIds": [
+        87,
+        615,
+        866,
+        873
+      ],
+      "memberSignature": "87-615-866-873",
+      "members": [
+        {
+          "id": 87,
+          "identifier": "dewgong",
+          "name": "Dewgong",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 615,
+          "identifier": "cryogonal",
+          "name": "Cryogonal",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 866,
+          "identifier": "mr-rime",
+          "name": "Mr. Rime",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 873,
+          "identifier": "frosmoth",
+          "name": "Frosmoth",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        }
+      ],
+      "predicateSignature": "type:{\"type\":\"ice\"}",
+      "provenance": {
+        "boundary": {
+          "entity": "National Pokédex species",
+          "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+          "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+          "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+        },
+        "datasetId": "pokeapi-national-species-f15414790832",
+        "factField": "defaultFormTypes",
+        "provider": "PokéAPI",
+        "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+        "sourceFiles": [
+          "data/v2/csv/pokemon.csv",
+          "data/v2/csv/pokemon_types.csv",
+          "data/v2/csv/types.csv"
+        ]
+      },
+      "signature": "type:{\"type\":\"ice\"}#87-615-866-873"
+    },
+    {
+      "explanation": "All four share Evolution Topology: Final under the declared parent/child topology rule.",
+      "hint": "Compare each species' position in its evolution-chain topology.",
+      "label": "Evolution topology: Final",
+      "matchingRuleEvidence": [
+        {
+          "explanation": "All four share Evolution Topology: Final under the declared parent/child topology rule.",
+          "hint": "Compare each species' position in its evolution-chain topology.",
+          "label": "Evolution topology: Final",
+          "parameters": {
+            "stage": "final"
+          },
+          "provenance": {
+            "boundary": {
+              "entity": "National Pokédex species",
+              "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+              "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+              "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+            },
+            "datasetId": "pokeapi-national-species-f15414790832",
+            "factField": "evolutionTopology",
+            "provider": "PokéAPI",
+            "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+            "sourceFiles": [
+              "data/v2/csv/pokemon_species.csv"
+            ]
+          },
+          "qualifyingSpeciesCount": 367,
+          "ruleId": "evolution_stage",
+          "signature": "evolution_stage:{\"stage\":\"final\"}"
+        }
+      ],
+      "memberIds": [
+        89,
+        134,
+        450,
+        743
+      ],
+      "memberSignature": "89-134-450-743",
+      "members": [
+        {
+          "id": 89,
+          "identifier": "muk",
+          "name": "Muk",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 134,
+          "identifier": "vaporeon",
+          "name": "Vaporeon",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 450,
+          "identifier": "hippowdon",
+          "name": "Hippowdon",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        },
+        {
+          "id": 743,
+          "identifier": "ribombee",
+          "name": "Ribombee",
+          "provenanceRefs": [
+            "species",
+            "englishName",
+            "defaultFormTypes",
+            "evolutionTopology"
+          ]
+        }
+      ],
+      "predicateSignature": "evolution_stage:{\"stage\":\"final\"}",
+      "provenance": {
+        "boundary": {
+          "entity": "National Pokédex species",
+          "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+          "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added.",
+          "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred."
+        },
+        "datasetId": "pokeapi-national-species-f15414790832",
+        "factField": "evolutionTopology",
+        "provider": "PokéAPI",
+        "sourceCommit": "f15414790832c88d784d1537658b957fd73cbbbd",
+        "sourceFiles": [
+          "data/v2/csv/pokemon_species.csv"
+        ]
+      },
+      "signature": "evolution_stage:{\"stage\":\"final\"}#89-134-450-743"
+    }
+  ],
+  "publicationPolicy": "stored manifests become public only when date <= current UTC date; storage does not imply publication or indexing",
+  "publishAtUtc": "2026-08-11T00:00:00.000Z",
+  "puzzleId": "daily-2026-08-11-bae6a6c6b2cd28e5",
+  "puzzleSchemaVersion": 1,
+  "solver": {
+    "countComplete": true,
+    "overlapRuleCount": 3,
+    "partitionSignature": "3-182-460-810|304-305-411-805|87-615-866-873|89-134-450-743",
+    "solutionCount": 1,
+    "validQuartetCount": 336
+  }
+}

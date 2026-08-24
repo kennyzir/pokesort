@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokesort.org/schemas/pokelike-today-manifest.v1.json",
+  "title": "Pokelike Today manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "game", "status", "localDate", "timezone", "day", "puzzleNumber", "observedAt", "verifiedAt", "candidates", "startOrder", "links", "solutionOrder", "hints", "provenance"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "game": { "const": "pokelike-pokesort" },
+    "status": { "enum": ["PENDING", "EXTRACTED", "VERIFIED", "PUBLISHED", "BLOCKED", "STALE"] },
+    "localDate": { "type": "string", "format": "date" },
+    "timezone": { "type": "string", "minLength": 1 },
+    "day": { "type": "integer" },
+    "puzzleNumber": { "type": "integer", "minimum": 1 },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "verifiedAt": { "type": "string", "format": "date-time" },
+    "candidates": {
+      "type": "array", "minItems": 6, "maxItems": 6,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "name", "generation", "stage", "color", "types"],
+        "properties": {
+          "id": { "type": "integer", "minimum": 1 }, "name": { "type": "string", "minLength": 1 },
+          "generation": { "type": "integer", "minimum": 1 }, "stage": { "type": "integer", "minimum": 0 },
+          "color": { "type": "string", "minLength": 1 },
+          "types": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "type": "string" }, "uniqueItems": true }
+        }
+      }
+    },
+    "startOrder": { "type": "array", "minItems": 6, "maxItems": 6, "items": { "type": "integer" }, "uniqueItems": true },
+    "solutionOrder": { "type": "array", "minItems": 6, "maxItems": 6, "items": { "type": "integer" }, "uniqueItems": true },
+    "links": {
+      "type": "array", "minItems": 5, "maxItems": 5,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["relation", "leftId", "rightId", "explanation"],
+        "properties": {
+          "relation": { "enum": ["color", "type", "gen_eq", "gen_gt", "gen_lt", "stage_eq", "stage_gt", "stage_lt", "se"] },
+          "leftId": { "type": "integer" }, "rightId": { "type": "integer" }, "explanation": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "hints": {
+      "type": "object", "additionalProperties": false, "required": ["noSpoiler", "progressive"],
+      "properties": { "noSpoiler": { "type": "string", "minLength": 1 }, "progressive": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } } }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sourceUrl", "sourceSha256", "bundleUrl", "bundleSha256", "stateSha256", "contentSha256"],
+      "properties": {
+        "sourceUrl": { "type": "string", "format": "uri" }, "bundleUrl": { "type": "string", "format": "uri" },
+        "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "bundleSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "stateSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "contentSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    }
+  }
+}

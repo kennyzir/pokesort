@@ -1,0 +1,290 @@
+{
+  "schemaVersion": 1,
+  "publicationPolicy": {
+    "timezone": "UTC",
+    "containsElapsedOnly": true,
+    "immutable": true
+  },
+  "entries": [
+    {
+      "date": "2026-07-25",
+      "file": "2026-07-25.json",
+      "puzzleId": "daily-2026-07-25-9c7a2982fb3caddb",
+      "contentHash": "9c7a2982fb3caddbace1fd048e2c003c3bde29c30dd2e3725e93a2c1dd1beee6",
+      "boardContentHash": "ecf7dec1d432c55d41061c47015ef24f51754e542cb97644311123413d48dcc3",
+      "boardSignature": "130-226-291-303-353-414-430-540-581-619-745-747-750-801-838-845",
+      "publishAtUtc": "2026-07-25T00:00:00.000Z"
+    },
+    {
+      "date": "2026-07-26",
+      "file": "2026-07-26.json",
+      "puzzleId": "daily-2026-07-26-2ef29510e3b4f8d9",
+      "contentHash": "2ef29510e3b4f8d99585f6025e58c386accbfa969dd2d937e4a4adf6a7b6e50c",
+      "boardContentHash": "7f1f852141cc9c437f3ca4549575f460525587e9d49b403a4eb83936eeb1c1e1",
+      "boardSignature": "73-113-122-169-296-362-407-439-478-712-739-748-760-860-992-1002",
+      "publishAtUtc": "2026-07-26T00:00:00.000Z"
+    },
+    {
+      "date": "2026-07-27",
+      "file": "2026-07-27.json",
+      "puzzleId": "daily-2026-07-27-9827fdd76069d5f2",
+      "contentHash": "9827fdd76069d5f2e1bdff7cec2c35b0dc665fe317502ef0d4cf823d0a97818b",
+      "boardContentHash": "81475ca146619829cd93f41eaf30bfb942461a8a2d230edb5346f8b002beadfa",
+      "boardSignature": "195-217-224-240-254-513-552-560-598-678-733-769-781-833-863-1011",
+      "publishAtUtc": "2026-07-27T00:00:00.000Z"
+    },
+    {
+      "date": "2026-07-28",
+      "file": "2026-07-28.json",
+      "puzzleId": "daily-2026-07-28-5517328869a5dca2",
+      "contentHash": "5517328869a5dca206a942bc38ebd6829d3387a2d06b40c7e8bd9c490d45ff36",
+      "boardContentHash": "713426efde14a81adb970d3f80d01907a966e665956dcb86a775981d9d34e132",
+      "boardSignature": "5-256-259-305-340-345-346-410-411-423-536-585-607-805-851-1001",
+      "publishAtUtc": "2026-07-28T00:00:00.000Z"
+    },
+    {
+      "date": "2026-07-29",
+      "file": "2026-07-29.json",
+      "puzzleId": "daily-2026-07-29-b99f6c843a63a08c",
+      "contentHash": "b99f6c843a63a08ca94cedb749d248934948de99516d304aed63963772dcee9e",
+      "boardContentHash": "cd53ddbe910e4f2dbf2c9d898ebcf394b8c849f1fe7e499e6ed551b710df21ad",
+      "boardSignature": "22-74-75-112-145-246-266-298-415-430-486-719-756-793-896-958",
+      "publishAtUtc": "2026-07-29T00:00:00.000Z"
+    },
+    {
+      "date": "2026-07-30",
+      "file": "2026-07-30.json",
+      "puzzleId": "daily-2026-07-30-b1925969e30daf88",
+      "contentHash": "b1925969e30daf8867c4b6e390c4bad18578c7f6d894390f94b2ebb70d9207ca",
+      "boardContentHash": "d0ce33ee2987dc2a2d4842d470e87eb94eedb95d9d863a9d9c2f6817486e8a6e",
+      "boardSignature": "140-148-217-256-259-262-268-340-361-464-564-565-601-689-777-984",
+      "publishAtUtc": "2026-07-30T00:00:00.000Z"
+    },
+    {
+      "date": "2026-07-31",
+      "file": "2026-07-31.json",
+      "puzzleId": "daily-2026-07-31-72b0595160794738",
+      "contentHash": "72b05951607947387dfad16f5e73378e79864967a9745f27347e4793b2f16ed4",
+      "boardContentHash": "907853045b4e590828d51bc552325f6738af84a148a2358fb3fb29f3d8a1408b",
+      "boardSignature": "45-71-172-175-236-251-272-300-305-313-433-490-492-590-591-647",
+      "publishAtUtc": "2026-07-31T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-01",
+      "file": "2026-08-01.json",
+      "puzzleId": "daily-2026-08-01-08c5415924e68acc",
+      "contentHash": "08c5415924e68acce3ce8a46d447ee243c63249d21883ea810460cc095bd9204",
+      "boardContentHash": "ed5002edd4f66393c16f95b55a1642b0a911c5e1d6b40a982c2254b1a62acf0f",
+      "boardSignature": "14-48-49-82-146-377-451-476-529-560-575-583-639-680-890-990",
+      "publishAtUtc": "2026-08-01T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-02",
+      "file": "2026-08-02.json",
+      "puzzleId": "daily-2026-08-02-fa1a8a7740d919ee",
+      "contentHash": "fa1a8a7740d919ee9481b52e00ee9f760cd0a72a67a9fefefaa23b37b2d24344",
+      "boardContentHash": "3410b5e550983b9a00e7ea6e993a758dbbb503a9bbf13e3739600f2329b2ea1b",
+      "boardSignature": "123-267-302-325-392-394-444-453-469-517-606-666-792-854-976-1012",
+      "publishAtUtc": "2026-08-02T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-03",
+      "file": "2026-08-03.json",
+      "puzzleId": "daily-2026-08-03-34472c5dc32e8104",
+      "contentHash": "34472c5dc32e8104a050e0f9825f67f2649a2b7c8ba715515078f81da94dd30e",
+      "boardContentHash": "53cc739923f760e49451ee73bd95e5d349c185d0eddf297d5b06ba3d8a710ce4",
+      "boardSignature": "170-224-291-333-396-398-502-628-737-826-953-955-963-975-1004-1006",
+      "publishAtUtc": "2026-08-03T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-04",
+      "file": "2026-08-04.json",
+      "puzzleId": "daily-2026-08-04-a903c8490387131f",
+      "contentHash": "a903c8490387131fdaeaf3e2e0895852845f50dd107f8caaf0f5d4bd238a2d76",
+      "boardContentHash": "285bd5fff7ddff3c21180427415ba0a3bee42069332c9c515d144dd400b0a709",
+      "boardSignature": "108-133-181-190-230-243-274-277-332-463-821-822-841-849-908-986",
+      "publishAtUtc": "2026-08-04T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-05",
+      "file": "2026-08-05.json",
+      "puzzleId": "daily-2026-08-05-63c8bc9a60ff70e2",
+      "contentHash": "63c8bc9a60ff70e2a14a6837c1cd3241a0c66f9dc201da87fb0a4642e245e3b5",
+      "boardContentHash": "b8245a6c6978863c301306f7f3ef6e92908134b08e64165ac53b28438946d3ea",
+      "boardSignature": "122-196-280-483-509-644-668-671-676-680-715-786-871-985-1005-1020",
+      "publishAtUtc": "2026-08-05T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-06",
+      "file": "2026-08-06.json",
+      "puzzleId": "daily-2026-08-06-ef811f1df1a7aef6",
+      "contentHash": "ef811f1df1a7aef66d324117925a2dea9fcb32835077e13e2d9c1e3fa333483d",
+      "boardContentHash": "c50ee8fb98f85bb2215dd30aba464b6e517c45a90b2a37cea0c38693f8b7c876",
+      "boardSignature": "87-262-363-365-410-476-526-688-724-781-883-904-943-946-1003-1013",
+      "publishAtUtc": "2026-08-06T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-07",
+      "file": "2026-08-07.json",
+      "puzzleId": "daily-2026-08-07-91ea2fc638ac2b11",
+      "contentHash": "91ea2fc638ac2b11df1f314dbf12a1d66db2dee74030bc32bcb21ae314f5449d",
+      "boardContentHash": "20cb3b0f60d286786995c00328ae4bb579869f249a87de2b4a27f654c7380100",
+      "boardSignature": "21-33-142-151-198-239-375-385-403-430-436-437-630-717-796-941",
+      "publishAtUtc": "2026-08-07T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-08",
+      "file": "2026-08-08.json",
+      "puzzleId": "daily-2026-08-08-af8bcea6601da35b",
+      "contentHash": "af8bcea6601da35b4da125aa61acbe1b719f6ed395fcf6f7c39d1df1aab91514",
+      "boardContentHash": "fee8f03b687a2985999244b1f06ff4ffcd3bef3502d04fb6249c8f1c0f8187d8",
+      "boardSignature": "96-127-130-243-278-279-324-378-581-785-868-906-909-915-923-990",
+      "publishAtUtc": "2026-08-08T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-09",
+      "file": "2026-08-09.json",
+      "puzzleId": "daily-2026-08-09-df98e5c1e035415e",
+      "contentHash": "df98e5c1e035415e1e11e114dd86ae8256ffc89d6bf72b6a06ad8dbd748c4757",
+      "boardContentHash": "72fa21042e0680bb92a92d632c4c61d20ddc61ba46a6decf8cfcfebb6fae74c9",
+      "boardSignature": "3-116-169-173-187-370-446-477-501-526-528-591-733-860-890-1014",
+      "publishAtUtc": "2026-08-09T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-10",
+      "file": "2026-08-10.json",
+      "puzzleId": "daily-2026-08-10-86510fc810a0a4f3",
+      "contentHash": "86510fc810a0a4f3ae6da359ddcfd689b62d5a80bc1de1418a218f376c9604de",
+      "boardContentHash": "2a6fb2626560c438d832b8400e5ec8013fbb81fbbccb046e2c4fa456e47353ae",
+      "boardSignature": "129-168-178-236-257-332-338-473-621-674-711-774-820-918-984-1005",
+      "publishAtUtc": "2026-08-10T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-11",
+      "file": "2026-08-11.json",
+      "puzzleId": "daily-2026-08-11-bae6a6c6b2cd28e5",
+      "contentHash": "bae6a6c6b2cd28e5f575d7728f2fe73303f9aa43df002c3b54e4dae508073b14",
+      "boardContentHash": "0741317c282f44cb87e689459fc154aedce68dde34f1e967987a8f1611788e1a",
+      "boardSignature": "3-87-89-134-182-304-305-411-450-460-615-743-805-810-866-873",
+      "publishAtUtc": "2026-08-11T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-12",
+      "file": "2026-08-12.json",
+      "puzzleId": "daily-2026-08-12-68a44fccc85491d4",
+      "contentHash": "68a44fccc85491d47491cbaa948a9d16018f8606617927f16e88c77b658039c9",
+      "boardContentHash": "ffc94bde5d0d3bf5ba0c6373794b9836722add811ba82d14c77652b78d75fa1d",
+      "boardSignature": "76-111-188-246-249-359-464-566-675-741-748-759-775-778-925-941",
+      "publishAtUtc": "2026-08-12T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-13",
+      "file": "2026-08-13.json",
+      "puzzleId": "daily-2026-08-13-dca33700825ee0bb",
+      "contentHash": "dca33700825ee0bb0c2f37e56752ceb4570ec6aad32065850b5775d9a281e197",
+      "boardContentHash": "5c1122882030323b608091e87a873ee75fe1e9c58d617bd91ac8829301c3f8b8",
+      "boardSignature": "35-74-113-174-247-261-281-344-388-445-520-670-750-811-910-976",
+      "publishAtUtc": "2026-08-13T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-14",
+      "file": "2026-08-14.json",
+      "puzzleId": "daily-2026-08-14-40319d5c35ffd997",
+      "contentHash": "40319d5c35ffd997204d5d2fca1d8f6a7b2b2d671685db585bf2be825906e9ce",
+      "boardContentHash": "48340feef4d9b88fdc3d13840a19bb879194fc801e732b6fd9074efc96c410a9",
+      "boardSignature": "139-140-173-222-239-269-280-284-358-447-689-720-801-808-848-893",
+      "publishAtUtc": "2026-08-14T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-15",
+      "file": "2026-08-15.json",
+      "puzzleId": "daily-2026-08-15-90e42407f09395c6",
+      "contentHash": "90e42407f09395c6cd012c207c46065a3c3ed59ac07ccfd8e00dd280af5b622c",
+      "boardContentHash": "484a15e30700f159e2f2a4a85d081f07c221b59ecaf66b361276fee140f2c770",
+      "boardSignature": "5-43-205-315-379-485-515-528-581-590-591-618-636-649-878-937",
+      "publishAtUtc": "2026-08-15T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-16",
+      "file": "2026-08-16.json",
+      "puzzleId": "daily-2026-08-16-9093b1ffc31a3bb5",
+      "contentHash": "9093b1ffc31a3bb56a3b2a9f9fc546527d902caf30d72e32084b17edcce1883d",
+      "boardContentHash": "cf7eeac22edf0c1e87d1ae91a746f53404ebb64e9cb019ddffd378fb8749e47a",
+      "boardSignature": "97-122-150-165-267-291-381-382-432-433-491-492-605-666-785-858",
+      "publishAtUtc": "2026-08-16T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-17",
+      "file": "2026-08-17.json",
+      "puzzleId": "daily-2026-08-17-f5c5ef90a372aae2",
+      "contentHash": "f5c5ef90a372aae23e886ba8f975fbd208ac5ffb047cdd33db73507fc4e5f4a8",
+      "boardContentHash": "37d6ee786ba877e4d117d29cd460b8b0c78526854fe71b3dd18585621d49805b",
+      "boardSignature": "22-164-170-199-271-292-398-543-649-731-738-833-947-987-1003-1009",
+      "publishAtUtc": "2026-08-17T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-18",
+      "file": "2026-08-18.json",
+      "puzzleId": "daily-2026-08-18-e6a3648db89d30b6",
+      "contentHash": "e6a3648db89d30b67f94ae8106394dbb1b6c5ccedf0340957737e3c09efad759",
+      "boardContentHash": "76ad4934ffd4cbb100edf5b59141c3b1194236fad799ab2db9d1a1b69169ace2",
+      "boardSignature": "15-49-167-260-274-275-423-536-537-544-810-852-875-879-908-1001",
+      "publishAtUtc": "2026-08-18T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-19",
+      "file": "2026-08-19.json",
+      "puzzleId": "daily-2026-08-19-33f3486f9a4ad999",
+      "contentHash": "33f3486f9a4ad999712b22d3dad3b7db48c4ab1825f9f5905be6263c8936d2dc",
+      "boardContentHash": "5d0e9d97730feb7ce770bc5c3ca6ba2bdbb0b81301ab3f1d2cf3d06de3a63df7",
+      "boardSignature": "122-166-201-210-233-247-281-352-439-474-626-673-693-706-712-858",
+      "publishAtUtc": "2026-08-19T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-20",
+      "file": "2026-08-20.json",
+      "puzzleId": "daily-2026-08-20-600d7b2c0035a8ed",
+      "contentHash": "600d7b2c0035a8ed6d0ffd88a41bbd481e49435c69e2edc8f50f8b90b44c9d7d",
+      "boardContentHash": "7587998704775f75b106d023c8285c05259aa3bc7114863ab4da1e770f82c011",
+      "boardSignature": "41-76-91-131-200-302-364-365-410-424-477-563-609-639-871-933",
+      "publishAtUtc": "2026-08-20T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-21",
+      "file": "2026-08-21.json",
+      "puzzleId": "daily-2026-08-21-656f8f03eeca66d6",
+      "contentHash": "656f8f03eeca66d653f93d28d915215670ef919a599e4dc3fdcfd280f7af28e9",
+      "boardContentHash": "1cff63c25ff0aaad83a54a8677bbba455c4be0977637d2a0e97de6330bf19297",
+      "boardSignature": "18-33-48-124-180-181-309-417-452-551-708-711-893-920-947-1013",
+      "publishAtUtc": "2026-08-21T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-22",
+      "file": "2026-08-22.json",
+      "puzzleId": "daily-2026-08-22-2bc58290cec54d1e",
+      "contentHash": "2bc58290cec54d1e2db3bbadd54cad3f666964621afdbabe0e5f90e65f76d696",
+      "boardContentHash": "92d22b06d0f1d1c11f4df166ef8b15fa99bf91133fd205ac06ffe2fdd7c3883f",
+      "boardSignature": "157-226-239-279-302-385-436-437-580-596-612-791-794-802-845-1006",
+      "publishAtUtc": "2026-08-22T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-23",
+      "file": "2026-08-23.json",
+      "puzzleId": "daily-2026-08-23-c20f2da86ae16fc0",
+      "contentHash": "c20f2da86ae16fc0c2c34175359c1ef6c2bdcf777669f74adcfe788aee25f225",
+      "boardContentHash": "460ff8c4c2d0b704d5a930c448b4ffa8ba9acba45a2446e4789725a762f2562d",
+      "boardSignature": "58-62-198-202-340-356-363-461-604-630-659-717-796-932-962-993",
+      "publishAtUtc": "2026-08-23T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-24",
+      "file": "2026-08-24.json",
+      "puzzleId": "daily-2026-08-24-f89f9269f0c6767a",
+      "contentHash": "f89f9269f0c6767a27fd794ce58c7f7ab743d22b47a817c52328c75d8262ee8c",
+      "boardContentHash": "bb1ef5f659d4067d0a8246be3a6daf6b860dcdc871dbec00d886c25c729390a6",
+      "boardSignature": "13-31-63-69-127-149-188-316-317-388-635-651-697-750-895-995",
+      "publishAtUtc": "2026-08-24T00:00:00.000Z"
+    }
+  ],
+  "contentHash": "f776b32133878e48945fe83099c8b1b7a8481c781c513b8f7ab3ccf8fd94a210"
+}

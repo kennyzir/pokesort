@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "recordKind": "pokelike-readiness-drill",
+  "simulated": true,
+  "scenario": "acquisition_failure",
+  "createdAt": "2026-08-24T01:09:00.000Z",
+  "inputManifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-08-24",
+    "timezone": "Asia/Shanghai",
+    "day": 20689,
+    "puzzleNumber": 54,
+    "observedAt": "2026-08-24T01:08:00.000Z",
+    "verifiedAt": "2026-08-24T01:09:00.000Z",
+    "candidates": [
+      {
+        "id": 299,
+        "name": "Nosepass",
+        "generation": 3,
+        "stage": 0,
+        "color": "gray",
+        "types": [
+          "rock"
+        ]
+      },
+      {
+        "id": 562,
+        "name": "Yamask",
+        "generation": 5,
+        "stage": 0,
+        "color": "black",
+        "types": [
+          "ghost"
+        ]
+      },
+      {
+        "id": 679,
+        "name": "Honedge",
+        "generation": 6,
+        "stage": 0,
+        "color": "brown",
+        "types": [
+          "steel",
+          "ghost"
+        ]
+      },
+      {
+        "id": 330,
+        "name": "Flygon",
+        "generation": 3,
+        "stage": 2,
+        "color": "green",
+        "types": [
+          "ground",
+          "dragon"
+        ]
+      },
+      {
+        "id": 107,
+        "name": "Hitmonchan",
+        "generation": 1,
+        "stage": 1,
+        "color": "brown",
+        "types": [
+          "fighting"
+        ]
+      },
+      {
+        "id": 536,
+        "name": "Palpitoad",
+        "generation": 5,
+        "stage": 1,
+        "color": "blue",
+        "types": [
+          "water",
+          "ground"
+        ]
+      }
+    ],
+    "startOrder": [
+      299,
+      562,
+      679,
+      330,
+      107,
+      536
+    ],
+    "solutionOrder": [
+      562,
+      330,
+      107,
+      679,
+      536,
+      299
+    ],
+    "links": [
+      {
+        "relation": "stage_lt",
+        "leftId": 562,
+        "rightId": 330,
+        "explanation": "Yamask is stage 0; Flygon is stage 2."
+      },
+      {
+        "relation": "stage_gt",
+        "leftId": 330,
+        "rightId": 107,
+        "explanation": "Flygon is stage 2; Hitmonchan is stage 1."
+      },
+      {
+        "relation": "color",
+        "leftId": 107,
+        "rightId": 679,
+        "explanation": "Hitmonchan and Honedge are brown."
+      },
+      {
+        "relation": "stage_lt",
+        "leftId": 679,
+        "rightId": 536,
+        "explanation": "Honedge is stage 0; Palpitoad is stage 1."
+      },
+      {
+        "relation": "gen_gt",
+        "leftId": 536,
+        "rightId": 299,
+        "explanation": "Palpitoad is generation 5; Nosepass is generation 3."
+      }
+    ],
+    "hints": {
+      "noSpoiler": "Start with the only same-color adjacent pair.",
+      "progressive": [
+        "The brown pair belongs in the middle.",
+        "The final comparison is generation 5 before generation 3."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+      "bundleSha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+      "stateSha256": "f6cc0b83a2e4280041481e4b0bfc53de1a90d96a7d0dc4117323595f6e33d5c5",
+      "contentSha256": "4423a11fc9e20b81eecbdf1f73d28a5764ec0b91724548a71737c48ae52f2b21"
+    }
+  },
+  "trigger": {
+    "kind": "controlled_offline_fixture",
+    "code": "SIMULATED_NETWORK_UNAVAILABLE",
+    "message": "Simulated acquisition failure; no network request was attempted."
+  },
+  "expectedStatus": "BLOCKED",
+  "observedStatus": "BLOCKED",
+  "evidenceSha256": "2975f2c0744603b8fd2e20a5b74ae8f974798ffca63187d65f9d036de7c4e05e"
+}

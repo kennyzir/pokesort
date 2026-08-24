@@ -1,47 +1,139 @@
-name: Refresh daily PokeSort archive
+name: PokeSort Daily release automation
 
 on:
   schedule:
-    - cron: "5 0 * * *"
+    - cron: "10 0 * * *"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: daily-pokesort-archive-refresh
+  group: daily-pokesort-release-main
   cancel-in-progress: false
 
 jobs:
-  refresh:
+  prepare-private-buffer:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
-      - name: Check out main
-        uses: actions/checkout@v5
-        with:
-          ref: main
-          fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install locked dependencies
-        run: npm ci
-
-      - name: Build and validate static release
-        run: npm run test:static
+      - uses: actions/checkout@v5
+        with: { ref: main, fetch-depth: 0 }
+      - uses: actions/setup-node@v5
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Stage only today's manifest for the runner build
+        shell: bash
         env:
-          SITE_URL: https://pokesort.org
+          POKESORT_DAILY_SEED: ${{ secrets.POKESORT_DAILY_SEED }}
+        run: |
+          set -euo pipefail
+          npm run --silent stage:current-daily -- --strategy seed --private-dir "$RUNNER_TEMP/current-stage" --as-of "$(date -u +%F)"
+      - name: Run the shared production build and security Gate
+        run: npm run release:gate
+        env: { SITE_URL: "https://pokesort.org" }
+      - name: Prepare and preload immutable private dates
+        if: vars.POKESORT_DAILY_AUTOMATION_ENABLED == 'true'
+        shell: bash
+        env:
+          POKESORT_DAILY_SEED: ${{ secrets.POKESORT_DAILY_SEED }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          EXPECTED_CLOUDFLARE_ACCOUNT_ID: ${{ vars.POKESORT_CLOUDFLARE_ACCOUNT_ID }}
+          POKESORT_PRODUCTION_DAILY_KV_NAMESPACE_ID: ${{ secrets.POKESORT_PRODUCTION_DAILY_KV_NAMESPACE_ID }}
+          CLOUDFLARE_DAILY_KV_API_TOKEN: ${{ secrets.CLOUDFLARE_DAILY_KV_API_TOKEN }}
+          POKESORT_PRODUCTION_DAILY_ENVELOPE_HMAC_KEY: ${{ secrets.POKESORT_PRODUCTION_DAILY_ENVELOPE_HMAC_KEY }}
+        run: |
+          set -euo pipefail
+          [[ -n "$EXPECTED_CLOUDFLARE_ACCOUNT_ID" && "$CLOUDFLARE_ACCOUNT_ID" == "$EXPECTED_CLOUDFLARE_ACCOUNT_ID" ]] || { echo "Cloudflare target-account Gate blocked." >&2; exit 1; }
+          as_of="$(date -u +%F)"
+          private_dir="$RUNNER_TEMP/pokesort-private-buffer"
+          npm run --silent prepare:private-daily-buffer -- --elapsed-dir data/puzzles/public-daily --output-dir "$private_dir" --as-of "$as_of" --days 37
+          # The job runs after 00:00 UTC, so date +8 is the first activation
+          # that is a full 7*24 hours away under the exact uploader Gate.
+          minimum_date="$(date -u -d "$as_of + 8 days" +%F)"
+          upload_args=()
+          while IFS= read -r path; do
+            date="$(basename "$path" .json)"
+            [[ "$date" < "$minimum_date" ]] || upload_args+=(--manifest "$path")
+          done < <(find "$private_dir" -maxdepth 1 -type f -name '????-??-??.json' | sort)
+          npm run --silent prepare:daily-kv-upload -- --environment production --prepared-at "$(date -u +%FT%T.000Z)" --minimum-count 7 "${upload_args[@]}" --write
+      - name: Record held external activation
+        if: vars.POKESORT_DAILY_AUTOMATION_ENABLED != 'true'
+        run: echo "Private KV activation is held; static Daily and Pokelike shadow capture remain independent."
 
-      - name: Trigger the Cloudflare Pages Git deployment
+  publish-elapsed-history:
+    needs: prepare-private-buffer
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with: { ref: main, fetch-depth: 0 }
+      - uses: actions/setup-node@v5
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Obtain today's manifest from the enabled server API
+        if: vars.POKESORT_DAILY_AUTOMATION_ENABLED == 'true'
+        run: npm run --silent stage:current-daily -- --strategy api --api-url "${POKESORT_DAILY_API_URL:-https://pokesort.org/api/daily/current}" --as-of "$(date -u +%F)"
+        env:
+          POKESORT_DAILY_API_URL: ${{ vars.POKESORT_DAILY_API_URL }}
+      - name: Deterministically generate and publish only today while held
+        if: vars.POKESORT_DAILY_AUTOMATION_ENABLED != 'true'
+        run: npm run --silent stage:current-daily -- --strategy seed --private-dir "$RUNNER_TEMP/held-current-stage" --as-of "$(date -u +%F)"
+        env:
+          POKESORT_DAILY_SEED: ${{ secrets.POKESORT_DAILY_SEED }}
+      - name: Run the shared release Gate after today's append
+        run: npm run release:gate
+        env: { SITE_URL: "https://pokesort.org" }
+      - name: Commit only elapsed public history
         shell: bash
         run: |
-          refresh_date="$(date -u +%F)"
+          set -euo pipefail
+          git add -- data/puzzles/public-daily
+          mapfile -t staged < <(git diff --cached --name-only --diff-filter=ACM)
+          [[ ${#staged[@]} -le 2 ]] || { printf 'Unexpected publication paths:\n%s\n' "${staged[*]}" >&2; exit 1; }
+          for path in "${staged[@]}"; do [[ "$path" == "data/puzzles/public-daily/index.json" || "$path" =~ ^data/puzzles/public-daily/[0-9]{4}-[0-9]{2}-[0-9]{2}\.json$ ]] || exit 1; done
+          git diff --cached --diff-filter=D --quiet || { echo "Publication must not delete history." >&2; exit 1; }
+          git diff --cached --quiet && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit --allow-empty -m "chore: refresh daily archive ${refresh_date}"
+          git commit -m "chore: publish elapsed Daily $(date -u +%F)"
           git push origin HEAD:main
+
+  readiness-monitor:
+    needs: publish-elapsed-history
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with: { ref: main, fetch-depth: 0 }
+      - name: Refresh checkout after the publication push
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout --detach origin/main
+      - uses: actions/setup-node@v5
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Require the just-published UTC date
+        run: npm run verify:public-current
+      - name: Run the shared production build and security Gate
+        run: npm run release:gate
+        env: { SITE_URL: "https://pokesort.org" }
+      - name: Run fail-closed release rehearsal
+        run: npm run test:r7-release
+      - name: Verify live API, private depth, hashes, and archive lag
+        if: vars.POKESORT_DAILY_AUTOMATION_ENABLED == 'true'
+        run: npm run monitor:daily-readiness
+        env:
+          POKESORT_DAILY_ENVIRONMENT: production
+          POKESORT_DAILY_API_BASE_URL: ${{ vars.POKESORT_DAILY_API_BASE_URL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          POKESORT_PRODUCTION_DAILY_KV_NAMESPACE_ID: ${{ secrets.POKESORT_PRODUCTION_DAILY_KV_NAMESPACE_ID }}
+          CLOUDFLARE_DAILY_KV_API_TOKEN: ${{ secrets.CLOUDFLARE_DAILY_KV_API_TOKEN }}
+          POKESORT_PRODUCTION_DAILY_ENVELOPE_HMAC_KEY: ${{ secrets.POKESORT_PRODUCTION_DAILY_ENVELOPE_HMAC_KEY }}
+      - name: Keep external activation explicitly blocked by default
+        if: vars.POKESORT_DAILY_AUTOMATION_ENABLED != 'true'
+        run: echo "Daily KV live readiness is CONDITIONAL/BLOCKED pending the verified target Cloudflare account and bindings."

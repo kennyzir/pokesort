@@ -1,3 +1,5 @@
+import { handleDailyRequest } from "../functions/_lib/daily-handler.js";
+
 export const ARCHIVE_NEWEST_DATE = "__ARCHIVE_NEWEST_DATE__";
 export const ARCHIVE_OLDEST_DATE = "__ARCHIVE_OLDEST_DATE__";
 
@@ -15,6 +17,18 @@ export default {
       url.protocol = "https:";
       url.hostname = "pokesort.org";
       return Response.redirect(url.toString(), 308);
+    }
+
+    const dailyCurrent = url.pathname === "/api/daily/current" || url.pathname === "/api/daily/current/";
+    const dailyDateMatch = /^\/api\/daily\/([^/]+)\/?$/.exec(url.pathname);
+    if (dailyCurrent || dailyDateMatch) {
+      if (env.DAILY_API_ENABLED !== "true") {
+        return new Response(JSON.stringify({ schemaVersion: 1, status: "not_found" }), {
+          status: 404,
+          headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "cloudflare-cdn-cache-control": "no-store" },
+        });
+      }
+      return handleDailyRequest({ request, env, requestedDate: dailyCurrent ? null : dailyDateMatch?.[1] ?? null });
     }
 
     if (url.pathname === "/" && url.searchParams.get("mode") === "infinite") {

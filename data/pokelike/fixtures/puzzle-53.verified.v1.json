@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "game": "pokelike-pokesort",
+  "status": "VERIFIED",
+  "localDate": "2026-08-23",
+  "timezone": "America/Los_Angeles",
+  "day": 20688,
+  "puzzleNumber": 53,
+  "observedAt": "2026-08-24T01:07:48.430Z",
+  "verifiedAt": "2026-08-24T01:08:48.430Z",
+  "candidates": [
+    { "id": 512, "name": "Simisage", "generation": 5, "stage": 1, "color": "green", "types": ["grass"] },
+    { "id": 500, "name": "Emboar", "generation": 5, "stage": 2, "color": "red", "types": ["fire", "fighting"] },
+    { "id": 401, "name": "Kricketot", "generation": 4, "stage": 0, "color": "red", "types": ["bug"] },
+    { "id": 295, "name": "Exploud", "generation": 3, "stage": 2, "color": "blue", "types": ["normal"] },
+    { "id": 514, "name": "Simisear", "generation": 5, "stage": 1, "color": "red", "types": ["fire"] },
+    { "id": 553, "name": "Krookodile", "generation": 5, "stage": 2, "color": "red", "types": ["ground", "dark"] }
+  ],
+  "startOrder": [512, 500, 401, 295, 514, 553],
+  "solutionOrder": [512, 295, 514, 500, 553, 401],
+  "links": [
+    { "relation": "gen_gt", "leftId": 512, "rightId": 295, "explanation": "Simisage is generation 5; Exploud is generation 3." },
+    { "relation": "stage_gt", "leftId": 295, "rightId": 514, "explanation": "Exploud is stage 2; Simisear is stage 1." },
+    { "relation": "type", "leftId": 514, "rightId": 500, "explanation": "Simisear and Emboar share Fire type." },
+    { "relation": "gen_eq", "leftId": 500, "rightId": 553, "explanation": "Emboar and Krookodile are generation 5." },
+    { "relation": "color", "leftId": 553, "rightId": 401, "explanation": "Krookodile and Kricketot are red." }
+  ],
+  "hints": {
+    "noSpoiler": "Look for the pair that shares a type.",
+    "progressive": ["The shared type is Fire.", "The final link uses Pokédex color."]
+  },
+  "provenance": {
+    "sourceUrl": "https://pokelike.xyz/pokesort",
+    "sourceSha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+    "bundleUrl": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+    "bundleSha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+    "stateSha256": "d6e24541e27f753582ae7faf94337739e3e8abef614105bafdc3dfc2b96f1618",
+    "contentSha256": "10dfd015fd56dea52d6cf092380712b09e9b9ab3f8a5050e8c5b4451c08146cb"
+  }
+}

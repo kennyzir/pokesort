@@ -7,7 +7,7 @@ Research date: 2026-08-23. GSC data is unavailable, so demand evidence is qualit
 - **Pokelike / 6-link sequence:** BUILD `/pokelike-pokesort/` for the parent/subgame relationship, rules, recurring link types, solving method, and local worksheet. Never send these users to the independent 4×4 board as if it were the Pokelike answer.
 - **Current Pokelike hint/answer:** HOLD one future canonical `/pokelike-pokesort/today/` until an auditable daily-data process can verify the six Pokémon, five links, order, date, and reset boundary. The query is relevant; the missing data blocks publication, not the topic.
 - **Pokelike solver:** HOLD `/pokelike-pokesort/solver/` until it is a complete working six-position solver. A public GitHub solver proves the task and competition exist, but a worksheet must not be mislabeled as a solver.
-- **4×4 grouping:** target `/`, `/infinite/`, `/archive/`, `/how-to-play/`, and `/categories/` with explicit 4×4 language.
+- **4×4 grouping:** target `/`, `/infinite/`, `/archive/`, `/how-to-play/`, `/categories/`, and persistent `/daily/YYYY-MM-DD/` pages with explicit 4×4 language. Dated pages are indexable only after their UTC manifest date and remain available after they leave the 31-card Archive UI.
 - **Generic Pokémon Connections:** target only when the 4×4 product satisfies the task.
 - **Mixed:** disambiguate or route by modifier. Do not force one mechanic onto the other.
 
@@ -20,7 +20,7 @@ Scores use Intent Fit (25), Ability (20), Unique Product Value (20), SERP Opport
 | `/pokelike-pokesort/` | 25 | 18 | 17 | 13 | 8 | 7 | 88 | 0 | -3 | 0 | -3 | -8 | -14 | 74 | High | BUILD | Sourced guide plus real worksheet |
 | `/infinite/` | 23 | 19 | 18 | 12 | 7 | 9 | 88 | -5 | -2 | 0 | -2 | 0 | -9 | 79 | Medium | BUILD | Label the independent 4×4 mechanic |
 | `/archive/` | 23 | 18 | 18 | 13 | 7 | 8 | 87 | 0 | -2 | 0 | -2 | -3 | -7 | 80 | High | IMPROVE | Preserve crawlable rolling archive |
-| dated 4×4 pages | 22 | 19 | 16 | 10 | 4 | 8 | 79 | 0 | -3 | -2 | -2 | -6 | -13 | 66 | Medium | HOLD | Hold index release until packs are unique |
+| dated 4×4 pages | 22 | 19 | 18 | 10 | 4 | 8 | 81 | 0 | 0 | -2 | -2 | -3 | -7 | 74 | Medium | BUILD | Immutable unique boards now provide playable cards, progressive hints, four reveals, exact canonicals, and persistent URLs; demand remains qualitative until GSC data exists |
 | `/categories/` | 21 | 18 | 18 | 10 | 6 | 9 | 82 | -6 | -3 | 0 | -2 | -2 | -13 | 69 | Medium | BUILD | Explicit 4×4 pack reference |
 | future Pokelike `/today/` with verified feed | 25 | 14 | 18 | 12 | 10 | 5 | 84 | 0 | -2 | -3 | -3 | -10 | -18 | 66 | Medium | HOLD | Verified daily-data Gate not met |
 | future complete Pokelike solver | 25 | 15 | 20 | 14 | 8 | 6 | 88 | 0 | -2 | 0 | -3 | -5 | -10 | 78 | Medium | HOLD | Complete relation engine not built |
@@ -54,3 +54,5 @@ Observed on 2026-08-23. Result classes are recorded without inventing stable ran
 ## Publication boundary
 
 Relevance does not justify fabrication. The guide can rank now because its evergreen entity/rules task is sourced and its worksheet is real. A Today answer page can rank only when it truthfully completes the volatile daily task. All hint, answer, solution, and order variants for the same day should consolidate into one stable `/pokelike-pokesort/today/` URL rather than several thin pages.
+
+The independent 4×4 dated pages have a different boundary: each URL identifies itself as a 4×4 board, is backed by an immutable manifest, contains a playable puzzle plus spoiler-controlled hints and verified groups, and is published only on or after its UTC date. These pages must not be described as Pokelike’s six-Pokémon answer.

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "factsSchemaVersion": 1,
+  "modelId": "pokesort-source-backed-categories-v2",
+  "legacyCompatibleModelIds": ["pokesort-source-backed-categories-v1"],
+  "legacyCompatibility": {
+    "pokesort-source-backed-categories-v1": { "excludedRuleIds": ["monotype"] }
+  },
+  "semantics": {
+    "entity": "National Pokédex species",
+    "typing": "Type rules use the PokeAPI default Pokémon row for each species; alternate-form typing is not inferred.",
+    "evolutionStage": "Topology labels are derived only from evolves_from_species_id: single has no parent or child; base has child but no parent; middle has both; final has parent but no child.",
+    "flags": "Baby, Legendary, and Mythical are independent boolean fields copied from pokemon_species.csv; no community classifications are added."
+  },
+  "provenance": {
+    "factsDatasetField": "datasetId",
+    "requiredFactProvenanceRefs": ["species", "englishName", "defaultFormTypes", "evolutionTopology"]
+  },
+  "rules": [
+    {
+      "id": "type",
+      "labelTemplate": "{type} type",
+      "parameters": [{ "name": "type", "valuesFrom": "enumerations.types", "values": ["bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water"] }],
+      "predicate": { "path": "types", "operator": "includes", "parameter": "type" },
+      "sourceFieldProvenance": "defaultFormTypes"
+    },
+    {
+      "id": "dual_type",
+      "labelTemplate": "{typeA} / {typeB}",
+      "parameters": [
+        { "name": "typeA", "valuesFrom": "enumerations.types", "values": ["bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water"] },
+        { "name": "typeB", "valuesFrom": "enumerations.types", "values": ["bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water"] }
+      ],
+      "predicate": { "path": "types", "operator": "setEquals", "parameters": ["typeA", "typeB"] },
+      "constraints": [{ "kind": "distinctParameters", "parameters": ["typeA", "typeB"] }],
+      "sourceFieldProvenance": "defaultFormTypes"
+    },
+    {
+      "id": "monotype",
+      "labelTemplate": "Only {type} type",
+      "parameters": [{ "name": "type", "values": ["bug"] }],
+      "predicate": { "path": "types", "operator": "setEquals", "parameters": ["type"] },
+      "sourceFieldProvenance": "defaultFormTypes"
+    },
+    {
+      "id": "generation",
+      "labelTemplate": "Generation {generation}",
+      "parameters": [{ "name": "generation", "valuesFrom": "enumerations.generations", "values": [1, 2, 3, 4, 5, 6, 7, 8, 9] }],
+      "predicate": { "path": "generation", "operator": "equals", "parameter": "generation" },
+      "sourceFieldProvenance": "species"
+    },
+    {
+      "id": "color",
+      "labelTemplate": "Pokédex color: {color}",
+      "parameters": [{ "name": "color", "valuesFrom": "enumerations.colors", "values": ["black", "blue", "brown", "gray", "green", "pink", "purple", "red", "white", "yellow"] }],
+      "predicate": { "path": "color", "operator": "equals", "parameter": "color" },
+      "sourceFieldProvenance": "species"
+    },
+    {
+      "id": "evolution_stage",
+      "labelTemplate": "Evolution topology: {stage}",
+      "parameters": [{ "name": "stage", "valuesFrom": "enumerations.evolutionStages", "values": ["base", "final", "middle", "single"] }],
+      "predicate": { "path": "evolution.stage", "operator": "equals", "parameter": "stage" },
+      "sourceFieldProvenance": "evolutionTopology"
+    },
+    {
+      "id": "baby",
+      "labelTemplate": "Baby Pokémon",
+      "parameters": [{ "name": "value", "values": [true] }],
+      "predicate": { "path": "flags.isBaby", "operator": "equals", "parameter": "value" },
+      "sourceFieldProvenance": "species"
+    },
+    {
+      "id": "legendary",
+      "labelTemplate": "Legendary Pokémon",
+      "parameters": [{ "name": "value", "values": [true] }],
+      "predicate": { "path": "flags.isLegendary", "operator": "equals", "parameter": "value" },
+      "sourceFieldProvenance": "species"
+    },
+    {
+      "id": "mythical",
+      "labelTemplate": "Mythical Pokémon",
+      "parameters": [{ "name": "value", "values": [true] }],
+      "predicate": { "path": "flags.isMythical", "operator": "equals", "parameter": "value" },
+      "sourceFieldProvenance": "species"
+    }
+  ]
+}

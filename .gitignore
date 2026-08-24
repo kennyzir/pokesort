@@ -8,3 +8,16 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
+
+# Local Daily calendar artifacts are private publication inputs until R2 moves
+# elapsed history to an explicitly public path. Keep the files recoverable locally.
+/data/puzzles/daily/*.json
+
+# This is the deliberately public, tracked subset. It contains elapsed manifests
+# only and is validated separately from the ignored private calendar candidates.
+!/data/puzzles/public-daily/
+!/data/puzzles/public-daily/*.json
+
+# R2 precomputed future Daily payloads are private deployment inputs. They must
+# never be staged: only aggregate, answer-free quality reports belong in Git.
+/data/puzzles/private/

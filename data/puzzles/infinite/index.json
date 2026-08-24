@@ -1,0 +1,179 @@
+{
+  "categoryModelId": "pokesort-source-backed-categories-v2",
+  "contentHash": "9cc2c4597a0a3759f9425f9a92f32ad63004eec34093257abf60b781cbca8d63",
+  "datasetId": "pokeapi-national-species-f15414790832",
+  "diversity": {
+    "contentHash": "b297ba07ab4419f8e09d15e606e5b51b166d560ac9ff5b8365d226807c3c545f",
+    "policyId": "pokesort-infinite-diversity-v1",
+    "reportFile": "diversity-report.json",
+    "summary": {
+      "advertisedFamilyCoverage": 8,
+      "coveredAdvertisedFamilies": [
+        "type",
+        "dual_type",
+        "generation",
+        "color",
+        "evolution_stage",
+        "baby",
+        "legendary",
+        "mythical"
+      ],
+      "distinctPairs": 19075,
+      "maximumBoardsPerPair": 9,
+      "maximumBoardsPerSpecies": 41,
+      "maximumFamilyGroups": 800,
+      "maximumFamilyShare": 0.2,
+      "speciesCoverage": 1025,
+      "totalSpecies": 1025
+    }
+  },
+  "exclusions": {
+    "dailyBoardsChecked": 365,
+    "dailyCalendar": true
+  },
+  "factsSchemaVersion": 1,
+  "generationAudit": {
+    "accepted": 1000,
+    "ambiguous": 9759,
+    "attempted": 10773,
+    "constructionRejected": 0,
+    "dailyCollision": 0,
+    "duplicate": 0,
+    "familyScheduleExhausted": 0,
+    "predicateMismatch": 14,
+    "unsolved": 0
+  },
+  "generatorVersion": "qb2-generator-v1",
+  "poolGeneratorVersion": "qb4-infinite-pool-v2",
+  "poolSize": 1000,
+  "schemaVersion": 2,
+  "seed": "pokesort-infinite-pool-diverse-2026-v2",
+  "sequence": {
+    "guaranteedNoRepeatRounds": 1000,
+    "offset": 137,
+    "step": 791
+  },
+  "shardSize": 50,
+  "shards": [
+    {
+      "contentHash": "475b32dbcf949735e1eb4313fff9a00dd0e79bb23cc184198cedf47354156b06",
+      "count": 50,
+      "file": "shard-000.json",
+      "start": 0
+    },
+    {
+      "contentHash": "02b640f13a126558da4b32d8e2142683eb13701ad36c9594660adcde1744e45d",
+      "count": 50,
+      "file": "shard-001.json",
+      "start": 50
+    },
+    {
+      "contentHash": "07b6f1d52e02ecb48573987385f91dfefb18057a2b13c10367d189928d1df478",
+      "count": 50,
+      "file": "shard-002.json",
+      "start": 100
+    },
+    {
+      "contentHash": "2bd2b313e5ef7ede637c2f595d811275abc1aa81916673c70a832df0e62ffbba",
+      "count": 50,
+      "file": "shard-003.json",
+      "start": 150
+    },
+    {
+      "contentHash": "6833ddbdc0490c91d8b09d5d2342b5f0e2bfb0062d1f222d5e03211cb5f56d76",
+      "count": 50,
+      "file": "shard-004.json",
+      "start": 200
+    },
+    {
+      "contentHash": "e77c89e0c4d96401d57048dd5601721900bb32b3babfba49b05597c88d0c93e2",
+      "count": 50,
+      "file": "shard-005.json",
+      "start": 250
+    },
+    {
+      "contentHash": "b9c5cfa13248c98ee67d3f3617768e5ff67dd518aeeca6c30b7923e07e0fe52b",
+      "count": 50,
+      "file": "shard-006.json",
+      "start": 300
+    },
+    {
+      "contentHash": "43e534205b41b3398cf0edae2a71035fe39c02aa4a09fcf785877572462628a5",
+      "count": 50,
+      "file": "shard-007.json",
+      "start": 350
+    },
+    {
+      "contentHash": "734f5d5ed2abf4e013e8a3173d019721f59d9c7c304ab2e188a445a1b9afbbe6",
+      "count": 50,
+      "file": "shard-008.json",
+      "start": 400
+    },
+    {
+      "contentHash": "1a6db760499199b90410b9603716242c52a73f8770cc537916122adc69717fec",
+      "count": 50,
+      "file": "shard-009.json",
+      "start": 450
+    },
+    {
+      "contentHash": "2a1a624f61a57c06aab84730dc2c27e4f342d8150e3728657e967566e4d7ad54",
+      "count": 50,
+      "file": "shard-010.json",
+      "start": 500
+    },
+    {
+      "contentHash": "9a1cd041a96e84f69451cc1d6037ace9d09de75c4bee27cb28650a3ef1eb49e9",
+      "count": 50,
+      "file": "shard-011.json",
+      "start": 550
+    },
+    {
+      "contentHash": "2ecb12974f3c103e8155c12c9fa3f2c2bcd3c39e377be3ce2a5fef0cf54ded57",
+      "count": 50,
+      "file": "shard-012.json",
+      "start": 600
+    },
+    {
+      "contentHash": "b795596eeb70166b5f2d4c8fd4c8a48cd1a0eceb6e9ee02aac55cc8a60f9e1f9",
+      "count": 50,
+      "file": "shard-013.json",
+      "start": 650
+    },
+    {
+      "contentHash": "aac0b45947875d53a8c6abef8e0ad2e1011a479a70fb6cc1a93a1b255ed7c22e",
+      "count": 50,
+      "file": "shard-014.json",
+      "start": 700
+    },
+    {
+      "contentHash": "a4ba1cde02590d4bf2dfdcbf50b4c790d5af6dbc3ef937fc9c5e0dead2f5553a",
+      "count": 50,
+      "file": "shard-015.json",
+      "start": 750
+    },
+    {
+      "contentHash": "fbb74f9b24203e5b11e41b90818cb9a82d15b83f3a6c2bb81f0208ac13d93392",
+      "count": 50,
+      "file": "shard-016.json",
+      "start": 800
+    },
+    {
+      "contentHash": "8151ded7c74fce24ca901364557918df345f8bac78caab11214a3f93c9f5ef00",
+      "count": 50,
+      "file": "shard-017.json",
+      "start": 850
+    },
+    {
+      "contentHash": "7c9cdb65ff45be7c5f255224ea9cab8ca2b7b44fc724af4f44592abd2e9cec90",
+      "count": 50,
+      "file": "shard-018.json",
+      "start": 900
+    },
+    {
+      "contentHash": "208fded4dc42cd6df1c5d8c80f3e3875bae2bf64a258411eef23e5359fc531fb",
+      "count": 50,
+      "file": "shard-019.json",
+      "start": 950
+    }
+  ]
+}

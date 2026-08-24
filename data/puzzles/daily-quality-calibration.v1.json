@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "policyId": "pokesort-daily-board-quality-v1",
+  "sampleType": "deterministic-private-input-calibration",
+  "status": "PASS",
+  "cooldownInterpretation": "a predicate used on date D is forbidden on each of the next 14 dates",
+  "stressTargetDays": 365,
+  "capacityRepair": {
+    "beforeEligiblePredicateCount": 59,
+    "minimumDistinctPredicatesForAny15DayWindow": 60,
+    "addedPredicate": "monotype:{\"type\":\"bug\"}",
+    "sourceField": "defaultFormTypes",
+    "qualifyingSpecies": 23,
+    "availableDistinctQuartets": 8855,
+    "afterEligiblePredicateCount": 60,
+    "elapsedBoardsWithAddedQuartets": 0,
+    "elapsedBoardsWithChangedPartitions": 0,
+    "elapsedIntendedGroupsWithChangedEvidence": 0,
+    "rationale": "This is an exact set-equality fact from the already pinned default-form typing field. It narrowly expands the advertised exact-typing family and was selected only after exhaustive evaluation of every eligible monotype candidate against all 31 elapsed manifests."
+  },
+  "deterministic365DayCalibration": {
+    "reruns": 2,
+    "matchingReceiptSha256": "985a8749167328084e2fa7f89fbbf73ccf1b7f7455f54ba0ec51dbc811acca02",
+    "matchingReceipts": true,
+    "acceptedBoards": 365,
+    "difficultyBands": { "easy": 100, "medium": 185, "hard": 80, "extreme": 0 },
+    "calibratedCoverage": 1,
+    "difficultyDistributionPass": true,
+    "validQuartetDistribution": { "minimum": 14, "p25": 34, "median": 49, "p75": 66, "maximum": 100 },
+    "maximumUnintendedOverlap": 3,
+    "threeCardUnintendedDistribution": { "minimum": 0, "p25": 10, "median": 15, "p75": 20, "p95": 25, "maximum": 30, "acceptedMaximum": 30 },
+    "rejectionCounts": { "too_few_valid_quartets": 1, "too_many_three_card_unintended_quartets": 35, "too_many_valid_quartets": 107, "uncontrolled_difficulty_extreme": 108 },
+    "candidateAttempts": 93979,
+    "generationDerivation": { "id": "infinite-exclusion-v1", "attempt": 5, "maximumAttempts": 8 },
+    "infiniteExclusion": {
+      "indexContentHash": "9cc2c4597a0a3759f9425f9a92f32ad63004eec34093257abf60b781cbca8d63",
+      "puzzleCount": 1000,
+      "boardSignatureCount": 1000,
+      "exactGroupSignatureCount": 4000,
+      "memberGroupSignatureCount": 4000,
+      "collisions": { "boards": 0, "exactGroups": 0, "memberGroups": 0 }
+    }
+  },
+  "notes": "Aggregate report only. No private input, future board, answer, candidate payload, or attempt-level content is present. No quality threshold or cooldown was weakened."
+}

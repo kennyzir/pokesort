@@ -1,7 +1,6 @@
 import http from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { chromium } from "playwright";
-import { puzzleFor } from "../assets/puzzle-data.js";
 
 const dist = new URL("../dist/", import.meta.url);
 const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon", ".json": "application/json", ".xml": "application/xml", ".txt": "text/plain" };
@@ -32,9 +31,20 @@ const cards = () => page.locator(".poke-card");
 const select = async (names) => { for (const name of names) await cards().filter({ hasText: name }).click(); };
 const submit = () => page.locator("#submit-selection").click();
 const clearAndReload = async () => { await page.evaluate(() => localStorage.clear()); await page.reload(); await cards().first().waitFor(); };
+const dailyPackFor = async (date) => {
+  const manifest = JSON.parse(await readFile(new URL(`../data/puzzles/public-daily/${date}.json`, import.meta.url), "utf8"));
+  return manifest.groups.map((group) => ({ name: group.label, hint: group.hint, mons: group.members.map(({ name, id }) => [name, id]) }));
+};
+const infinitePackFor = async (round) => {
+  const index = JSON.parse(await readFile(new URL("../data/puzzles/infinite/index.json", import.meta.url), "utf8"));
+  const poolIndex = (index.sequence.offset + (round % index.poolSize) * index.sequence.step) % index.poolSize;
+  const entry = index.shards.find((shard) => poolIndex >= shard.start && poolIndex < shard.start + shard.count);
+  const shard = JSON.parse(await readFile(new URL(`../data/puzzles/infinite/${entry.file}`, import.meta.url), "utf8"));
+  return shard.puzzles[poolIndex - entry.start].groups.map((group) => ({ name: group.label, mons: group.members.map(({ name, id }) => [name, id]) }));
+};
 
 try {
-  const today = new Date().toISOString().slice(0, 10), dailyPack = puzzleFor(today);
+  const today = new Date().toISOString().slice(0, 10), dailyPack = await dailyPackFor(today);
   await page.goto(`${base}/`); await cards().first().waitFor();
   assert(await cards().count() === 16, "Daily must render 16 cards at 390×844");
 
@@ -52,10 +62,52 @@ try {
   assert(await page.locator(".solved-group").count() === 1 && await cards().count() === 12, "solved progress must restore from localStorage");
 
   await clearAndReload();
-  await select([...dailyPack[0].mons.slice(0, 3).map(([name]) => name), dailyPack[1].mons[0][0]]); await submit();
+  const oneAwayNames = await page.evaluate(() => {
+    const puzzle = JSON.parse(document.querySelector("#pokesort-puzzle-data").textContent);
+    const valid = new Set(puzzle.validQuartets);
+    for (const group of puzzle.groups) {
+      const three = group.mons.slice(0, 3).map(([name, id]) => ({ name, id }));
+      for (const card of puzzle.cards.filter(({ id }) => !group.mons.some(([, memberId]) => memberId === id))) {
+        const signature = [...three.map(({ id }) => id), card.id].sort((a, b) => a - b).join("-");
+        if (!valid.has(signature)) return [...three.map(({ name }) => name), card.name];
+      }
+    }
+    return [];
+  });
+  assert(oneAwayNames.length === 4, "Daily board must provide a non-overlap one-away fixture");
+  await select(oneAwayNames); await submit();
   assert((await page.locator("#game-status").textContent()).includes("One away"), "three matching members must report One Away");
   await page.locator("#hint-button").click();
   assert((await page.locator("#game-status").textContent()).length > 5, "Hint must expose useful text");
+
+  await clearAndReload();
+  const overlapNames = await page.evaluate(() => {
+    const puzzle = JSON.parse(document.querySelector("#pokesort-puzzle-data").textContent);
+    const intended = new Set(puzzle.groups.map((group) => group.mons.map(([, id]) => id).sort((a, b) => a - b).join("-")));
+    const signature = puzzle.validQuartets.find((item) => !intended.has(item));
+    const ids = signature?.split("-").map(Number) || [];
+    return ids.map((id) => puzzle.cards.find((card) => card.id === id)?.name);
+  });
+  assert(overlapNames.length === 4 && overlapNames.every(Boolean), "Daily payload must include at least one factual overlap fixture");
+  await select(overlapNames); await submit();
+  assert((await page.locator("#game-status").textContent()).includes("real canonical fact"), "a factual overlap must explain why it cannot complete the unique partition");
+
+  await clearAndReload();
+  const invalidNames = await page.evaluate(() => {
+    const puzzle = JSON.parse(document.querySelector("#pokesort-puzzle-data").textContent);
+    const valid = new Set(puzzle.validQuartets);
+    const intendedGroups = puzzle.groups.map((group) => new Set(group.mons.map(([, id]) => id)));
+    const cards = puzzle.cards;
+    for (let a = 0; a < 13; a++) for (let b = a + 1; b < 14; b++) for (let c = b + 1; c < 15; c++) for (let d = c + 1; d < 16; d++) {
+      const chosen = [cards[a], cards[b], cards[c], cards[d]];
+      const signature = chosen.map(({ id }) => id).sort((left, right) => left - right).join("-");
+      if (!valid.has(signature) && intendedGroups.every((group) => chosen.filter(({ id }) => group.has(id)).length < 3)) return chosen.map(({ name }) => name);
+    }
+    return [];
+  });
+  assert(invalidNames.length === 4, "Daily board must provide an unrelated quartet fixture");
+  await select(invalidNames); await submit();
+  assert((await page.locator("#game-status").textContent()).includes("Not the connection"), "a factually invalid quartet must retain the unrelated feedback");
 
   await clearAndReload(); await page.locator("#reveal-board").click();
   assert((await page.locator("#game-status").textContent()).includes("revealed"), "Reveal must report a revealed board");
@@ -77,26 +129,42 @@ try {
 
   await page.locator('[data-mode="infinite"]').click(); await page.waitForURL(`${base}/infinite/#game`); await cards().first().waitFor();
   assert(await cards().count() === 16 && await page.locator("#new-infinite").isVisible(), "Infinite must render 16 cards and New puzzle");
+  const firstInfiniteBoard = (await cards().allTextContents()).sort().join("|");
+  const runtimePoolAudit = await page.evaluate(async () => {
+    const index = await (await fetch("/assets/infinite/index.json")).json();
+    const first500 = Array.from({ length: 500 }, (_, round) => (index.sequence.offset + round * index.sequence.step) % index.poolSize);
+    const shardStatuses = await Promise.all(index.shards.map(async ({ file }) => (await fetch(`/assets/infinite/${file}`)).status));
+    return { unique: new Set(first500).size, shardStatuses };
+  });
+  assert(runtimePoolAudit.unique === 500 && runtimePoolAudit.shardStatuses.every((status) => status === 200), "Infinite runtime must expose 500 no-repeat selections and every validated shard");
   const winsBefore = await page.evaluate(() => localStorage.getItem("pokesort-wins"));
-  for (const group of puzzleFor("infinite-0")) { await select(group.mons.map(([name]) => name)); await submit(); }
+  for (const group of await infinitePackFor(0)) { await select(group.mons.map(([name]) => name)); await submit(); }
   assert((await page.locator("#game-status").textContent()).includes("Infinite puzzle #1"), "Infinite completion status must name its round");
   assert(await page.evaluate(() => localStorage.getItem("pokesort-wins")) === winsBefore, "Infinite must not change Daily wins");
   await page.locator("#share-result").click();
   const shared = await page.evaluate(() => globalThis.__pokesortShared);
   assert(shared.includes("PokeSort Infinite #1") && shared.includes(`${base}/infinite/`), "Infinite share must use its round and canonical route");
+  await page.evaluate(() => { void globalThis.__pokesortRuntime.newInfinite(); void globalThis.__pokesortRuntime.newInfinite(); });
+  await page.waitForFunction(() => document.querySelector("#game-kicker")?.textContent?.includes("#3") && document.querySelectorAll(".poke-card").length === 16);
+  assert((await cards().allTextContents()).sort().join("|") !== firstInfiniteBoard, "rapid New Infinite requests must settle on the latest different verified board");
+  const latestInfinitePack = await infinitePackFor(2);
+  await select(latestInfinitePack[0].mons.map(([name]) => name)); await submit();
+  assert(await page.locator(".solved-group").count() === 1, "rapid Infinite loads must not let a stale shard response replace the latest round");
   await page.locator('[data-mode="daily"]').click(); await page.waitForURL(`${base}/#game`);
 
   const inWindow = new Date(`${today}T00:00:00Z`); inWindow.setUTCDate(inWindow.getUTCDate() - 3);
   const inDate = inWindow.toISOString().slice(0, 10);
   await page.goto(`${base}/?date=${inDate}`); await page.waitForURL(`${base}/daily/${inDate}/`); await cards().first().waitFor();
   assert(await cards().count() === 16, "in-window legacy date must migrate to a playable static route");
+  const inDatePack = await dailyPackFor(inDate);
+  await select(inDatePack[0].mons.map(([name]) => name)); await submit();
+  assert(await page.locator(".solved-group").count() === 1, "dated route must use its exact immutable manifest");
   const outside = new Date(`${today}T00:00:00Z`); outside.setUTCDate(outside.getUTCDate() - 31);
   const outDate = outside.toISOString().slice(0, 10);
+  await page.evaluate((date) => localStorage.removeItem(`pokesort-daily-${date}`), today);
   await page.goto(`${base}/?date=${outDate}`); await cards().first().waitFor();
-  assert(new URL(page.url()).searchParams.get("date") === outDate && await cards().count() === 16, "out-of-window legacy date must remain compatible");
-  for (const group of puzzleFor(outDate)) { await select(group.mons.map(([name]) => name)); await submit(); }
-  await page.locator("#share-result").click();
-  assert((await page.evaluate(() => globalThis.__pokesortShared)).includes(`${base}/?date=${outDate}`), "out-of-window legacy share must preserve its playable query URL");
+  assert(new URL(page.url()).searchParams.get("date") === outDate && await cards().count() === 16, "out-of-window legacy URL must remain browser-compatible");
+  assert((await page.locator("#game-kicker").textContent()).includes(today) && !(await page.locator("#game-kicker").textContent()).includes(outDate), "an unavailable legacy date must honestly fall back to today's immutable board");
 
   await page.evaluate((date) => localStorage.removeItem(`pokesort-daily-${date}`), today);
   await page.goto(`${base}/?date=2026-00-99`); await cards().first().waitFor();
@@ -119,10 +187,26 @@ try {
   await page.locator("#clear-worksheet").click();
   assert(await page.locator('[data-slot="0"]').inputValue() === "" && await page.evaluate(() => localStorage.getItem("pokesort-pokelike-worksheet")) === null, "Pokelike worksheet clear must remove saved progress");
 
+  await page.goto(`${base}/pokelike-pokesort/today/`);
+  assert(await page.locator("main").getAttribute("data-today-state") === "unavailable", "default Today route must expose a held state");
+  assert((await page.locator("main").textContent()).includes("No answer is being shown"), "held Today route must explain that no answer is shown");
+  assert(await page.locator("[data-answer-position]").count() === 0, "held Today route must not leak a stale answer");
+
+  await page.goto(`${base}/archive/`);
+  assert(await page.locator("#archive-grid .archive-card").count() === 31, "Archive must keep the latest 31 puzzles as its primary recent view");
+  const monthHref = await page.locator('a[href^="/archive/20"]').filter({ hasText: "Browse month" }).first().getAttribute("href");
+  assert(/^\/archive\/\d{4}\/\d{2}\/$/.test(monthHref || ""), "Archive must expose mobile month discovery links");
+  await page.goto(`${base}${monthHref}`);
+  assert(await page.locator(".archive-card").count() > 0, "monthly Archive must render elapsed date cards on mobile");
+  const bodyOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+  assert(!bodyOverflow, "monthly Archive must not overflow the 390px mobile viewport");
+  const datedHref = await page.locator('.archive-card[href^="/daily/"]').first().getAttribute("href");
+  assert(/^\/daily\/\d{4}-\d{2}-\d{2}\/$/.test(datedHref || ""), "monthly Archive must link to real dated pages");
+
   const missing = await page.goto(`${base}/not-a-real-route/`);
   assert(missing.status() === 404, "unknown routes must return HTTP 404 in the smoke server");
   assert(pageErrors.length === 0, `page errors occurred: ${pageErrors.join("; ")}`);
-  console.log("Browser runtime validation passed in Chrome at 390×844: Daily, reveal/failure, Infinite, storage, share, keyboard, legacy dates, Pokelike worksheet, and 404.");
+  console.log("Browser runtime validation passed in Chrome at 390×844: intended, one-away, valid-overlap, invalid, win, reveal, failure, Infinite, storage, share, keyboard, legacy dates, Archive/month discovery, Pokelike worksheet, and 404.");
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

@@ -1,0 +1,18 @@
+# Copy to wrangler.toml only after Cloudflare namespace creation. Never commit real IDs.
+name = "pokesort"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-08-24"
+
+[[kv_namespaces]]
+binding = "DAILY_MANIFESTS"
+id = "REPLACE_WITH_PRODUCTION_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_PREVIEW_NAMESPACE_ID"
+
+[vars]
+DAILY_ENVIRONMENT = "production"
+DAILY_API_ENABLED = "false"
+
+# Configure DAILY_ENVIRONMENT=preview in the Pages preview environment. The
+# upload token is CI-only and must never be bound to the public Function.
+# Bind DAILY_ENVELOPE_HMAC_KEY as a different encrypted secret in preview and
+# production. Never place either value in this file or in a plain-text var.

@@ -284,7 +284,16 @@
       "boardContentHash": "bb1ef5f659d4067d0a8246be3a6daf6b860dcdc871dbec00d886c25c729390a6",
       "boardSignature": "13-31-63-69-127-149-188-316-317-388-635-651-697-750-895-995",
       "publishAtUtc": "2026-08-24T00:00:00.000Z"
+    },
+    {
+      "date": "2026-08-25",
+      "file": "2026-08-25.json",
+      "puzzleId": "daily-2026-08-25-c058a7970d0ff8d7",
+      "contentHash": "c058a7970d0ff8d7cc857f3b2f00b4820c035796aaa2e8c688c58a62f2d65c8f",
+      "boardContentHash": "9edbe676f1a9c1629bb357c0dc571e5eb921e7bce3a855a9c075b3faa39b9a54",
+      "boardSignature": "10-66-80-129-338-412-454-499-517-616-619-654-892-918-957-978",
+      "publishAtUtc": "2026-08-25T00:00:00.000Z"
     }
   ],
-  "contentHash": "f776b32133878e48945fe83099c8b1b7a8481c781c513b8f7ab3ccf8fd94a210"
+  "contentHash": "ad6a7e21384817218b038502340e680ad2ad43327ebcdd72a8f23d519e070e09"
 }

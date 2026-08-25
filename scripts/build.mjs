@@ -250,6 +250,7 @@ function ensureSocialMetadata(html) {
     !html.includes('property="og:title"') && `<meta property="og:title" content="${title}">`,
     !html.includes('property="og:description"') && `<meta property="og:description" content="${description}">`,
     !html.includes('property="og:type"') && '<meta property="og:type" content="website">',
+    !html.includes('property="og:site_name"') && '<meta property="og:site_name" content="PokeSort 4×4">',
     canonical && !html.includes('property="og:url"') && `<meta property="og:url" content="${canonical}">`,
     !html.includes('name="twitter:title"') && `<meta name="twitter:title" content="${title}">`,
     !html.includes('name="twitter:description"') && `<meta name="twitter:description" content="${description}">`,

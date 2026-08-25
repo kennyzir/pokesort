@@ -13,10 +13,9 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.hostname === "www.pokesort.org") {
-      url.protocol = "https:";
-      url.hostname = "pokesort.org";
-      return Response.redirect(url.toString(), 308);
+    const canonicalHost = url.hostname === "pokesort.org" || url.hostname === "www.pokesort.org";
+    if (canonicalHost && (url.protocol !== "https:" || url.hostname !== "pokesort.org")) {
+      return Response.redirect(`https://pokesort.org${url.pathname}${url.search}`, 308);
     }
 
     const dailyCurrent = url.pathname === "/api/daily/current" || url.pathname === "/api/daily/current/";

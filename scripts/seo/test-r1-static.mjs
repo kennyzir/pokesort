@@ -48,6 +48,7 @@ async function inspectDist(directory) {
     else {
       const contents = await readFile(url);
       assert(!contents.includes(Buffer.from("pokesort.example")), `dist/${decodeURIComponent(url.pathname.split("/dist/")[1])} contains pokesort.example`);
+      assert(!contents.includes(Buffer.from("monsort.com")), `dist/${decodeURIComponent(url.pathname.split("/dist/")[1])} contains monsort.com`);
       if (entry.name.endsWith(".html")) {
         htmlFiles += 1;
         const html = contents.toString("utf8");
@@ -81,8 +82,10 @@ const env = { ASSETS: { fetch: async () => assetPass } };
 const edgeFetch = (url) => edgeWorker.fetch(new Request(url), env);
 const redirectCases = [
   ["http://pokesort.org/", "https://pokesort.org/"],
-  ["https://www.pokesort.org/archive/?ref=r1", "https://pokesort.org/archive/?ref=r1"],
-  ["http://www.pokesort.org/daily/test/?a=1&b=2", "https://pokesort.org/daily/test/?a=1&b=2"],
+  ["http://pokesort.org/infinite/?source=test", "https://pokesort.org/infinite/?source=test"],
+  ["http://www.pokesort.org/archive/?source=test&check=origin", "https://pokesort.org/archive/?source=test&check=origin"],
+  ["https://www.pokesort.org/", "https://pokesort.org/"],
+  ["http://pokesort.org/?next=https%3A%2F%2Fevil.example%2F", "https://pokesort.org/?next=https%3A%2F%2Fevil.example%2F"],
 ];
 for (const [from, to] of redirectCases) {
   const response = await edgeFetch(from);
@@ -91,8 +94,9 @@ for (const [from, to] of redirectCases) {
   const destination = await edgeFetch(to);
   assert.notEqual(destination.status, 308, `redirect destination must not loop: ${to}`);
 }
-for (const url of ["http://preview.pokesort.org/path/?next=https://evil.example", "http://pokesort.org.evil.example/path/"]) {
+assert.strictEqual(await edgeFetch("https://pokesort.org/"), assetPass, "canonical HTTPS apex must not redirect");
+for (const url of ["http://pokesort.org.example.com/path/", "http://evilpokesort.org/path/", "http://pokesort.org.evil.example/path/"]) {
   assert.strictEqual(await edgeFetch(url), assetPass, `unapproved host must not be canonicalized: ${url}`);
 }
 
-console.log(JSON.stringify({ gate: "PASS", pages: pages.map(({ label, url }) => ({ label, url })), htmlFiles, sitemapUrls: locations.length, redirectCases: redirectCases.length, openRedirectCases: 2 }, null, 2));
+console.log(JSON.stringify({ gate: "PASS", pages: pages.map(({ label, url }) => ({ label, url })), htmlFiles, sitemapUrls: locations.length, redirectCases: redirectCases.length, maliciousHostCases: 3, openRedirectCases: 1 }, null, 2));

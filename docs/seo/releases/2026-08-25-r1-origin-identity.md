@@ -104,3 +104,63 @@ git revert ba62cd8de67199883428b435267f34f55e72a608
 ```
 
 The exact pre-release baseline is also preserved by the annotated tag `pre-seo-r1-20260825`. After rollback/deployment, rerun `npm run smoke:production`; do not claim a successful rollback until the live checks pass for the intended baseline behavior.
+
+## Final release completion
+
+The historical failures above are retained as the pre-release record. R1.1 resolved them without changing production Daily validation or product scope.
+
+- Branch push: completed immediately before PR creation at `2026-08-25T19:56:23Z`; GitHub exposes the PR creation timestamp as the upper bound for the preceding branch push.
+- Pull request: [#1 — SEO R1: normalize origin and establish PokeSort site identity](https://github.com/kennyzir/pokesort/pull/1)
+- PR created: `2026-08-25T19:56:23Z`
+- PR merged: `2026-08-25T19:56:40Z`
+- Squash merge commit: `034a8ad6002d3f362043bcc61d78b2dff843bb8a`
+- Cloudflare Pages deployment ID: `372722ae-7289-42e2-a1f1-bded07f95601`
+- Production deployment completed: `2026-08-25T19:57:16Z`
+- Post-merge Daily Workflow: [Run 32892569467](https://github.com/kennyzir/pokesort/actions/runs/32892569467), completed `success` at `2026-08-25T19:59:25Z`
+  - `prepare-private-buffer`: success
+  - `publish-elapsed-history`: success
+  - `readiness-monitor`: success
+
+### Final unpinned test results
+
+All final local commands used the real UTC environment with no `POKESORT_BUILD_UTC_DATE` override.
+
+| Command | Final result |
+| --- | --- |
+| `npm ci` | PASS; 0 vulnerabilities |
+| `npm run test:cloudflare-automation` | PASS; fixed historical fixture ends at 2026-08-24, production history remains byte-stable, activation/API/deploy-hook failures remain fail-closed |
+| `npm run test:r7-release` | PASS; explicit archive lag 1 and 0 acceptance plus lag 2 rejection, immutable/orphan/idempotent/failure rehearsals |
+| `npm run build` | PASS; 32 elapsed Daily manifests, 1000 Infinite puzzles, 44 indexable routes |
+| `npm test` | PASS; complete static, semantic, security, Archive, Daily, R7, regression, and Chrome runtime suite |
+| `npm run test:seo-r1` | PASS; 47 HTML files, 44 HTTPS-apex sitemap URLs, 5 Worker redirect cases, 3 malicious-host cases, 1 open-redirect case |
+| `npm run build:cloudflare` | PASS; source/final newest date 2026-08-25, 32 history dates, no API backfill required |
+| `npm run smoke:production` | PASS on the first post-deployment attempt |
+
+### Final production evidence
+
+- HTTP root chain: `http://pokesort.org/` —301→ `https://pokesort.org/` —200
+- HTTP path/query chain: `http://pokesort.org/infinite/?source=test` —301→ `https://pokesort.org/infinite/?source=test` —200
+- HTTP www path/query chain: `http://www.pokesort.org/archive/?source=test&check=origin` —301→ `https://www.pokesort.org/archive/?source=test&check=origin` —301→ `https://pokesort.org/archive/?source=test&check=origin` —200
+- HTTPS www chain: `https://www.pokesort.org/` —301→ `https://pokesort.org/` —200
+- Adversarial `next=https://evil.example/` remained a query parameter on the HTTPS apex URL and did not become a redirect target.
+- Homepage status: 200
+- Homepage canonical: `https://pokesort.org/`
+- Homepage `og:site_name`: exactly `PokeSort 4×4`
+- Homepage WebSite schema: exactly one, with `@id=https://pokesort.org/#website`, `name=PokeSort 4×4`, and `url=https://pokesort.org/`
+- Sitemap: 44 parsed URLs, all HTTPS apex
+- Robots sitemap: `https://pokesort.org/sitemap.xml`
+- Current Daily: `ready`, dateKey `2026-08-25`
+- Infinite: `ready`, 16 cards
+- Archive: 200, 31 visible recent cards
+- Today: `unavailable`, `noindex,follow`, zero answer positions
+- Placeholder origins: absent from validated production homepage/sitemap and all local `dist` files
+
+### Final rollback
+
+Revert the R1 squash merge without rewriting history:
+
+```bash
+git revert 034a8ad6002d3f362043bcc61d78b2dff843bb8a
+```
+
+The annotated pre-release baseline remains available as `pre-seo-r1-20260825`. A rollback is not complete until its Cloudflare deployment finishes and `npm run smoke:production` is rerun against the intended rollback behavior.

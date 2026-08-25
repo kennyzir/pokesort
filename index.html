@@ -18,6 +18,7 @@
       content="Play the PokeSort 4×4 Daily: sort 16 Pokémon into four hidden groups, with a separate Infinite practice mode."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PokeSort 4×4" />
     <meta property="og:url" content="https://pokesort.example/" />
     <meta
       property="og:image"
@@ -32,7 +33,7 @@
       content="https://pokesort.example/assets/social-card.png"
     />
     <meta name="theme-color" content="#151c35" />
-    <meta name="application-name" content="PokeSort" />
+    <meta name="application-name" content="PokeSort 4×4" />
     <meta name="apple-mobile-web-app-title" content="PokeSort" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
@@ -62,8 +63,19 @@
         "applicationCategory": "GameApplication",
         "operatingSystem": "Any",
         "url": "https://pokesort.example/",
+        "isPartOf": { "@id": "https://pokesort.example/#website" },
         "description": "A free 4×4 Pokémon grouping puzzle with one Daily board and a separate Infinite practice mode.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://pokesort.example/#website",
+        "name": "PokeSort 4×4",
+        "alternateName": ["PokeSort", "Poke Sort", "pokesort.org"],
+        "url": "https://pokesort.example/"
       }
     </script>
   </head>

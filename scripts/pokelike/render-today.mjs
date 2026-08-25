@@ -12,7 +12,7 @@ function shell({ title, description, body, siteUrl }) {
     name: title,
     url,
     description,
-    isPartOf: { "@type": "WebSite", name: "PokeSort", url: `${siteUrl}/` },
+    isPartOf: { "@type": "WebSite", name: "PokeSort 4×4", url: `${siteUrl}/` },
     about: { "@type": "VideoGame", name: "Pokelike Daily Pokésort" },
   }).replaceAll("<", "\\u003c");
   return `<!doctype html>

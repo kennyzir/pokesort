@@ -1,0 +1,468 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-08-26T16:35:48.130Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-08-26T16:35:55.261Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-08-26T16:35:55.262Z"
+    }
+  ],
+  "consistencySha256": "93be27bb9e7e2d62093e404f61473f80b8b397aa5dd70350b43ef30c761128b6",
+  "samples": [
+    {
+      "capturedAt": "2026-08-26T16:35:50.940Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Wed, 26 Aug 2026 16:35:49 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+        "capturedAt": "2026-08-26T16:35:50.940Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Wed, 26 Aug 2026 16:35:49 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-26T16:35:50.940Z"
+      },
+      "snapshot": {
+        "day": 20692,
+        "puzzleNumber": 57,
+        "state": {
+          "slots": [
+            22,
+            437,
+            198,
+            429,
+            634,
+            105
+          ],
+          "conds": [
+            "se",
+            "gen_gt",
+            "gen_lt",
+            "stage_gt",
+            "se"
+          ],
+          "solution": [
+            105,
+            437,
+            22,
+            634,
+            198,
+            429
+          ]
+        },
+        "candidates": [
+          {
+            "id": 22,
+            "name": "Fearow",
+            "types": [
+              "Normal",
+              "Flying"
+            ],
+            "color": "brown",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 437,
+            "name": "Bronzong",
+            "types": [
+              "Steel",
+              "Psychic"
+            ],
+            "color": "green",
+            "gen": 4,
+            "stage": 1
+          },
+          {
+            "id": 198,
+            "name": "Murkrow",
+            "types": [
+              "Dark",
+              "Flying"
+            ],
+            "color": "black",
+            "gen": 2,
+            "stage": 0
+          },
+          {
+            "id": 429,
+            "name": "Mismagius",
+            "types": [
+              "Ghost"
+            ],
+            "color": "purple",
+            "gen": 4,
+            "stage": 1
+          },
+          {
+            "id": 634,
+            "name": "Zweilous",
+            "types": [
+              "Dark",
+              "Dragon"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 1
+          },
+          {
+            "id": 105,
+            "name": "Marowak",
+            "types": [
+              "Ground"
+            ],
+            "color": "brown",
+            "gen": 1,
+            "stage": 1
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type is super-effective against the right."
+          },
+          {
+            "key": "gen_gt",
+            "label": "Gen",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is from a later generation than the right."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type is super-effective against the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-08-26T16:35:54.923Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Wed, 26 Aug 2026 16:35:53 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+        "capturedAt": "2026-08-26T16:35:54.923Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Wed, 26 Aug 2026 16:35:53 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-26T16:35:54.923Z"
+      },
+      "snapshot": {
+        "day": 20692,
+        "puzzleNumber": 57,
+        "state": {
+          "slots": [
+            22,
+            437,
+            198,
+            429,
+            634,
+            105
+          ],
+          "conds": [
+            "se",
+            "gen_gt",
+            "gen_lt",
+            "stage_gt",
+            "se"
+          ],
+          "solution": [
+            105,
+            437,
+            22,
+            634,
+            198,
+            429
+          ]
+        },
+        "candidates": [
+          {
+            "id": 22,
+            "name": "Fearow",
+            "types": [
+              "Normal",
+              "Flying"
+            ],
+            "color": "brown",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 437,
+            "name": "Bronzong",
+            "types": [
+              "Steel",
+              "Psychic"
+            ],
+            "color": "green",
+            "gen": 4,
+            "stage": 1
+          },
+          {
+            "id": 198,
+            "name": "Murkrow",
+            "types": [
+              "Dark",
+              "Flying"
+            ],
+            "color": "black",
+            "gen": 2,
+            "stage": 0
+          },
+          {
+            "id": 429,
+            "name": "Mismagius",
+            "types": [
+              "Ghost"
+            ],
+            "color": "purple",
+            "gen": 4,
+            "stage": 1
+          },
+          {
+            "id": 634,
+            "name": "Zweilous",
+            "types": [
+              "Dark",
+              "Dragon"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 1
+          },
+          {
+            "id": 105,
+            "name": "Marowak",
+            "types": [
+              "Ground"
+            ],
+            "color": "brown",
+            "gen": 1,
+            "stage": 1
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type is super-effective against the right."
+          },
+          {
+            "key": "gen_gt",
+            "label": "Gen",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is from a later generation than the right."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type is super-effective against the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-08-27",
+    "timezone": "Asia/Shanghai",
+    "day": 20692,
+    "puzzleNumber": 57,
+    "observedAt": "2026-08-26T16:35:49.000Z",
+    "verifiedAt": "2026-08-26T16:35:55.262Z",
+    "candidates": [
+      {
+        "id": 22,
+        "name": "Fearow",
+        "generation": 1,
+        "stage": 1,
+        "color": "brown",
+        "types": [
+          "normal",
+          "flying"
+        ]
+      },
+      {
+        "id": 437,
+        "name": "Bronzong",
+        "generation": 4,
+        "stage": 1,
+        "color": "green",
+        "types": [
+          "steel",
+          "psychic"
+        ]
+      },
+      {
+        "id": 198,
+        "name": "Murkrow",
+        "generation": 2,
+        "stage": 0,
+        "color": "black",
+        "types": [
+          "dark",
+          "flying"
+        ]
+      },
+      {
+        "id": 429,
+        "name": "Mismagius",
+        "generation": 4,
+        "stage": 1,
+        "color": "purple",
+        "types": [
+          "ghost"
+        ]
+      },
+      {
+        "id": 634,
+        "name": "Zweilous",
+        "generation": 5,
+        "stage": 1,
+        "color": "blue",
+        "types": [
+          "dark",
+          "dragon"
+        ]
+      },
+      {
+        "id": 105,
+        "name": "Marowak",
+        "generation": 1,
+        "stage": 1,
+        "color": "brown",
+        "types": [
+          "ground"
+        ]
+      }
+    ],
+    "startOrder": [
+      22,
+      437,
+      198,
+      429,
+      634,
+      105
+    ],
+    "links": [
+      {
+        "relation": "se",
+        "leftId": 105,
+        "rightId": 437,
+        "explanation": "Marowak's primary type is super-effective against Bronzong's primary type."
+      },
+      {
+        "relation": "gen_gt",
+        "leftId": 437,
+        "rightId": 22,
+        "explanation": "Bronzong is generation 4; Fearow is generation 1."
+      },
+      {
+        "relation": "gen_lt",
+        "leftId": 22,
+        "rightId": 634,
+        "explanation": "Fearow is generation 1; Zweilous is generation 5."
+      },
+      {
+        "relation": "stage_gt",
+        "leftId": 634,
+        "rightId": 198,
+        "explanation": "Zweilous is stage 1; Murkrow is stage 0."
+      },
+      {
+        "relation": "se",
+        "leftId": 198,
+        "rightId": 429,
+        "explanation": "Murkrow's primary type is super-effective against Mismagius's primary type."
+      }
+    ],
+    "solutionOrder": [
+      105,
+      437,
+      22,
+      634,
+      198,
+      429
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: The LEFT Pokémon's primary type is super-effective against the right.",
+        "Link 2: The LEFT Pokémon is from a later generation than the right.",
+        "Link 3: The LEFT Pokémon is from an earlier generation than the right.",
+        "Link 4: The LEFT Pokémon is further evolved than the right.",
+        "Link 5: The LEFT Pokémon's primary type is super-effective against the right."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+      "bundleSha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+      "stateSha256": "f2912ba71d757334ac43fec26b9bdae229b47aa6d3fa1d39a1baef0c7152ac80",
+      "contentSha256": "5db4c75d48e7e4161d3235b90fda5aeb288e89176f01d6ea5e56437ee31ed5e5"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

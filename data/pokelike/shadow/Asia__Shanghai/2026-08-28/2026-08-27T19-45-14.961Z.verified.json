@@ -1,0 +1,468 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-08-27T19:45:14.961Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-08-27T19:45:21.194Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-08-27T19:45:21.194Z"
+    }
+  ],
+  "consistencySha256": "11961109203d98649ad77db331c1dd57c862481e72a2b917651bc1eace657a61",
+  "samples": [
+    {
+      "capturedAt": "2026-08-27T19:45:16.942Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Thu, 27 Aug 2026 19:45:15 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+        "capturedAt": "2026-08-27T19:45:16.942Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Thu, 27 Aug 2026 19:45:15 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-27T19:45:16.942Z"
+      },
+      "snapshot": {
+        "day": 20693,
+        "puzzleNumber": 58,
+        "state": {
+          "slots": [
+            332,
+            580,
+            314,
+            581,
+            463,
+            184
+          ],
+          "conds": [
+            "stage_gt",
+            "se",
+            "stage_eq",
+            "gen_lt",
+            "stage_gt"
+          ],
+          "solution": [
+            184,
+            314,
+            332,
+            463,
+            581,
+            580
+          ]
+        },
+        "candidates": [
+          {
+            "id": 332,
+            "name": "Cacturne",
+            "types": [
+              "Grass",
+              "Dark"
+            ],
+            "color": "green",
+            "gen": 3,
+            "stage": 1
+          },
+          {
+            "id": 580,
+            "name": "Ducklett",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 314,
+            "name": "Illumise",
+            "types": [
+              "Bug"
+            ],
+            "color": "purple",
+            "gen": 3,
+            "stage": 0
+          },
+          {
+            "id": 581,
+            "name": "Swanna",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "color": "white",
+            "gen": 5,
+            "stage": 1
+          },
+          {
+            "id": 463,
+            "name": "Lickilicky",
+            "types": [
+              "Normal"
+            ],
+            "color": "pink",
+            "gen": 4,
+            "stage": 1
+          },
+          {
+            "id": 184,
+            "name": "Azumarill",
+            "types": [
+              "Water",
+              "Fairy"
+            ],
+            "color": "blue",
+            "gen": 2,
+            "stage": 2
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type is super-effective against the right."
+          },
+          {
+            "key": "stage_eq",
+            "label": "Stage",
+            "cmp": "=",
+            "desc": "Same evolution stage (unevolved, 1st or 2nd evolution)."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-08-27T19:45:20.883Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Thu, 27 Aug 2026 19:45:19 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+        "capturedAt": "2026-08-27T19:45:20.883Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Thu, 27 Aug 2026 19:45:19 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-27T19:45:20.883Z"
+      },
+      "snapshot": {
+        "day": 20693,
+        "puzzleNumber": 58,
+        "state": {
+          "slots": [
+            332,
+            580,
+            314,
+            581,
+            463,
+            184
+          ],
+          "conds": [
+            "stage_gt",
+            "se",
+            "stage_eq",
+            "gen_lt",
+            "stage_gt"
+          ],
+          "solution": [
+            184,
+            314,
+            332,
+            463,
+            581,
+            580
+          ]
+        },
+        "candidates": [
+          {
+            "id": 332,
+            "name": "Cacturne",
+            "types": [
+              "Grass",
+              "Dark"
+            ],
+            "color": "green",
+            "gen": 3,
+            "stage": 1
+          },
+          {
+            "id": 580,
+            "name": "Ducklett",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 314,
+            "name": "Illumise",
+            "types": [
+              "Bug"
+            ],
+            "color": "purple",
+            "gen": 3,
+            "stage": 0
+          },
+          {
+            "id": 581,
+            "name": "Swanna",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "color": "white",
+            "gen": 5,
+            "stage": 1
+          },
+          {
+            "id": 463,
+            "name": "Lickilicky",
+            "types": [
+              "Normal"
+            ],
+            "color": "pink",
+            "gen": 4,
+            "stage": 1
+          },
+          {
+            "id": 184,
+            "name": "Azumarill",
+            "types": [
+              "Water",
+              "Fairy"
+            ],
+            "color": "blue",
+            "gen": 2,
+            "stage": 2
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type is super-effective against the right."
+          },
+          {
+            "key": "stage_eq",
+            "label": "Stage",
+            "cmp": "=",
+            "desc": "Same evolution stage (unevolved, 1st or 2nd evolution)."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-08-28",
+    "timezone": "Asia/Shanghai",
+    "day": 20693,
+    "puzzleNumber": 58,
+    "observedAt": "2026-08-27T19:45:15.000Z",
+    "verifiedAt": "2026-08-27T19:45:21.194Z",
+    "candidates": [
+      {
+        "id": 332,
+        "name": "Cacturne",
+        "generation": 3,
+        "stage": 1,
+        "color": "green",
+        "types": [
+          "grass",
+          "dark"
+        ]
+      },
+      {
+        "id": 580,
+        "name": "Ducklett",
+        "generation": 5,
+        "stage": 0,
+        "color": "blue",
+        "types": [
+          "water",
+          "flying"
+        ]
+      },
+      {
+        "id": 314,
+        "name": "Illumise",
+        "generation": 3,
+        "stage": 0,
+        "color": "purple",
+        "types": [
+          "bug"
+        ]
+      },
+      {
+        "id": 581,
+        "name": "Swanna",
+        "generation": 5,
+        "stage": 1,
+        "color": "white",
+        "types": [
+          "water",
+          "flying"
+        ]
+      },
+      {
+        "id": 463,
+        "name": "Lickilicky",
+        "generation": 4,
+        "stage": 1,
+        "color": "pink",
+        "types": [
+          "normal"
+        ]
+      },
+      {
+        "id": 184,
+        "name": "Azumarill",
+        "generation": 2,
+        "stage": 2,
+        "color": "blue",
+        "types": [
+          "water",
+          "fairy"
+        ]
+      }
+    ],
+    "startOrder": [
+      332,
+      580,
+      314,
+      581,
+      463,
+      184
+    ],
+    "links": [
+      {
+        "relation": "stage_gt",
+        "leftId": 184,
+        "rightId": 314,
+        "explanation": "Azumarill is stage 2; Illumise is stage 0."
+      },
+      {
+        "relation": "se",
+        "leftId": 314,
+        "rightId": 332,
+        "explanation": "Illumise's primary type is super-effective against Cacturne's primary type."
+      },
+      {
+        "relation": "stage_eq",
+        "leftId": 332,
+        "rightId": 463,
+        "explanation": "Cacturne and Lickilicky are both evolution stage 1."
+      },
+      {
+        "relation": "gen_lt",
+        "leftId": 463,
+        "rightId": 581,
+        "explanation": "Lickilicky is generation 4; Swanna is generation 5."
+      },
+      {
+        "relation": "stage_gt",
+        "leftId": 581,
+        "rightId": 580,
+        "explanation": "Swanna is stage 1; Ducklett is stage 0."
+      }
+    ],
+    "solutionOrder": [
+      184,
+      314,
+      332,
+      463,
+      581,
+      580
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: The LEFT Pokémon is further evolved than the right.",
+        "Link 2: The LEFT Pokémon's primary type is super-effective against the right.",
+        "Link 3: Same evolution stage (unevolved, 1st or 2nd evolution).",
+        "Link 4: The LEFT Pokémon is from an earlier generation than the right.",
+        "Link 5: The LEFT Pokémon is further evolved than the right."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "ebff5e6f2820c9fe10621bdfd6531db70b766d29888a370268f44447066fceb2",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+      "bundleSha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+      "stateSha256": "3101592783841dd50cf001b1e8392df9f583ebbd7f86914acdcfa9ab805ba508",
+      "contentSha256": "ae53df5da146cdaae0f5cbe915bbcfd3b9a39632ad9d5f73db4f488b2c0bc28a"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

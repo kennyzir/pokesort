@@ -1,0 +1,468 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-08-28T20:11:10.984Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-08-28T20:11:17.139Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-08-28T20:11:17.139Z"
+    }
+  ],
+  "consistencySha256": "cbb1a861d6d9fa8456216bc71de39873670d404ee71d371d666db002c099faa7",
+  "samples": [
+    {
+      "capturedAt": "2026-08-28T20:11:12.748Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Fri, 28 Aug 2026 20:11:11 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "d2c7bfee1ab575c22a2a6dc2e23ad7514b31ac4bbff67d0b17bea2d84904df48",
+        "capturedAt": "2026-08-28T20:11:12.748Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Fri, 28 Aug 2026 20:11:11 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-28T20:11:12.748Z"
+      },
+      "snapshot": {
+        "day": 20694,
+        "puzzleNumber": 59,
+        "state": {
+          "slots": [
+            30,
+            72,
+            130,
+            476,
+            688,
+            653
+          ],
+          "conds": [
+            "gen_lt",
+            "gen_eq",
+            "type",
+            "stage_gt",
+            "gen_lt"
+          ],
+          "solution": [
+            30,
+            653,
+            688,
+            130,
+            72,
+            476
+          ]
+        },
+        "candidates": [
+          {
+            "id": 30,
+            "name": "Nidorina",
+            "types": [
+              "Poison"
+            ],
+            "color": "blue",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 72,
+            "name": "Tentacool",
+            "types": [
+              "Water",
+              "Poison"
+            ],
+            "color": "blue",
+            "gen": 1,
+            "stage": 0
+          },
+          {
+            "id": 130,
+            "name": "Gyarados",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "color": "blue",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 476,
+            "name": "Probopass",
+            "types": [
+              "Rock",
+              "Steel"
+            ],
+            "color": "gray",
+            "gen": 4,
+            "stage": 1
+          },
+          {
+            "id": 688,
+            "name": "Binacle",
+            "types": [
+              "Rock",
+              "Water"
+            ],
+            "color": "brown",
+            "gen": 6,
+            "stage": 0
+          },
+          {
+            "id": 653,
+            "name": "Fennekin",
+            "types": [
+              "Fire"
+            ],
+            "color": "red",
+            "gen": 6,
+            "stage": 0
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "gen_eq",
+            "label": "Gen",
+            "cmp": "=",
+            "desc": "Both were introduced in the same generation."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-08-28T20:11:16.779Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Fri, 28 Aug 2026 20:11:15 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "d2c7bfee1ab575c22a2a6dc2e23ad7514b31ac4bbff67d0b17bea2d84904df48",
+        "capturedAt": "2026-08-28T20:11:16.779Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+        "status": 200,
+        "date": "Fri, 28 Aug 2026 20:11:15 GMT",
+        "etag": "W/\"18187d19a1440d75c8e96939a18b7912\"",
+        "bodyBytes": 3006312,
+        "bodySha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+        "capturedAt": "2026-08-28T20:11:16.779Z"
+      },
+      "snapshot": {
+        "day": 20694,
+        "puzzleNumber": 59,
+        "state": {
+          "slots": [
+            30,
+            72,
+            130,
+            476,
+            688,
+            653
+          ],
+          "conds": [
+            "gen_lt",
+            "gen_eq",
+            "type",
+            "stage_gt",
+            "gen_lt"
+          ],
+          "solution": [
+            30,
+            653,
+            688,
+            130,
+            72,
+            476
+          ]
+        },
+        "candidates": [
+          {
+            "id": 30,
+            "name": "Nidorina",
+            "types": [
+              "Poison"
+            ],
+            "color": "blue",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 72,
+            "name": "Tentacool",
+            "types": [
+              "Water",
+              "Poison"
+            ],
+            "color": "blue",
+            "gen": 1,
+            "stage": 0
+          },
+          {
+            "id": 130,
+            "name": "Gyarados",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "color": "blue",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 476,
+            "name": "Probopass",
+            "types": [
+              "Rock",
+              "Steel"
+            ],
+            "color": "gray",
+            "gen": 4,
+            "stage": 1
+          },
+          {
+            "id": 688,
+            "name": "Binacle",
+            "types": [
+              "Rock",
+              "Water"
+            ],
+            "color": "brown",
+            "gen": 6,
+            "stage": 0
+          },
+          {
+            "id": 653,
+            "name": "Fennekin",
+            "types": [
+              "Fire"
+            ],
+            "color": "red",
+            "gen": 6,
+            "stage": 0
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "gen_eq",
+            "label": "Gen",
+            "cmp": "=",
+            "desc": "Both were introduced in the same generation."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-08-29",
+    "timezone": "Asia/Shanghai",
+    "day": 20694,
+    "puzzleNumber": 59,
+    "observedAt": "2026-08-28T20:11:11.000Z",
+    "verifiedAt": "2026-08-28T20:11:17.139Z",
+    "candidates": [
+      {
+        "id": 30,
+        "name": "Nidorina",
+        "generation": 1,
+        "stage": 1,
+        "color": "blue",
+        "types": [
+          "poison"
+        ]
+      },
+      {
+        "id": 72,
+        "name": "Tentacool",
+        "generation": 1,
+        "stage": 0,
+        "color": "blue",
+        "types": [
+          "water",
+          "poison"
+        ]
+      },
+      {
+        "id": 130,
+        "name": "Gyarados",
+        "generation": 1,
+        "stage": 1,
+        "color": "blue",
+        "types": [
+          "water",
+          "flying"
+        ]
+      },
+      {
+        "id": 476,
+        "name": "Probopass",
+        "generation": 4,
+        "stage": 1,
+        "color": "gray",
+        "types": [
+          "rock",
+          "steel"
+        ]
+      },
+      {
+        "id": 688,
+        "name": "Binacle",
+        "generation": 6,
+        "stage": 0,
+        "color": "brown",
+        "types": [
+          "rock",
+          "water"
+        ]
+      },
+      {
+        "id": 653,
+        "name": "Fennekin",
+        "generation": 6,
+        "stage": 0,
+        "color": "red",
+        "types": [
+          "fire"
+        ]
+      }
+    ],
+    "startOrder": [
+      30,
+      72,
+      130,
+      476,
+      688,
+      653
+    ],
+    "links": [
+      {
+        "relation": "gen_lt",
+        "leftId": 30,
+        "rightId": 653,
+        "explanation": "Nidorina is generation 1; Fennekin is generation 6."
+      },
+      {
+        "relation": "gen_eq",
+        "leftId": 653,
+        "rightId": 688,
+        "explanation": "Fennekin and Binacle were introduced in generation 6."
+      },
+      {
+        "relation": "type",
+        "leftId": 688,
+        "rightId": 130,
+        "explanation": "Binacle and Gyarados share at least one type."
+      },
+      {
+        "relation": "stage_gt",
+        "leftId": 130,
+        "rightId": 72,
+        "explanation": "Gyarados is stage 1; Tentacool is stage 0."
+      },
+      {
+        "relation": "gen_lt",
+        "leftId": 72,
+        "rightId": 476,
+        "explanation": "Tentacool is generation 1; Probopass is generation 4."
+      }
+    ],
+    "solutionOrder": [
+      30,
+      653,
+      688,
+      130,
+      72,
+      476
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: The LEFT Pokémon is from an earlier generation than the right.",
+        "Link 2: Both were introduced in the same generation.",
+        "Link 3: They share at least one type.",
+        "Link 4: The LEFT Pokémon is further evolved than the right.",
+        "Link 5: The LEFT Pokémon is from an earlier generation than the right."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "d2c7bfee1ab575c22a2a6dc2e23ad7514b31ac4bbff67d0b17bea2d84904df48",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.66f70857dc.js",
+      "bundleSha256": "66f70857dc1427270ca9e7787ba914bb07c29974fdb2d2b60786d724f5b49668",
+      "stateSha256": "fb55aba7940052a665f0e0befcadf1815cfa1710936a992420f2d37ef7c3189c",
+      "contentSha256": "f64a586311359f051ceab9eb91d3685b4853956e1c2db67de438b0ca3ff816c9"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

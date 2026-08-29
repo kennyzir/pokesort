@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "kind": "pokelike-shadow-readiness-receipt",
+  "captureEvidencePath": "data/pokelike/shadow/Asia__Shanghai/2026-08-30/2026-08-29T16-21-20.269Z.verified.json",
+  "captureStatus": "VERIFIED",
+  "captureLocalDate": "2026-08-30",
+  "captureTimezone": "Asia/Shanghai",
+  "contentSha256": "8bd6289018f0d04ab48b6785ebc04803d05baee572b052a991720475aa40b70e",
+  "readiness": {
+    "schemaVersion": 2,
+    "evaluatedAt": "2026-08-29T16:21:26.571Z",
+    "timezone": "Asia/Shanghai",
+    "expectedLatestLocalDate": "2026-08-30",
+    "maxEvidenceAgeHours": 26,
+    "recordCount": 6,
+    "statusCounts": {
+      "VERIFIED": 6
+    },
+    "drillRecordCount": 2,
+    "drillStatusCounts": {
+      "acquisition_failure": 1,
+      "stale_record": 1
+    },
+    "validEvidenceBackedGoodRecords": 6,
+    "invalidGoodRecords": [],
+    "duplicateGoodDates": [],
+    "latestEvidenceAt": "2026-08-29T16:21:26.506Z",
+    "latestEvidenceAgeHours": 0,
+    "freshnessPass": true,
+    "endsOnExpectedDate": true,
+    "consecutiveVerifiedDays": 4,
+    "requiredConsecutiveVerifiedDays": 7,
+    "failureDrills": {
+      "acquisitionFailureObserved": true,
+      "staleFailureObserved": true,
+      "validAcquisitionFailureRecords": 1,
+      "validStaleFailureRecords": 1
+    },
+    "invalidFailureRecords": [],
+    "taskCompletionSignals": {
+      "hintProgression": "pokelike_today_hint_open",
+      "answerCompletion": "pokelike_today_answer_reveal",
+      "officialHandoff": "pokelike_today_official_click"
+    },
+    "externalEvidence": {
+      "ga4ObservedEvents": "UNVERIFIED",
+      "gscQueryByPage": "UNVERIFIED",
+      "fieldPerformance": "UNVERIFIED"
+    },
+    "localGate": "BLOCKED"
+  },
+  "publicationAction": "NONE"
+}

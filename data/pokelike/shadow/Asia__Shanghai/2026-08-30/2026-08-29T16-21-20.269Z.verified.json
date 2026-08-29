@@ -1,0 +1,465 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-08-29T16:21:20.269Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-08-29T16:21:26.506Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-08-29T16:21:26.506Z"
+    }
+  ],
+  "consistencySha256": "994d397cd6ad3b7eff090892c60fd526b17577449285ef680d258184ab1a6321",
+  "samples": [
+    {
+      "capturedAt": "2026-08-29T16:21:22.431Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Sat, 29 Aug 2026 16:21:21 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "95e6fce9785053cee8610905341c37cb05e77fa2ed47d4e8e22a8a8936812a95",
+        "capturedAt": "2026-08-29T16:21:22.431Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.74cb08940b.js",
+        "status": 200,
+        "date": "Sat, 29 Aug 2026 16:21:21 GMT",
+        "etag": "W/\"0df4b7af1cb5d4d421565c128951b708\"",
+        "bodyBytes": 3187738,
+        "bodySha256": "74cb08940b5e410e19cd990dcde561f5b8d554f9524bc7ba7dc5cfc4397c90e0",
+        "capturedAt": "2026-08-29T16:21:22.431Z"
+      },
+      "snapshot": {
+        "day": 20695,
+        "puzzleNumber": 60,
+        "state": {
+          "slots": [
+            433,
+            189,
+            711,
+            699,
+            154,
+            420
+          ],
+          "conds": [
+            "gen_lt",
+            "gen_gt",
+            "type",
+            "stage_gt",
+            "color"
+          ],
+          "solution": [
+            433,
+            711,
+            420,
+            154,
+            699,
+            189
+          ]
+        },
+        "candidates": [
+          {
+            "id": 433,
+            "name": "Chingling",
+            "types": [
+              "Psychic"
+            ],
+            "color": "yellow",
+            "gen": 4,
+            "stage": 0
+          },
+          {
+            "id": 189,
+            "name": "Jumpluff",
+            "types": [
+              "Grass",
+              "Flying"
+            ],
+            "color": "blue",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 711,
+            "name": "Gourgeist",
+            "types": [
+              "Ghost",
+              "Grass"
+            ],
+            "color": "brown",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 699,
+            "name": "Aurorus",
+            "types": [
+              "Rock",
+              "Ice"
+            ],
+            "color": "blue",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 154,
+            "name": "Meganium",
+            "types": [
+              "Grass"
+            ],
+            "color": "green",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 420,
+            "name": "Cherubi",
+            "types": [
+              "Grass"
+            ],
+            "color": "pink",
+            "gen": 4,
+            "stage": 0
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "gen_gt",
+            "label": "Gen",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is from a later generation than the right."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "color",
+            "label": "Colour",
+            "cmp": "=",
+            "desc": "Both Pokémon share the same body colour."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-08-29T16:21:26.226Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Sat, 29 Aug 2026 16:21:24 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "95e6fce9785053cee8610905341c37cb05e77fa2ed47d4e8e22a8a8936812a95",
+        "capturedAt": "2026-08-29T16:21:26.226Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.74cb08940b.js",
+        "status": 200,
+        "date": "Sat, 29 Aug 2026 16:21:24 GMT",
+        "etag": "W/\"0df4b7af1cb5d4d421565c128951b708\"",
+        "bodyBytes": 3187738,
+        "bodySha256": "74cb08940b5e410e19cd990dcde561f5b8d554f9524bc7ba7dc5cfc4397c90e0",
+        "capturedAt": "2026-08-29T16:21:26.226Z"
+      },
+      "snapshot": {
+        "day": 20695,
+        "puzzleNumber": 60,
+        "state": {
+          "slots": [
+            433,
+            189,
+            711,
+            699,
+            154,
+            420
+          ],
+          "conds": [
+            "gen_lt",
+            "gen_gt",
+            "type",
+            "stage_gt",
+            "color"
+          ],
+          "solution": [
+            433,
+            711,
+            420,
+            154,
+            699,
+            189
+          ]
+        },
+        "candidates": [
+          {
+            "id": 433,
+            "name": "Chingling",
+            "types": [
+              "Psychic"
+            ],
+            "color": "yellow",
+            "gen": 4,
+            "stage": 0
+          },
+          {
+            "id": 189,
+            "name": "Jumpluff",
+            "types": [
+              "Grass",
+              "Flying"
+            ],
+            "color": "blue",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 711,
+            "name": "Gourgeist",
+            "types": [
+              "Ghost",
+              "Grass"
+            ],
+            "color": "brown",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 699,
+            "name": "Aurorus",
+            "types": [
+              "Rock",
+              "Ice"
+            ],
+            "color": "blue",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 154,
+            "name": "Meganium",
+            "types": [
+              "Grass"
+            ],
+            "color": "green",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 420,
+            "name": "Cherubi",
+            "types": [
+              "Grass"
+            ],
+            "color": "pink",
+            "gen": 4,
+            "stage": 0
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "gen_gt",
+            "label": "Gen",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is from a later generation than the right."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "color",
+            "label": "Colour",
+            "cmp": "=",
+            "desc": "Both Pokémon share the same body colour."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-08-30",
+    "timezone": "Asia/Shanghai",
+    "day": 20695,
+    "puzzleNumber": 60,
+    "observedAt": "2026-08-29T16:21:21.000Z",
+    "verifiedAt": "2026-08-29T16:21:26.506Z",
+    "candidates": [
+      {
+        "id": 433,
+        "name": "Chingling",
+        "generation": 4,
+        "stage": 0,
+        "color": "yellow",
+        "types": [
+          "psychic"
+        ]
+      },
+      {
+        "id": 189,
+        "name": "Jumpluff",
+        "generation": 2,
+        "stage": 2,
+        "color": "blue",
+        "types": [
+          "grass",
+          "flying"
+        ]
+      },
+      {
+        "id": 711,
+        "name": "Gourgeist",
+        "generation": 6,
+        "stage": 1,
+        "color": "brown",
+        "types": [
+          "ghost",
+          "grass"
+        ]
+      },
+      {
+        "id": 699,
+        "name": "Aurorus",
+        "generation": 6,
+        "stage": 1,
+        "color": "blue",
+        "types": [
+          "rock",
+          "ice"
+        ]
+      },
+      {
+        "id": 154,
+        "name": "Meganium",
+        "generation": 2,
+        "stage": 2,
+        "color": "green",
+        "types": [
+          "grass"
+        ]
+      },
+      {
+        "id": 420,
+        "name": "Cherubi",
+        "generation": 4,
+        "stage": 0,
+        "color": "pink",
+        "types": [
+          "grass"
+        ]
+      }
+    ],
+    "startOrder": [
+      433,
+      189,
+      711,
+      699,
+      154,
+      420
+    ],
+    "links": [
+      {
+        "relation": "gen_lt",
+        "leftId": 433,
+        "rightId": 711,
+        "explanation": "Chingling is generation 4; Gourgeist is generation 6."
+      },
+      {
+        "relation": "gen_gt",
+        "leftId": 711,
+        "rightId": 420,
+        "explanation": "Gourgeist is generation 6; Cherubi is generation 4."
+      },
+      {
+        "relation": "type",
+        "leftId": 420,
+        "rightId": 154,
+        "explanation": "Cherubi and Meganium share at least one type."
+      },
+      {
+        "relation": "stage_gt",
+        "leftId": 154,
+        "rightId": 699,
+        "explanation": "Meganium is stage 2; Aurorus is stage 1."
+      },
+      {
+        "relation": "color",
+        "leftId": 699,
+        "rightId": 189,
+        "explanation": "Aurorus and Jumpluff share the blue body colour."
+      }
+    ],
+    "solutionOrder": [
+      433,
+      711,
+      420,
+      154,
+      699,
+      189
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: The LEFT Pokémon is from an earlier generation than the right.",
+        "Link 2: The LEFT Pokémon is from a later generation than the right.",
+        "Link 3: They share at least one type.",
+        "Link 4: The LEFT Pokémon is further evolved than the right.",
+        "Link 5: Both Pokémon share the same body colour."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "95e6fce9785053cee8610905341c37cb05e77fa2ed47d4e8e22a8a8936812a95",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.74cb08940b.js",
+      "bundleSha256": "74cb08940b5e410e19cd990dcde561f5b8d554f9524bc7ba7dc5cfc4397c90e0",
+      "stateSha256": "3b35a6a3c937527d50548435b7aa657d8feda16234aabd3b218c878bb1ea67c3",
+      "contentSha256": "8bd6289018f0d04ab48b6785ebc04803d05baee572b052a991720475aa40b70e"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

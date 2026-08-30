@@ -1,0 +1,468 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-08-30T16:21:30.519Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-08-30T16:21:37.229Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-08-30T16:21:37.229Z"
+    }
+  ],
+  "consistencySha256": "36bae24bdd8eca00f9f7f56782a823f345077efafe4b3fdd6eadd2f0a8e6337c",
+  "samples": [
+    {
+      "capturedAt": "2026-08-30T16:21:33.004Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Sun, 30 Aug 2026 16:21:31 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "2fdf6aee6ebf818f36d138c9baa6d8931c797ad9fa1c25613a24c19de9e0ef7c",
+        "capturedAt": "2026-08-30T16:21:33.004Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.ea9c567571.js",
+        "status": 200,
+        "date": "Sun, 30 Aug 2026 16:21:31 GMT",
+        "etag": "W/\"eab72a63498bb874f8a7784bd70f1c4b\"",
+        "bodyBytes": 3192139,
+        "bodySha256": "ea9c567571d5e2a0055a001c2c68e6ed9725a0a91553a324db755e3fc83885f4",
+        "capturedAt": "2026-08-30T16:21:33.004Z"
+      },
+      "snapshot": {
+        "day": 20696,
+        "puzzleNumber": 61,
+        "state": {
+          "slots": [
+            320,
+            605,
+            274,
+            230,
+            42,
+            400
+          ],
+          "conds": [
+            "stage_gt",
+            "type",
+            "type",
+            "gen_lt",
+            "gen_lt"
+          ],
+          "solution": [
+            42,
+            320,
+            400,
+            230,
+            274,
+            605
+          ]
+        },
+        "candidates": [
+          {
+            "id": 320,
+            "name": "Wailmer",
+            "types": [
+              "Water"
+            ],
+            "color": "blue",
+            "gen": 3,
+            "stage": 0
+          },
+          {
+            "id": 605,
+            "name": "Elgyem",
+            "types": [
+              "Psychic"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 274,
+            "name": "Nuzleaf",
+            "types": [
+              "Grass",
+              "Dark"
+            ],
+            "color": "brown",
+            "gen": 3,
+            "stage": 1
+          },
+          {
+            "id": 230,
+            "name": "Kingdra",
+            "types": [
+              "Water",
+              "Dragon"
+            ],
+            "color": "blue",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 42,
+            "name": "Golbat",
+            "types": [
+              "Poison",
+              "Flying"
+            ],
+            "color": "purple",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 400,
+            "name": "Bibarel",
+            "types": [
+              "Normal",
+              "Water"
+            ],
+            "color": "brown",
+            "gen": 4,
+            "stage": 1
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-08-30T16:21:36.915Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Sun, 30 Aug 2026 16:21:35 GMT",
+        "etag": null,
+        "bodyBytes": 48750,
+        "bodySha256": "2fdf6aee6ebf818f36d138c9baa6d8931c797ad9fa1c25613a24c19de9e0ef7c",
+        "capturedAt": "2026-08-30T16:21:36.915Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.ea9c567571.js",
+        "status": 200,
+        "date": "Sun, 30 Aug 2026 16:21:35 GMT",
+        "etag": "W/\"eab72a63498bb874f8a7784bd70f1c4b\"",
+        "bodyBytes": 3192139,
+        "bodySha256": "ea9c567571d5e2a0055a001c2c68e6ed9725a0a91553a324db755e3fc83885f4",
+        "capturedAt": "2026-08-30T16:21:36.915Z"
+      },
+      "snapshot": {
+        "day": 20696,
+        "puzzleNumber": 61,
+        "state": {
+          "slots": [
+            320,
+            605,
+            274,
+            230,
+            42,
+            400
+          ],
+          "conds": [
+            "stage_gt",
+            "type",
+            "type",
+            "gen_lt",
+            "gen_lt"
+          ],
+          "solution": [
+            42,
+            320,
+            400,
+            230,
+            274,
+            605
+          ]
+        },
+        "candidates": [
+          {
+            "id": 320,
+            "name": "Wailmer",
+            "types": [
+              "Water"
+            ],
+            "color": "blue",
+            "gen": 3,
+            "stage": 0
+          },
+          {
+            "id": 605,
+            "name": "Elgyem",
+            "types": [
+              "Psychic"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 274,
+            "name": "Nuzleaf",
+            "types": [
+              "Grass",
+              "Dark"
+            ],
+            "color": "brown",
+            "gen": 3,
+            "stage": 1
+          },
+          {
+            "id": 230,
+            "name": "Kingdra",
+            "types": [
+              "Water",
+              "Dragon"
+            ],
+            "color": "blue",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 42,
+            "name": "Golbat",
+            "types": [
+              "Poison",
+              "Flying"
+            ],
+            "color": "purple",
+            "gen": 1,
+            "stage": 1
+          },
+          {
+            "id": 400,
+            "name": "Bibarel",
+            "types": [
+              "Normal",
+              "Water"
+            ],
+            "color": "brown",
+            "gen": 4,
+            "stage": 1
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "stage_gt",
+            "label": "Stage",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon is further evolved than the right."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-08-31",
+    "timezone": "Asia/Shanghai",
+    "day": 20696,
+    "puzzleNumber": 61,
+    "observedAt": "2026-08-30T16:21:31.000Z",
+    "verifiedAt": "2026-08-30T16:21:37.229Z",
+    "candidates": [
+      {
+        "id": 320,
+        "name": "Wailmer",
+        "generation": 3,
+        "stage": 0,
+        "color": "blue",
+        "types": [
+          "water"
+        ]
+      },
+      {
+        "id": 605,
+        "name": "Elgyem",
+        "generation": 5,
+        "stage": 0,
+        "color": "blue",
+        "types": [
+          "psychic"
+        ]
+      },
+      {
+        "id": 274,
+        "name": "Nuzleaf",
+        "generation": 3,
+        "stage": 1,
+        "color": "brown",
+        "types": [
+          "grass",
+          "dark"
+        ]
+      },
+      {
+        "id": 230,
+        "name": "Kingdra",
+        "generation": 2,
+        "stage": 2,
+        "color": "blue",
+        "types": [
+          "water",
+          "dragon"
+        ]
+      },
+      {
+        "id": 42,
+        "name": "Golbat",
+        "generation": 1,
+        "stage": 1,
+        "color": "purple",
+        "types": [
+          "poison",
+          "flying"
+        ]
+      },
+      {
+        "id": 400,
+        "name": "Bibarel",
+        "generation": 4,
+        "stage": 1,
+        "color": "brown",
+        "types": [
+          "normal",
+          "water"
+        ]
+      }
+    ],
+    "startOrder": [
+      320,
+      605,
+      274,
+      230,
+      42,
+      400
+    ],
+    "links": [
+      {
+        "relation": "stage_gt",
+        "leftId": 42,
+        "rightId": 320,
+        "explanation": "Golbat is stage 1; Wailmer is stage 0."
+      },
+      {
+        "relation": "type",
+        "leftId": 320,
+        "rightId": 400,
+        "explanation": "Wailmer and Bibarel share at least one type."
+      },
+      {
+        "relation": "type",
+        "leftId": 400,
+        "rightId": 230,
+        "explanation": "Bibarel and Kingdra share at least one type."
+      },
+      {
+        "relation": "gen_lt",
+        "leftId": 230,
+        "rightId": 274,
+        "explanation": "Kingdra is generation 2; Nuzleaf is generation 3."
+      },
+      {
+        "relation": "gen_lt",
+        "leftId": 274,
+        "rightId": 605,
+        "explanation": "Nuzleaf is generation 3; Elgyem is generation 5."
+      }
+    ],
+    "solutionOrder": [
+      42,
+      320,
+      400,
+      230,
+      274,
+      605
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: The LEFT Pokémon is further evolved than the right.",
+        "Link 2: They share at least one type.",
+        "Link 3: They share at least one type.",
+        "Link 4: The LEFT Pokémon is from an earlier generation than the right.",
+        "Link 5: The LEFT Pokémon is from an earlier generation than the right."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "2fdf6aee6ebf818f36d138c9baa6d8931c797ad9fa1c25613a24c19de9e0ef7c",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.ea9c567571.js",
+      "bundleSha256": "ea9c567571d5e2a0055a001c2c68e6ed9725a0a91553a324db755e3fc83885f4",
+      "stateSha256": "1325f35fd804205e22a53df83cdef0b39881cd2f1b7ee189a5213404a284045c",
+      "contentSha256": "8980a028299d39a884476f2a79e77554f3341e394e46a356d05491b11c7f3d5b"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

@@ -114,8 +114,6 @@ let infinite = home
   .replace('"url": "https://pokesort.example/"', '"url": "https://pokesort.example/infinite/"')
   .replace('"name": "PokeSort 4×4 Daily"', '"name": "PokeSort 4×4 Infinite"')
   .replace('"description": "A free 4×4 Pokémon grouping puzzle with one Daily board and a separate Infinite practice mode."', '"description": "Unlimited 4×4 Pokémon grouping practice with a verified finite no-repeat sequence."')
-  .replace('<a aria-current="page" href="/">Daily</a', '<a href="/">Daily</a')
-  .replace('<a href="/infinite/#game">Infinite</a', '<a aria-current="page" href="/infinite/#game">Infinite</a')
   .replace("POKESORT · DAILY", "POKESORT · INFINITE")
   .replace("Today’s puzzle", "Infinite practice board")
   .replace("Find four groups in today’s 4×4 PokeSort", "Play unlimited 4×4 Pokémon sorting puzzles")
@@ -241,6 +239,31 @@ if (todayLoadError) console.warn(todayLoadError);
 console.log(`Pokelike Today build state: ${todayPage.state}; ${todayPage.rejections.length} configured record(s) rejected.`);
 console.log(`Pokelike Today build monitor: ${JSON.stringify({ state: todayPage.state, configuredRecords: todayManifests.length, rejectedRecords: todayPage.rejections.length, rejectionCodes: [...new Set(todayPage.rejections.flatMap((entry) => entry.issues))].sort(), loadFailure: Boolean(todayLoadError) })}`);
 
+const mainNavigationItems = [
+  { key: "daily", href: "/", label: "Daily" },
+  { key: "infinite", href: "/infinite/", label: "Infinite" },
+  { key: "archive", href: "/archive/", label: "Archive" },
+  { key: "how-to-play", href: "/how-to-play/", label: "How to Play" },
+];
+function renderMainNavigation(activeKey = null) {
+  if (activeKey !== null && !mainNavigationItems.some(({ key }) => key === activeKey)) throw new Error(`Unknown main navigation key: ${activeKey}`);
+  const links = mainNavigationItems.map(({ key, href, label }) => `  <a data-nav="${key}"${key === activeKey ? ' aria-current="page"' : ""} href="${href}">${label}</a>`).join("\n");
+  return `<nav aria-label="Main navigation">\n${links}\n</nav>`;
+}
+function replaceMainNavigation(html, activeKey = null) {
+  const header = html.match(/<header\b[^>]*\bclass="[^"]*\bsite-header\b[^"]*"[^>]*>[\s\S]*?<\/header>/)?.[0];
+  if (!header) return html;
+  if (!/<nav\b[^>]*>[\s\S]*?<\/nav>/.test(header)) throw new Error("Site header is missing its main navigation");
+  return html.replace(header, header.replace(/<nav\b[^>]*>[\s\S]*?<\/nav>/, renderMainNavigation(activeKey)));
+}
+function mainNavigationActiveKey(relativePath) {
+  if (relativePath === "index.html") return "daily";
+  if (relativePath === "infinite/index.html") return "infinite";
+  if (relativePath === "how-to-play/index.html") return "how-to-play";
+  if (relativePath === "archive/index.html" || /^archive\/\d{4}(?:\/\d{2})?\/index\.html$/.test(relativePath) || /^daily\/\d{4}-\d{2}-\d{2}\/index\.html$/.test(relativePath)) return "archive";
+  return null;
+}
+
 function ensureSocialMetadata(html) {
   if (!html.includes("<html")) return html;
   const title = html.match(/<title>(.*?)<\/title>/s)?.[1] || "PokeSort";
@@ -270,6 +293,18 @@ function ensureGoogleAnalytics(html) {
   </script>`;
   return html.replace("</head>", `${analytics}\n</head>`);
 }
-async function replaceBaseUrl(directory) { for (const entry of await readdir(directory, { withFileTypes: true })) { const url = new URL(entry.name + (entry.isDirectory() ? "/" : ""), directory); if (entry.isDirectory()) await replaceBaseUrl(url); else if (/\.(html|xml|txt)$/.test(entry.name)) { let contents = await readFile(url, "utf8"); contents = contents.replaceAll("https://monsort.com", siteUrl).replaceAll("https://pokesort.example", siteUrl).replaceAll("/?mode=infinite#game", "/infinite/#game"); if (entry.name.endsWith(".html")) contents = ensureGoogleAnalytics(ensureSocialMetadata(contents)); await writeFile(url, contents); } } }
+async function replaceBaseUrl(directory, relativeDirectory = "") {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const url = new URL(entry.name + (entry.isDirectory() ? "/" : ""), directory);
+    const relativePath = `${relativeDirectory}${entry.name}${entry.isDirectory() ? "/" : ""}`;
+    if (entry.isDirectory()) await replaceBaseUrl(url, relativePath);
+    else if (/\.(html|xml|txt)$/.test(entry.name)) {
+      let contents = await readFile(url, "utf8");
+      contents = contents.replaceAll("https://monsort.com", siteUrl).replaceAll("https://pokesort.example", siteUrl).replaceAll("/?mode=infinite#game", "/infinite/#game");
+      if (entry.name.endsWith(".html")) contents = ensureGoogleAnalytics(ensureSocialMetadata(replaceMainNavigation(contents, mainNavigationActiveKey(relativePath))));
+      await writeFile(url, contents);
+    }
+  }
+}
 await replaceBaseUrl(output);
 console.log(`Static site built in dist/ for ${siteUrl}: ${publishedDates.length} persistent published Daily pages; ${archiveDates.length} shown in Archive; ${routes.length} indexable routes.`);

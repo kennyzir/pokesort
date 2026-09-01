@@ -6,7 +6,7 @@ import { tmpdir } from "node:os";
 import { extname, join, resolve, sep } from "node:path";
 import { chromium } from "playwright";
 
-const dist = resolve("dist"), evidenceDirectory = await mkdtemp(join(tmpdir(), "pokesort-r3a-browser-"));
+const dist = resolve(process.env.POKESORT_R3A_DIST || "dist"), evidenceDirectory = await mkdtemp(join(tmpdir(), "pokesort-r3a-browser-"));
 const mime = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".json": "application/json", ".xml": "application/xml", ".txt": "text/plain", ".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon" };
 const previewOrigin = (process.env.POKESORT_TEST_ORIGIN || "").replace(/\/$/, "");
 const fixedRuntimeDate = "2026-08-25";
@@ -38,6 +38,13 @@ function combinations(values) {
   return output;
 }
 const signature = (ids) => [...ids].sort((left, right) => left - right).join("-");
+async function infiniteFixtureForRound(round) {
+  const index = JSON.parse(await readFile(resolve(dist, "assets/infinite/index.json"), "utf8"));
+  const poolIndex = (index.sequence.offset + (round % index.poolSize) * index.sequence.step) % index.poolSize;
+  const entry = index.shards.find((shard) => poolIndex >= shard.start && poolIndex < shard.start + shard.count);
+  const shard = JSON.parse(await readFile(resolve(dist, `assets/infinite/${entry.file}`), "utf8"));
+  return shard.puzzles[poolIndex - entry.start];
+}
 
 async function installCapture(context, utcDate = testUtcDate, analyticsMode = "capture") {
   const fixedNow = Date.parse(`${utcDate}T12:00:00.000Z`);
@@ -137,13 +144,22 @@ try {
   await failurePage.goto(`${origin}/`); await waitReady(failurePage); const failurePayload = await payload(failurePage), failureState = await state(failurePage);
   const failureIntended = new Set(failurePayload.groups.map(({ memberSignature }) => memberSignature)); const repeatedOverlap = failureState.validOverlaps.find((value) => !failureIntended.has(value));
   const repeatedInvalid = combinations(failureState.cardIds).find((ids) => !new Set([...failureState.validOverlaps, ...failureIntended]).has(signature(ids)));
-  for (let count = 0; count < 21; count++) await submitIds(failurePage, repeatedOverlap.split("-").map(Number));
+  await submitIds(failurePage, repeatedOverlap.split("-").map(Number));
+  const firstValidOverlapText = await failurePage.locator("#guess-history-list li:first-child strong").innerText(); assert.equal(firstValidOverlapText, "Valid fact — no penalty");
+  await submitIds(failurePage, repeatedOverlap.split("-").map(Number));
+  const repeatedValidOverlapText = await failurePage.locator("#guess-history-list li:first-child strong").innerText(); assert.equal(repeatedValidOverlapText, "Valid fact — no penalty · Repeated guess");
+  for (let count = 2; count < 21; count++) await submitIds(failurePage, repeatedOverlap.split("-").map(Number));
   assert.equal((await state(failurePage)).history.length, 20); assert.equal((await state(failurePage)).mistakes, 0); assert.equal((await state(failurePage)).history.at(-1).repeated, true);
-  assert.match(await failurePage.locator("#guess-history-list li:first-child strong").innerText(), /Repeated guess/);
-  for (let count = 0; count < 3; count++) await submitIds(failurePage, repeatedInvalid); assert.equal((await state(failurePage)).gameOver, false); assert.equal((await state(failurePage)).mistakes, 3);
+  await submitIds(failurePage, repeatedInvalid); let repeatedState = await state(failurePage); const firstInvalidResult = repeatedState.history.at(-1);
+  const firstInvalidText = firstInvalidResult.guessMatchCount === 0 ? "No close match" : `${firstInvalidResult.guessMatchCount} of 4 match one intended group`;
+  assert.equal(await failurePage.locator("#guess-history-list li:first-child strong").innerText(), firstInvalidText); assert.equal(repeatedState.mistakes, 1);
+  await submitIds(failurePage, repeatedInvalid); repeatedState = await state(failurePage); assert.equal(repeatedState.mistakes, 2);
+  const repeatedInvalidText = `${firstInvalidText} · Repeated guess`; assert.equal(await failurePage.locator("#guess-history-list li:first-child strong").innerText(), repeatedInvalidText);
+  await submitIds(failurePage, repeatedInvalid); assert.equal((await state(failurePage)).gameOver, false); assert.equal((await state(failurePage)).mistakes, 3);
   await submitIds(failurePage, repeatedInvalid); assert.equal((await state(failurePage)).gameOver, true); assert.equal((await state(failurePage)).mistakes, 4);
   assert.equal((await events(failurePage)).filter(({ name }) => name === "pokesort_game_complete").length, 0);
-  record("/", "1440x900", "history cap, repeated detection and four invalid guesses", "20 newest items; repeated marked; fourth ends play without game_complete", "history=20; mistakes=4; completion_events=0"); assertNoPageErrors(failureContext); await failureContext.close();
+  record("/", "1440x900", "repeated valid and invalid guesses", "retain real outcome, append repeated marker, and charge repeated invalid", `${firstValidOverlapText} | ${repeatedValidOverlapText} | ${firstInvalidText} | ${repeatedInvalidText}; mistakes=4`);
+  record("/", "1440x900", "history cap and four invalid guesses", "20 newest items; fourth ends play without game_complete", "history=20; mistakes=4; completion_events=0"); assertNoPageErrors(failureContext); await failureContext.close();
 
   const migrationContext = await browser.newContext({ viewport: { width: 1440, height: 900 } }); await installCapture(migrationContext); const migrationPage = await migrationContext.newPage();
   await migrationPage.goto(`${origin}/`); await waitReady(migrationPage); const migrationPayload = await payload(migrationPage), migrationState = await state(migrationPage);
@@ -168,6 +184,29 @@ try {
   await migrationPage.evaluate((runtime) => { const key = `pokesort:game:v2:daily:${runtime.puzzleId}`, stored = JSON.parse(localStorage.getItem(key)); stored.cards = stored.cards.slice(1); localStorage.setItem(key, JSON.stringify(stored)); }, await state(migrationPage));
   await migrationPage.reload(); await waitReady(migrationPage); assert.equal((await state(migrationPage)).mistakes, 0); assert.equal((await state(migrationPage)).history.length, 0);
   record("/", "1440x900", "Daily migration and layered corrupt-state recovery", "legacy migration; bad JSON/core reset; malformed history/hints reset locally; off-board IDs rejected", "legacy_mistakes=2; core_reset=0; partial_fields_preserved"); assertNoPageErrors(migrationContext); await migrationContext.close();
+
+  const legacyDailyContext = await browser.newContext({ viewport: { width: 1440, height: 900 } }); await installCapture(legacyDailyContext); const legacyDailyPage = await legacyDailyContext.newPage();
+  await legacyDailyPage.goto(`${origin}/`); await waitReady(legacyDailyPage); const legacyDailyPayload = await payload(legacyDailyPage), legacyDailyRuntime = await state(legacyDailyPage);
+  await legacyDailyPage.evaluate(({ puzzle, runtime }) => {
+    localStorage.removeItem(`pokesort:game:v2:daily:${runtime.puzzleId}`);
+    localStorage.setItem(`pokesort-daily-${runtime.dateKey}`, JSON.stringify({ mode: "daily", puzzleId: runtime.puzzleId, contentHash: runtime.contentHash, cards: [], solved: puzzle.groups.map((group) => group.name || group.label), mistakes: 0, revealed: false, gameOver: true, completionRecorded: true }));
+  }, { puzzle: legacyDailyPayload, runtime: legacyDailyRuntime });
+  await legacyDailyPage.reload(); await waitReady(legacyDailyPage); const migratedDailyTerminal = await state(legacyDailyPage), migratedDailyEvents = await events(legacyDailyPage);
+  assert.equal(migratedDailyTerminal.solved.length, 4); assert.equal(migratedDailyTerminal.cards, 0); assert.equal(migratedDailyTerminal.gameOver, true); assert.equal(migratedDailyTerminal.analyticsCompletionSent, true);
+  for (const name of ["pokesort_game_complete", "pokesort_game_start", "pokesort_guess_submit", "pokesort_group_solved", "pokesort_reveal"]) assert.equal(migratedDailyEvents.filter((event) => event.name === name).length, 0);
+  record("/", "1440x900", "legacy completed Daily migration", "restore terminal state without replaying action analytics", "solved=4; game_over=true; replayed_events=0"); assertNoPageErrors(legacyDailyContext); await legacyDailyContext.close();
+
+  const legacyActiveContext = await browser.newContext({ viewport: { width: 1440, height: 900 } }); await installCapture(legacyActiveContext); const legacyActivePage = await legacyActiveContext.newPage();
+  await legacyActivePage.goto(`${origin}/`); await waitReady(legacyActivePage); const legacyActivePayload = await payload(legacyActivePage), legacyActiveRuntime = await state(legacyActivePage);
+  await legacyActivePage.evaluate(({ puzzle, runtime }) => {
+    localStorage.removeItem(`pokesort:game:v2:daily:${runtime.puzzleId}`);
+    localStorage.setItem(`pokesort-daily-${runtime.dateKey}`, JSON.stringify({ mode: "daily", puzzleId: runtime.puzzleId, contentHash: runtime.contentHash, cards: puzzle.cards, solved: [], mistakes: 1, revealed: false, gameOver: false, completionRecorded: false }));
+  }, { puzzle: legacyActivePayload, runtime: legacyActiveRuntime });
+  await legacyActivePage.reload(); await waitReady(legacyActivePage); assert.equal((await events(legacyActivePage)).filter(({ name }) => name === "pokesort_game_complete").length, 0);
+  for (const group of legacyActivePayload.groups) await submitIds(legacyActivePage, group.mons.map(([, id]) => id));
+  assert.equal((await events(legacyActivePage)).filter(({ name }) => name === "pokesort_game_complete").length, 1);
+  await legacyActivePage.reload(); await waitReady(legacyActivePage); assert.equal((await events(legacyActivePage)).filter(({ name }) => name === "pokesort_game_complete").length, 0);
+  record("/", "1440x900", "legacy active Daily migration and completion", "no completion on migration, one on real solve, none on reload", "migration=0; real_completion=1; reload=0"); assertNoPageErrors(legacyActiveContext); await legacyActiveContext.close();
 
   const storageContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   await storageContext.addInitScript(() => {
@@ -204,6 +243,43 @@ try {
   record("/daily/2026-08-25/", "1440x900", "legacy Daily isolation", "Archive ignores old Daily key", "mistakes=0");
   await archivePage.screenshot({ path: join(evidenceDirectory, "desktop-archive.png"), fullPage: true }); await assertEventPrivacy(archivePage); assertNoPageErrors(desktop);
 
+  const sessionContext = await browser.newContext({ viewport: { width: 1440, height: 900 } }); await installCapture(sessionContext); const sessionPage = await sessionContext.newPage();
+  await sessionPage.goto(`${origin}/infinite/`); await waitReady(sessionPage); let sessionState = await state(sessionPage), sessionEvents = await events(sessionPage);
+  assert.equal(sessionEvents.filter(({ name }) => name === "pokesort_board_ready").length, 1); assert.equal(sessionEvents.filter(({ name }) => name === "pokesort_game_start").length, 0);
+  await sessionPage.evaluate((id) => globalThis.__pokesortRuntime.selectIds([id]), sessionState.cardIds[0]); assert.equal((await events(sessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 0); await sessionPage.locator("#deselect-all").click();
+  const puzzleOne = sessionState.puzzleId; await clickIds(sessionPage, [sessionState.cardIds[0]]); assert.equal((await events(sessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 1);
+  await clickIds(sessionPage, [sessionState.cardIds[1]]); await sessionPage.locator("#deselect-all").click(); assert.equal((await events(sessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 1);
+  record("/infinite/", "1440x900", "Infinite puzzle #1 ready and selections", "board_ready=1 and game_start remains 1 after repeated selections", "board_ready=1; game_start=1");
+  await sessionPage.locator("#new-infinite").click(); await sessionPage.waitForFunction((id) => globalThis.__pokesortRuntime.state().loadState === "ready" && globalThis.__pokesortRuntime.state().puzzleId !== id, puzzleOne);
+  sessionState = await state(sessionPage); sessionEvents = await events(sessionPage); const puzzleTwo = sessionState.puzzleId;
+  assert.equal(sessionEvents.filter(({ name }) => name === "pokesort_board_ready").length, 2); assert.equal(sessionEvents.filter(({ name }) => name === "pokesort_game_start").length, 1); assert.equal(sessionEvents.filter(({ name }) => name === "pokesort_new_infinite").length, 1);
+  await clickIds(sessionPage, [sessionState.cardIds[0], sessionState.cardIds[1]]); assert.equal((await events(sessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 2);
+  record("/infinite/", "1440x900", "Infinite puzzle #2 ready and selections", "board_ready=2 and game_start becomes 2 only on first new-session click", "board_ready=2; game_start=2; new_infinite=1");
+  await sessionPage.locator("#new-infinite").click(); await sessionPage.waitForFunction((id) => globalThis.__pokesortRuntime.state().loadState === "ready" && globalThis.__pokesortRuntime.state().puzzleId !== id, puzzleTwo);
+  sessionState = await state(sessionPage); sessionEvents = await events(sessionPage);
+  assert.equal(sessionEvents.filter(({ name }) => name === "pokesort_board_ready").length, 3); assert.equal(sessionEvents.filter(({ name }) => name === "pokesort_game_start").length, 2); assert.equal(sessionEvents.filter(({ name }) => name === "pokesort_new_infinite").length, 2);
+  await clickIds(sessionPage, [sessionState.cardIds[0]]); assert.equal((await events(sessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 3);
+  record("/infinite/", "1440x900", "Infinite puzzle #3 ready and first selection", "board_ready=3 and game_start=3", "board_ready=3; game_start=3; new_infinite=2");
+  await assertEventPrivacy(sessionPage); assertNoPageErrors(sessionContext); await sessionContext.close();
+
+  const dailySessionContext = await browser.newContext({ viewport: { width: 1440, height: 900 } }); await installCapture(dailySessionContext); const dailySessionPage = await dailySessionContext.newPage();
+  await dailySessionPage.goto(`${origin}/`); await waitReady(dailySessionPage); let dailySessionState = await state(dailySessionPage); await clickIds(dailySessionPage, [dailySessionState.cardIds[0]]);
+  assert.equal((await events(dailySessionPage)).filter(({ name }) => name === "pokesort_board_ready").length, 1); assert.equal((await events(dailySessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 1);
+  await dailySessionPage.evaluate(() => globalThis.__pokesortRuntime.reload()); await waitReady(dailySessionPage); dailySessionState = await state(dailySessionPage);
+  assert.equal((await events(dailySessionPage)).filter(({ name }) => name === "pokesort_board_ready").length, 2); assert.equal((await events(dailySessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 1);
+  await clickIds(dailySessionPage, [dailySessionState.cardIds.find((id) => !(dailySessionState.selected || []).includes(id))]); assert.equal((await events(dailySessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 2);
+  record("/", "1440x900", "Daily successful runtime reload session", "shared load lifecycle emits another board_ready and permits one new game_start", "board_ready=2; game_start=2"); await assertEventPrivacy(dailySessionPage); assertNoPageErrors(dailySessionContext); await dailySessionContext.close();
+
+  const failedSessionContext = await browser.newContext({ viewport: { width: 1440, height: 900 } }); let rejectNewInfiniteOverlap = false;
+  await installCapture(failedSessionContext); await failedSessionContext.route("**/assets/infinite-overlaps/shard-*.json", (route) => rejectNewInfiniteOverlap ? route.fulfill({ status: 503, contentType: "application/json", body: "{}" }) : route.continue());
+  const failedSessionPage = await failedSessionContext.newPage(); await failedSessionPage.goto(`${origin}/infinite/`); await waitReady(failedSessionPage); const failedSessionInitial = await state(failedSessionPage);
+  rejectNewInfiniteOverlap = true; await failedSessionPage.locator("#new-infinite").click(); await waitUnavailable(failedSessionPage); const failedSessionEvents = await events(failedSessionPage);
+  assert.equal(failedSessionEvents.filter(({ name }) => name === "pokesort_board_ready").length, 1); assert.equal(failedSessionEvents.filter(({ name }) => name === "pokesort_game_start").length, 0);
+  assert.equal(failedSessionEvents.filter(({ name }) => name === "pokesort_new_infinite").length, 1); assert.equal(failedSessionEvents.filter(({ name, parameters }) => name === "pokesort_load_error" && parameters.error_stage === "infinite_overlap_contract").length, 1);
+  await failedSessionPage.evaluate((id) => globalThis.__pokesortRuntime.selectIds([id]), failedSessionInitial.cardIds[0]); assert.equal((await events(failedSessionPage)).filter(({ name }) => name === "pokesort_game_start").length, 0);
+  record("/infinite/", "1440x900", "failed New Infinite load", "new_infinite and safe load_error only; no new ready session or game_start", "board_ready=1; game_start=0; new_infinite=1; load_error=1; state=unavailable");
+  await assertEventPrivacy(failedSessionPage); assertNoPageErrors(failedSessionContext); await failedSessionContext.close();
+
   const infinitePage = await desktop.newPage(); await infinitePage.goto(`${origin}/infinite/`); await waitReady(infinitePage); const infiniteStart = await state(infinitePage); assert.ok(infiniteStart.validOverlaps.length > 0);
   await submitIds(infinitePage, infiniteStart.validOverlaps[0].split("-").map(Number)); assert.equal((await state(infinitePage)).mistakes, 0); assert.equal((await state(infinitePage)).history.at(-1).outcome, "valid_overlap");
   const previousPuzzle = (await state(infinitePage)).puzzleId; await infinitePage.locator("#new-infinite").click(); await infinitePage.waitForFunction((id) => globalThis.__pokesortRuntime.state().loadState === "ready" && globalThis.__pokesortRuntime.state().puzzleId !== id, previousPuzzle);
@@ -219,6 +295,18 @@ try {
   await infinitePage.reload(); await waitReady(infinitePage); assert.equal((await state(infinitePage)).mistakes, 2);
   record("/infinite/", "1440x900", "legal legacy Infinite migration", "matching old round state restores safely", "mistakes=2");
   await infinitePage.screenshot({ path: join(evidenceDirectory, "desktop-infinite.png"), fullPage: true }); await assertEventPrivacy(infinitePage); assertNoPageErrors(desktop);
+
+  const legacyInfiniteContext = await browser.newContext({ viewport: { width: 1440, height: 900 } }); await installCapture(legacyInfiniteContext); const legacyInfinitePage = await legacyInfiniteContext.newPage();
+  await legacyInfinitePage.goto(`${origin}/infinite/`); await waitReady(legacyInfinitePage); const legacyInfiniteRuntime = await state(legacyInfinitePage), legacyInfiniteFixture = await infiniteFixtureForRound((await state(legacyInfinitePage)).round);
+  assert.equal(legacyInfiniteFixture.puzzleId, legacyInfiniteRuntime.puzzleId);
+  await legacyInfinitePage.evaluate(({ puzzle, runtime }) => {
+    localStorage.removeItem(`pokesort:game:v2:infinite:${runtime.puzzleId}`);
+    localStorage.setItem(`pokesort-infinite-${runtime.round}`, JSON.stringify({ mode: "infinite", puzzleId: runtime.puzzleId, contentHash: runtime.contentHash, cards: [], solved: puzzle.groups.map((group) => group.label), mistakes: 0, revealed: false, gameOver: true, completionRecorded: true }));
+  }, { puzzle: legacyInfiniteFixture, runtime: legacyInfiniteRuntime });
+  await legacyInfinitePage.reload(); await waitReady(legacyInfinitePage); const migratedInfiniteTerminal = await state(legacyInfinitePage), migratedInfiniteEvents = await events(legacyInfinitePage);
+  assert.equal(migratedInfiniteTerminal.solved.length, 4); assert.equal(migratedInfiniteTerminal.cards, 0); assert.equal(migratedInfiniteTerminal.gameOver, true); assert.equal(migratedInfiniteTerminal.analyticsCompletionSent, true);
+  for (const name of ["pokesort_game_complete", "pokesort_game_start", "pokesort_guess_submit", "pokesort_group_solved", "pokesort_reveal"]) assert.equal(migratedInfiniteEvents.filter((event) => event.name === name).length, 0);
+  record("/infinite/", "1440x900", "legacy completed Infinite migration", "restore terminal state without replaying action analytics", "solved=4; game_over=true; replayed_events=0"); await assertEventPrivacy(legacyInfinitePage); assertNoPageErrors(legacyInfiniteContext); await legacyInfiniteContext.close();
 
   const homeHtml = await readFile(resolve(dist, "index.html"), "utf8");
   const previousUtcDate = new Date(`${testUtcDate}T00:00:00.000Z`); previousUtcDate.setUTCDate(previousUtcDate.getUTCDate() - 1); const staleDate = previousUtcDate.toISOString().slice(0, 10);

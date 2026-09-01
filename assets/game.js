@@ -39,8 +39,7 @@ if ($("#puzzle-grid")) {
   let completionRecorded = false, analyticsCompletionSent = false;
   let loadVersion = 0, loadState = "idle", activeLoadController = null;
   let activePuzzleId = "", activeContentHash = "", activeValidQuartets = new Set();
-  let boardReadyAt = 0, gameStartSent = false;
-  const boardReadySent = new Set();
+  let boardReadyAt = 0, activeReadySessionId = 0, gameStartSentForSessionId = 0, boardReadySentForLoadVersion = 0;
 
   const analyticsBase = () => ({ game_mode: gameMode, elapsed_ms: Math.max(0, Math.round(performance.now() - boardReadyAt)) });
   const track = (eventName, values = {}) => emitPokeSortEvent(eventName, { ...analyticsBase(), ...values });
@@ -211,6 +210,12 @@ if ($("#puzzle-grid")) {
       const byName = new Map(pack.map((group) => [group.name, group.signature]));
       const migrated = { ...legacy, solved: legacy.solved.map((name) => byName.get(name)), analyticsCompletionSent: false };
       if (migrated.solved.some((signature) => !signature) || !savedStateIsConsistent(migrated)) return null;
+      const terminal = migrated.gameOver === true && (
+        (migrated.solved.length === 4 && migrated.cards.length === 0)
+        || migrated.revealed === true
+        || migrated.mistakes >= 4
+      );
+      migrated.analyticsCompletionSent = terminal;
       return { ...migrated, history: [], hintLevels: {} };
     } catch { return null; }
   }
@@ -264,6 +269,7 @@ if ($("#puzzle-grid")) {
     pack = []; cards = []; solved = []; selected = []; history = []; hintLevels = {};
     mistakes = 0; revealed = false; gameOver = true; completionRecorded = false; analyticsCompletionSent = false;
     activePuzzleId = ""; activeContentHash = ""; activeValidQuartets = new Set(); boardReadyAt = 0;
+    activeReadySessionId = 0; gameStartSentForSessionId = 0;
   }
 
   function embeddedValue() { try { return JSON.parse($("#pokesort-puzzle-data")?.textContent || "null"); } catch { return null; } }
@@ -293,8 +299,9 @@ if ($("#puzzle-grid")) {
       restoreState(fresh); selected = []; setLoadState("ready");
       try { render(); } catch { throw contractError("render"); }
       boardReadyAt = performance.now();
-      if (!boardReadySent.has(activePuzzleId)) {
-        boardReadySent.add(activePuzzleId);
+      activeReadySessionId = requestedLoadVersion; gameStartSentForSessionId = 0;
+      if (boardReadySentForLoadVersion !== requestedLoadVersion) {
+        boardReadySentForLoadVersion = requestedLoadVersion;
         emitPokeSortEvent("pokesort_board_ready", { game_mode: gameMode, load_ms: Math.max(0, Math.round(boardReadyAt - (loadVersion === 1 ? scriptStartedAt : loadStartedAt))), mistakes, groups_solved: solved.length, outcome: loadOutcome });
       }
       if (solved.length === 4) finish(revealed ? "revealed" : "solved");
@@ -323,7 +330,8 @@ if ($("#puzzle-grid")) {
       const row = document.createElement("li"), pokemon = document.createElement("span"), outcome = document.createElement("strong");
       pokemon.className = "guess-history-names"; pokemon.textContent = item.selectedIds.map((id) => names.get(id)).join(" · ");
       const labels = { correct: "Correct", valid_overlap: "Valid fact — no penalty" };
-      outcome.textContent = item.repeated ? "Repeated guess" : labels[item.outcome] || (item.guessMatchCount === 0 ? "No close match" : `${item.guessMatchCount} of 4 match one intended group`);
+      const result = labels[item.outcome] || (item.guessMatchCount === 0 ? "No close match" : `${item.guessMatchCount} of 4 match one intended group`);
+      outcome.textContent = `${result}${item.repeated ? " · Repeated guess" : ""}`;
       row.append(pokemon, outcome); list.append(row);
     }
     section.hidden = list.children.length === 0;
@@ -355,7 +363,9 @@ if ($("#puzzle-grid")) {
 
   function toggle(id, restoreFocus = false) {
     if (loadState !== "ready" || gameOver || !cards.some((card) => card.id === id)) return;
-    if (!gameStartSent) { gameStartSent = true; track("pokesort_game_start"); }
+    if (activeReadySessionId && gameStartSentForSessionId !== activeReadySessionId) {
+      gameStartSentForSessionId = activeReadySessionId; track("pokesort_game_start");
+    }
     selected = selected.includes(id) ? selected.filter((item) => item !== id) : selected.length < 4 ? [...selected, id] : selected; render(restoreFocus ? id : undefined);
   }
 

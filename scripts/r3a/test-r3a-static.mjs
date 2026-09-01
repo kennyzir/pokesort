@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
+const dist = resolve(process.env.POKESORT_R3A_DIST || "dist");
 
 const calls = [];
 globalThis.window = { gtag: (...args) => calls.push(args) };
@@ -34,7 +37,7 @@ assert.doesNotThrow(() => analytics.emitPokeSortEvent("pokesort_board_ready", { 
 assert.equal(analytics.emitPokeSortEvent("pokesort_board_ready", { game_mode: "daily", outcome: "embedded", load_ms: 1 }), false);
 
 const [home, howTo, rules, manifest, game, build, styles] = await Promise.all([
-  readFile("dist/index.html", "utf8"), readFile("how-to-play/index.html", "utf8"), readFile("data/pokemon/category-rules.v2.json", "utf8"),
+  readFile(resolve(dist, "index.html"), "utf8"), readFile("how-to-play/index.html", "utf8"), readFile("data/pokemon/category-rules.v2.json", "utf8"),
   readFile("data/puzzles/public-daily/2026-08-25.json", "utf8"), readFile("assets/game.js", "utf8"), readFile("scripts/build.mjs", "utf8"), readFile("assets/styles.css", "utf8"),
 ]);
 assert.match(home, /<title>PokeSort 4×4 Daily — Pokémon Grouping Puzzle<\/title>/);
@@ -54,6 +57,8 @@ assert.match(game, /schemaVersion: 2, stateVersion: 2/); assert.match(game, /ana
 assert.match(game, /Valid Pokémon fact — not the intended group\. No mistake charged\./);
 assert.ok(game.indexOf("if (activeValidQuartets.has(signature))") < game.indexOf("mistakes += 1"));
 assert.match(game, /Repeated guess/); assert.match(game, /Two members are \$\{names\[0\]\} and \$\{names\[1\]\}\./);
+assert.match(game, /activeReadySessionId = requestedLoadVersion/); assert.match(game, /boardReadySentForLoadVersion !== requestedLoadVersion/);
+assert.match(game, /migrated\.analyticsCompletionSent = terminal/); assert.match(game, /\$\{result\}\$\{item\.repeated \? " · Repeated guess" : ""\}/);
 assert.doesNotMatch(game, /recordGameComplete\("failed"\)|recordGameComplete\("revealed"\)/);
 assert.match(game, /if \(outcome === "solved"\) recordGameComplete\(\)/);
 assert.match(game, /Date\.UTC\(now\.getUTCFullYear\(\), now\.getUTCMonth\(\), now\.getUTCDate\(\) \+ 1/);

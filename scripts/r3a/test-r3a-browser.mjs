@@ -8,7 +8,8 @@ import { chromium } from "playwright";
 
 const dist = resolve("dist"), evidenceDirectory = await mkdtemp(join(tmpdir(), "pokesort-r3a-browser-"));
 const mime = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".json": "application/json", ".xml": "application/xml", ".txt": "text/plain", ".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon" };
-const server = createServer(async (request, response) => {
+const previewOrigin = (process.env.POKESORT_TEST_ORIGIN || "").replace(/\/$/, "");
+const server = previewOrigin ? null : createServer(async (request, response) => {
   try {
     let pathname = decodeURIComponent(new URL(request.url, "http://127.0.0.1").pathname);
     if (pathname.endsWith("/")) pathname += "index.html";
@@ -17,8 +18,8 @@ const server = createServer(async (request, response) => {
     const body = await readFile(file); response.writeHead(200, { "content-type": mime[extname(file)] || "application/octet-stream", "cache-control": "no-store" }); response.end(body);
   } catch { response.writeHead(404, { "content-type": "text/plain" }); response.end("Not found"); }
 });
-await new Promise((accept) => server.listen(0, "127.0.0.1", accept));
-const origin = `http://127.0.0.1:${server.address().port}`;
+if (server) await new Promise((accept) => server.listen(0, "127.0.0.1", accept));
+const origin = previewOrigin || `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch({ headless: true });
 const results = [];
 const forbiddenKeys = new Set(["puzzle_id", "pokemon_id", "pokemon_name", "selected_ids", "group_name", "rule_name", "rule_family", "answer", "content_hash", "member_signature", "URL", "query_string", "raw_error", "stack", "local_storage", "email", "user_id", "fingerprint"]);
@@ -219,5 +220,5 @@ try {
 
   console.log(JSON.stringify({ gate: "PASS", cases: results.length, results, analyticsPrivacy: { allowedKeys: [...allowedKeys].sort(), forbiddenDataFound: false }, evidenceDirectory }, null, 2));
 } finally {
-  await browser.close(); await new Promise((accept) => server.close(accept));
+  await browser.close(); if (server) await new Promise((accept) => server.close(accept));
 }

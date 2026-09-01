@@ -16,7 +16,8 @@ NOT DEPLOYED
 - Pre-release tag: `pre-r3a-game-fairness-observability-20260901`
 - Required ancestors verified: R1 `034a8ad6002d3f362043bcc61d78b2dff843bb8a`; R2-Lite `af063f14fe2e2a50b676af3faaa6499743f9636d`
 - PR: `https://github.com/kennyzir/pokesort/pull/3`
-- Cloudflare Pages branch Preview: pending for the second-round head
+- Cloudflare Pages commit Preview: `https://8927528d.pokesort-9je.pages.dev`
+- Cloudflare Pages branch Preview: `https://codex-r3a-game-fairness-obse.pokesort-9je.pages.dev`
 
 ## Delivered scope
 
@@ -87,7 +88,7 @@ The final failure set and error signatures match the unmodified baseline. No new
 - Local evidence: `C:\Users\zire\AppData\Local\Temp\pokesort-r3a-browser-tzAkUZ`
 - Covered embedded ready with zero current API requests; valid current API fallback; Daily/Archive/Infinite valid overlap; invalid and fourth-invalid failure without `game_complete`; correct groups and solved-only completion; History cap/recovery/migration/isolation/repeated state; malformed field-local recovery; unavailable LocalStorage; Hint Levels 1–3; Reveal without completion; clipboard/native share and cancelled native share; missing/throwing `gtag`; New Infinite; stale/missing/hash-invalid embedded data; stale API data; damaged Archive without current API; missing/hash/Puzzle-ID/source-content-hash sidecar failures; no page errors; and all six mobile routes without horizontal overflow.
 - Captured event parameter keys were limited to `elapsed_ms`, `error_stage`, `game_mode`, `groups_solved`, `guess_match_count`, `hint_level`, `load_ms`, `mistakes`, `outcome`, `round_number`, and `share_method`. Forbidden data found: NO.
-- Cloudflare Pages Preview acceptance for the second-round head: PENDING.
+- Cloudflare Pages Preview acceptance for head `bf1083c8b311705b9087f6d7fc78e2c72bf0d380`: PASS, 33 Chromium cases at 1440×900 and 390×844. Evidence: `C:\Users\zire\AppData\Local\Temp\pokesort-r3a-browser-76Ysx0`.
 
 ## Protected-field comparison
 

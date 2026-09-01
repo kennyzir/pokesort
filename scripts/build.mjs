@@ -8,6 +8,7 @@ import { loadCategoryModel } from "./puzzle/category-model.mjs";
 import { buildRuleUniverse, canonicalMemberSignature } from "./puzzle/rule-universe.mjs";
 import { enumerateInducedQuartets } from "./puzzle/solver.mjs";
 import { infiniteCapabilityCopy, loadPublicCapabilities } from "./puzzle/public-capabilities.mjs";
+import { sha256 } from "./puzzle/stable.mjs";
 
 const directoryUrl = (path) => pathToFileURL(`${resolve(path)}${sep}`);
 const output = process.env.POKESORT_BUILD_OUTPUT ? directoryUrl(process.env.POKESORT_BUILD_OUTPUT) : new URL("../dist/", import.meta.url);
@@ -23,6 +24,7 @@ const archiveDateRange = (end, historyDays) => { const dates = []; const date = 
 const archiveDates = archiveDateRange(today, ARCHIVE_HISTORY_DAYS);
 const calendarDirectory = process.env.POKESORT_DAILY_DIR ? directoryUrl(process.env.POKESORT_DAILY_DIR) : new URL("../data/puzzles/public-daily/", import.meta.url);
 const infiniteDirectory = process.env.POKESORT_INFINITE_DIR ? directoryUrl(process.env.POKESORT_INFINITE_DIR) : new URL("../data/puzzles/infinite/", import.meta.url);
+const infiniteOverlapDirectory = new URL("../data/puzzles/infinite-overlaps/", import.meta.url);
 const productionGate = await runProductionDataGate({ asOfDate: today });
 console.log(`Production data Gate PASS: ${productionGate.daily.dates.length} elapsed Daily manifests and ${productionGate.infinite.poolSize} Infinite puzzles.`);
 const infiniteCapabilities = await loadPublicCapabilities({ validatedPoolSize: productionGate.infinite.poolSize, validatedNoRepeatRounds: productionGate.infinite.noRepeatSequenceRounds, validatedDiversity: productionGate.infinite.diversity });
@@ -36,23 +38,28 @@ const indexableDates = publishedDates;
 const colors = ["#f5d65b", "#8bc5f5", "#f6a2ae", "#a8dbb6"];
 const safeJson = (value) => JSON.stringify(value).replaceAll("<", "\\u003c");
 const shortPuzzleId = (manifest) => manifest.contentHash.slice(0, 8).toUpperCase();
-const publicPuzzle = (manifest) => ({
-  schemaVersion: 1,
-  puzzleId: manifest.puzzleId,
-  contentHash: manifest.contentHash,
-  date: manifest.date,
-  boardSignature: manifest.boardSignature,
-  cards: manifest.cards.map(({ id, name }) => ({ id, name })),
-  validQuartets: enumerateInducedQuartets(manifest.cards.map(({ id }) => id), dailyRuleUniverse)
-    .map(({ memberIds }) => canonicalMemberSignature(memberIds)),
-  groups: manifest.groups.map((group, index) => ({
-    name: group.label,
-    hint: group.hint,
-    explanation: group.explanation,
-    color: colors[index],
-    mons: group.members.map(({ id, name }) => [name, id]),
-  })),
-});
+const publicPuzzle = (manifest) => {
+  const payload = {
+    schemaVersion: 1,
+    puzzleId: manifest.puzzleId,
+    contentHash: manifest.contentHash,
+    date: manifest.date,
+    boardSignature: manifest.boardSignature,
+    cards: manifest.cards.map(({ id, name }) => ({ id, name })),
+    validQuartets: enumerateInducedQuartets(manifest.cards.map(({ id }) => id), dailyRuleUniverse)
+      .map(({ memberIds }) => canonicalMemberSignature(memberIds)),
+    groups: manifest.groups.map((group, index) => ({
+      name: group.label,
+      hint: group.hint,
+      explanation: group.explanation,
+      color: colors[index],
+      memberSignature: group.memberSignature,
+      ruleFamily: group.predicateSignature.split(":", 1)[0],
+      mons: group.members.map(({ id, name }) => [name, id]),
+    })),
+  };
+  return { ...payload, embeddedContentHash: sha256(payload) };
+};
 const puzzleDataTag = (manifest) => `<script id="pokesort-puzzle-data" type="application/json">${safeJson(publicPuzzle(manifest))}</script>`;
 const embedPuzzle = (html, manifest) => html.includes('id="pokesort-puzzle-data"')
   ? html.replace(/<script id="pokesort-puzzle-data" type="application\/json">[\s\S]*?<\/script>/, puzzleDataTag(manifest))
@@ -70,6 +77,7 @@ await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 for (const path of ["index.html", "assets", "archive", "how-to-play", "pokelike-pokesort", "pokesort-alternative", "pokesort-down", "privacy", "categories", "about", "favicon.ico", "manifest.webmanifest"]) await cp(new URL(`../${path}`, import.meta.url), new URL(path, output), { recursive: true });
 await cp(infiniteDirectory, new URL("assets/infinite/", output), { recursive: true });
+await cp(infiniteOverlapDirectory, new URL("assets/infinite-overlaps/", output), { recursive: true });
 const workerTemplate = await readFile(new URL("edge-worker.js", import.meta.url), "utf8");
 const dailyContractModule = await readFile(new URL("../functions/_lib/daily-contract.js", import.meta.url), "utf8");
 const dailyHandlerModule = await readFile(new URL("../functions/_lib/daily-handler.js", import.meta.url), "utf8");

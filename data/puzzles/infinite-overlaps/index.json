@@ -1,0 +1,149 @@
+{
+  "contentHash": "18a2be4d56d7ed2e13a60013252076e7404ebc3f3caf06d37aa4358b52d458ed",
+  "puzzleCount": 1000,
+  "schemaVersion": 1,
+  "shards": [
+    {
+      "contentHash": "d1803913c1e4125bfd6d2dbdea0372565e026f0162747a3c7a6a2ec3a13f50e3",
+      "count": 50,
+      "file": "shard-000.json",
+      "sourceShard": "shard-000.json",
+      "start": 0
+    },
+    {
+      "contentHash": "51438877acc5bf0935dfe47647593ed81285dd75eeb33045bbc6b6f853393b95",
+      "count": 50,
+      "file": "shard-001.json",
+      "sourceShard": "shard-001.json",
+      "start": 50
+    },
+    {
+      "contentHash": "09a2e9ad3082ea83c5070b9406190ab48a5c5653ac13b5cdba8b7ef12e3b47f7",
+      "count": 50,
+      "file": "shard-002.json",
+      "sourceShard": "shard-002.json",
+      "start": 100
+    },
+    {
+      "contentHash": "c4fec081b4c873a13eab67a4cf9b64e2b3a4846f7b3e181297463bf66bff4727",
+      "count": 50,
+      "file": "shard-003.json",
+      "sourceShard": "shard-003.json",
+      "start": 150
+    },
+    {
+      "contentHash": "4ed69e7077ae0b540448e3eb47f46f926b441322c0c32efce6dcff59a08431c6",
+      "count": 50,
+      "file": "shard-004.json",
+      "sourceShard": "shard-004.json",
+      "start": 200
+    },
+    {
+      "contentHash": "41344323e5126becab76ec6b3b2331b494a21e2a85f13e5f824fb47c9295b661",
+      "count": 50,
+      "file": "shard-005.json",
+      "sourceShard": "shard-005.json",
+      "start": 250
+    },
+    {
+      "contentHash": "461a7250ed0c3f7f499ce3e6d7e361577af4d27fa803c3508af9f05bc4fa40d8",
+      "count": 50,
+      "file": "shard-006.json",
+      "sourceShard": "shard-006.json",
+      "start": 300
+    },
+    {
+      "contentHash": "8b5a03da0a5903e1ef9144fd2c7d72ede563bbb6b24ea322aa7fc6ad3a710e09",
+      "count": 50,
+      "file": "shard-007.json",
+      "sourceShard": "shard-007.json",
+      "start": 350
+    },
+    {
+      "contentHash": "be76e2adb59a6b890956195255d83ef86c1f04d83ab2cc80da05a6479b1ee5fe",
+      "count": 50,
+      "file": "shard-008.json",
+      "sourceShard": "shard-008.json",
+      "start": 400
+    },
+    {
+      "contentHash": "750522f05355c2f5e2025a94b4930de5cfa7bf31c50ea6c48ea79ea2ba80791a",
+      "count": 50,
+      "file": "shard-009.json",
+      "sourceShard": "shard-009.json",
+      "start": 450
+    },
+    {
+      "contentHash": "f1ba32a6e7d24adaf464765d18c900470f32f8235133ed3f1593639d3340578a",
+      "count": 50,
+      "file": "shard-010.json",
+      "sourceShard": "shard-010.json",
+      "start": 500
+    },
+    {
+      "contentHash": "bf94ece372c4f4602c75055b6b1f43de6812e1156e4cced12a2801228982dde2",
+      "count": 50,
+      "file": "shard-011.json",
+      "sourceShard": "shard-011.json",
+      "start": 550
+    },
+    {
+      "contentHash": "b6479d7e72a9a8ad92abc8aaedfc130949df2e656a65df08bfcfd6fb312bba6a",
+      "count": 50,
+      "file": "shard-012.json",
+      "sourceShard": "shard-012.json",
+      "start": 600
+    },
+    {
+      "contentHash": "6a44fc76a3014350df371a5f12cce38751d18f368d49410368fe3da04ea7b3fa",
+      "count": 50,
+      "file": "shard-013.json",
+      "sourceShard": "shard-013.json",
+      "start": 650
+    },
+    {
+      "contentHash": "e8e7a363467a58e45d732b19107dfe097884ab3c806046716add8b80b8a1fb6d",
+      "count": 50,
+      "file": "shard-014.json",
+      "sourceShard": "shard-014.json",
+      "start": 700
+    },
+    {
+      "contentHash": "3792b6434256c7a2daaae3bfc85c5b482e2fb482282531dae77407e4094c83d8",
+      "count": 50,
+      "file": "shard-015.json",
+      "sourceShard": "shard-015.json",
+      "start": 750
+    },
+    {
+      "contentHash": "608e0f45d96c82171feb429662bfefe35ba17a818cbbca5b8fba7018ff63383e",
+      "count": 50,
+      "file": "shard-016.json",
+      "sourceShard": "shard-016.json",
+      "start": 800
+    },
+    {
+      "contentHash": "b9595a060591d47942844c6a4594832b54c93380816bc1b1b8ae6b8fdc8c4852",
+      "count": 50,
+      "file": "shard-017.json",
+      "sourceShard": "shard-017.json",
+      "start": 850
+    },
+    {
+      "contentHash": "8acf3dd39ff8427a1f54cf201e6d68c193376653d448c792a8feeda14c454ce2",
+      "count": 50,
+      "file": "shard-018.json",
+      "sourceShard": "shard-018.json",
+      "start": 900
+    },
+    {
+      "contentHash": "5aede853aa876089fb2e901ca9127aead675455515c38ec2eed80a97abb6a5d0",
+      "count": 50,
+      "file": "shard-019.json",
+      "sourceShard": "shard-019.json",
+      "start": 950
+    }
+  ],
+  "sourcePoolContentHash": "9cc2c4597a0a3759f9425f9a92f32ad63004eec34093257abf60b781cbca8d63",
+  "sourcePoolGeneratorVersion": "qb4-infinite-pool-v2"
+}

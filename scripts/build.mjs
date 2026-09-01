@@ -58,7 +58,7 @@ const publicPuzzle = (manifest) => {
       mons: group.members.map(({ id, name }) => [name, id]),
     })),
   };
-  return { ...payload, embeddedContentHash: sha256(payload) };
+  return { ...payload, payloadHash: sha256(payload) };
 };
 const puzzleDataTag = (manifest) => `<script id="pokesort-puzzle-data" type="application/json">${safeJson(publicPuzzle(manifest))}</script>`;
 const embedPuzzle = (html, manifest) => html.includes('id="pokesort-puzzle-data"')

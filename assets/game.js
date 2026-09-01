@@ -36,7 +36,7 @@ if ($("#puzzle-grid")) {
   let dateKey = pathDate || browserUtcDate();
   let selected = [], solved = [], cards = [], pack = [], history = [], hintLevels = {};
   let mistakes = 0, revealed = false, gameOver = false;
-  let completionRecorded = false, analyticsCompletionRecorded = false;
+  let completionRecorded = false, analyticsCompletionSent = false;
   let loadVersion = 0, loadState = "idle", activeLoadController = null;
   let activePuzzleId = "", activeContentHash = "", activeValidQuartets = new Set();
   let boardReadyAt = 0, gameStartSent = false;
@@ -91,8 +91,8 @@ if ($("#puzzle-grid")) {
   async function inspectEmbeddedDaily(value, expectedDate, stage) {
     if (!value || value.schemaVersion !== 1 || value.date !== expectedDate || !validDateKey(value.date)
       || !/^[a-f0-9]{64}$/.test(value.contentHash || "") || value.puzzleId !== `daily-${value.date}-${value.contentHash.slice(0, 16)}`) throw contractError(stage);
-    const { embeddedContentHash, ...payload } = value;
-    if (!/^[a-f0-9]{64}$/.test(embeddedContentHash || "") || await sha256Hex(payload) !== embeddedContentHash) throw contractError(stage);
+    const { payloadHash, ...payload } = value;
+    if (!/^[a-f0-9]{64}$/.test(payloadHash || "") || await sha256Hex(payload) !== payloadHash) throw contractError(stage);
     const cardIds = value.cards?.map(({ id }) => id) ?? [];
     if (value.cards?.length !== 16 || cardIds.some((id) => !Number.isSafeInteger(id)) || new Set(cardIds).size !== 16
       || value.cards.some(({ name }) => typeof name !== "string" || !name) || value.boardSignature !== memberSignature(cardIds)) throw contractError(stage);
@@ -174,8 +174,9 @@ if ($("#puzzle-grid")) {
     const boardIds = new Set(boardCardMap().keys());
     return items.filter((item) => item && Array.isArray(item.selectedIds) && item.selectedIds.length === 4
       && item.selectedIds.every((id) => Number.isSafeInteger(id) && boardIds.has(id)) && new Set(item.selectedIds).size === 4
-      && ["correct", "valid_overlap", "invalid"].includes(item.outcome) && safeInteger(item.guessMatchCount, 4))
-      .slice(-20).map((item) => ({ selectedIds: [...item.selectedIds], outcome: item.outcome, guessMatchCount: item.guessMatchCount }));
+      && ["correct", "valid_overlap", "invalid"].includes(item.outcome) && safeInteger(item.guessMatchCount, 4)
+      && (item.repeated == null || typeof item.repeated === "boolean"))
+      .slice(-20).map((item) => ({ selectedIds: [...item.selectedIds], outcome: item.outcome, guessMatchCount: item.guessMatchCount, repeated: item.repeated === true }));
   }
 
   function sanitizeHintLevels(value) {
@@ -188,7 +189,7 @@ if ($("#puzzle-grid")) {
   function savedStateIsConsistent(stored) {
     if (!stored || !Array.isArray(stored.solved) || !Array.isArray(stored.cards) || !safeInteger(stored.mistakes, 4)
       || typeof stored.revealed !== "boolean" || typeof stored.gameOver !== "boolean" || typeof stored.completionRecorded !== "boolean"
-      || typeof stored.analyticsCompletionRecorded !== "boolean") return false;
+      || typeof (stored.analyticsCompletionSent ?? stored.analyticsCompletionRecorded) !== "boolean") return false;
     const groupSignatures = new Set(pack.map(({ signature }) => signature));
     if (new Set(stored.solved).size !== stored.solved.length || stored.solved.some((signature) => !groupSignatures.has(signature))) return false;
     const expected = pack.filter(({ signature }) => !stored.solved.includes(signature)).flatMap(({ mons }) => mons.map(([name, id]) => ({ name, id })));
@@ -208,7 +209,7 @@ if ($("#puzzle-grid")) {
       if (!legacy || legacy.mode !== (gameMode === "infinite" ? "infinite" : "daily") || legacy.puzzleId !== activePuzzleId
         || legacy.contentHash !== activeContentHash || !Array.isArray(legacy.solved)) return null;
       const byName = new Map(pack.map((group) => [group.name, group.signature]));
-      const migrated = { ...legacy, solved: legacy.solved.map((name) => byName.get(name)), analyticsCompletionRecorded: false };
+      const migrated = { ...legacy, solved: legacy.solved.map((name) => byName.get(name)), analyticsCompletionSent: false };
       if (migrated.solved.some((signature) => !signature) || !savedStateIsConsistent(migrated)) return null;
       return { ...migrated, history: [], hintLevels: {} };
     } catch { return null; }
@@ -218,25 +219,25 @@ if ($("#puzzle-grid")) {
     let stored = null;
     try {
       const parsed = JSON.parse(storageGet(stateKey()));
-      if (parsed?.stateVersion === 2 && parsed.gameMode === gameMode && parsed.puzzleId === activePuzzleId && parsed.contentHash === activeContentHash) stored = parsed;
+      if ((parsed?.schemaVersion === 2 || parsed?.stateVersion === 2) && parsed.gameMode === gameMode && parsed.puzzleId === activePuzzleId && parsed.contentHash === activeContentHash) stored = parsed;
     } catch { /* Invalid JSON starts clean. */ }
     if (!stored) stored = migrateLegacyState();
     if (!stored || !savedStateIsConsistent(stored)) {
       cards = freshCards; solved = []; mistakes = 0; revealed = false; gameOver = false;
-      completionRecorded = false; analyticsCompletionRecorded = false; history = []; hintLevels = {};
+      completionRecorded = false; analyticsCompletionSent = false; history = []; hintLevels = {};
       return;
     }
     cards = stored.cards.map(({ id, name }) => ({ id, name }));
     solved = [...stored.solved]; mistakes = stored.mistakes; revealed = stored.revealed; gameOver = stored.gameOver;
-    completionRecorded = stored.completionRecorded; analyticsCompletionRecorded = stored.analyticsCompletionRecorded;
+    completionRecorded = stored.completionRecorded; analyticsCompletionSent = stored.analyticsCompletionSent ?? stored.analyticsCompletionRecorded;
     history = sanitizeHistory(stored.history); hintLevels = sanitizeHintLevels(stored.hintLevels);
   }
 
   function save() {
     if (loadState !== "ready" || !activePuzzleId) return;
     storageSet(stateKey(), JSON.stringify({
-      stateVersion: 2, gameMode, puzzleId: activePuzzleId, contentHash: activeContentHash,
-      cards, solved, mistakes, revealed, gameOver, completionRecorded, analyticsCompletionRecorded,
+      schemaVersion: 2, stateVersion: 2, gameMode, puzzleId: activePuzzleId, contentHash: activeContentHash,
+      cards, solved, mistakes, revealed, gameOver, completionRecorded, analyticsCompletionSent,
       history: history.slice(-20), hintLevels,
     }));
   }
@@ -261,7 +262,7 @@ if ($("#puzzle-grid")) {
 
   function resetLoadedPuzzle() {
     pack = []; cards = []; solved = []; selected = []; history = []; hintLevels = {};
-    mistakes = 0; revealed = false; gameOver = true; completionRecorded = false; analyticsCompletionRecorded = false;
+    mistakes = 0; revealed = false; gameOver = true; completionRecorded = false; analyticsCompletionSent = false;
     activePuzzleId = ""; activeContentHash = ""; activeValidQuartets = new Set(); boardReadyAt = 0;
   }
 
@@ -312,17 +313,17 @@ if ($("#puzzle-grid")) {
   function ensureHistorySection() {
     let section = $("#guess-history"); if (section) return section;
     section = document.createElement("section"); section.id = "guess-history"; section.className = "guess-history"; section.setAttribute("aria-labelledby", "guess-history-title");
-    const heading = document.createElement("h2"); heading.id = "guess-history-title"; heading.textContent = "Guess History"; const list = document.createElement("ol"); list.id = "guess-history-list";
+    const heading = document.createElement("h3"); heading.id = "guess-history-title"; heading.textContent = "Guess history"; const list = document.createElement("ol"); list.id = "guess-history-list";
     section.append(heading, list); $("#game-status").after(section); return section;
   }
 
   function renderHistory() {
     const section = ensureHistorySection(), list = section.querySelector("ol"), names = boardCardMap(); list.replaceChildren();
-    for (const item of sanitizeHistory(history)) {
+    for (const item of [...sanitizeHistory(history)].reverse()) {
       const row = document.createElement("li"), pokemon = document.createElement("span"), outcome = document.createElement("strong");
       pokemon.className = "guess-history-names"; pokemon.textContent = item.selectedIds.map((id) => names.get(id)).join(" · ");
       const labels = { correct: "Correct", valid_overlap: "Valid fact — no penalty" };
-      outcome.textContent = labels[item.outcome] || (item.guessMatchCount === 0 ? "No close match" : `${item.guessMatchCount} of 4 match one intended group`);
+      outcome.textContent = item.repeated ? "Repeated guess" : labels[item.outcome] || (item.guessMatchCount === 0 ? "No close match" : `${item.guessMatchCount} of 4 match one intended group`);
       row.append(pokemon, outcome); list.append(row);
     }
     section.hidden = list.children.length === 0;
@@ -359,9 +360,12 @@ if ($("#puzzle-grid")) {
   }
 
   function maximumMatchCount(ids) { const selectedSet = new Set(ids); return Math.max(0, ...unsolvedGroups().map((group) => group.mons.filter(([, id]) => selectedSet.has(id)).length)); }
-  function appendHistory(selectedIds, outcome, guessMatchCount) { history = [...history, { selectedIds: [...selectedIds], outcome, guessMatchCount }].slice(-20); }
-  function recordGameComplete(outcome) {
-    if (analyticsCompletionRecorded) return; analyticsCompletionRecorded = true; track("pokesort_game_complete", { mistakes, groups_solved: solved.length, outcome }); save();
+  function appendHistory(selectedIds, outcome, guessMatchCount) {
+    const signature = memberSignature(selectedIds), repeated = history.some((item) => memberSignature(item.selectedIds) === signature);
+    history = [...history, { selectedIds: [...selectedIds], outcome, guessMatchCount, repeated }].slice(-20);
+  }
+  function recordGameComplete() {
+    if (analyticsCompletionSent) return; analyticsCompletionSent = true; track("pokesort_game_complete", { mistakes, groups_solved: solved.length, outcome: "solved" }); save();
   }
 
   function submit() {
@@ -380,7 +384,7 @@ if ($("#puzzle-grid")) {
     mistakes += 1; selected = []; gameOver = mistakes >= 4; appendHistory(selectedIds, "invalid", guessMatchCount); save(); render();
     track("pokesort_guess_submit", { mistakes, groups_solved: solved.length, guess_match_count: guessMatchCount, outcome: "invalid" });
     $("#game-status").textContent = gameOver ? "No mistakes left. Reveal the board or try Infinite mode." : guessMatchCount === 3 ? "One away…" : "Not the connection. Try another combination.";
-    if (gameOver) recordGameComplete("failed"); else { const grid = $("#puzzle-grid"); grid.classList.remove("shake"); void grid.offsetWidth; grid.classList.add("shake"); }
+    if (!gameOver) { const grid = $("#puzzle-grid"); grid.classList.remove("shake"); void grid.offsetWidth; grid.classList.add("shake"); }
   }
 
   function finish(outcome) {
@@ -391,7 +395,7 @@ if ($("#puzzle-grid")) {
       completionRecorded = true;
       if (gameMode === "daily" && mistakes < 4) { const wins = new Set(readWins()); if (!wins.has(dateKey)) { wins.add(dateKey); storageSet("pokesort-wins", JSON.stringify([...wins])); } updateStreak(dateKey); }
     }
-    recordGameComplete(outcome); save();
+    if (outcome === "solved") recordGameComplete(); save();
   }
 
   function openHint() {
@@ -399,7 +403,7 @@ if ($("#puzzle-grid")) {
     const current = hintLevels[group.signature] || 0; if (current >= 3) { $("#game-status").textContent = "Maximum hint reached."; return; }
     const next = current + 1; hintLevels[group.signature] = next;
     if (next === 1) $("#game-status").textContent = hintFamilyCopy[group.ruleFamily]; else if (next === 2) $("#game-status").textContent = group.name;
-    else { const names = [...group.mons].sort((left, right) => left[1] - right[1]).slice(0, 2).map(([name]) => name); $("#game-status").textContent = `${names[0]} and ${names[1]} are in this group.`; }
+    else { const names = [...group.mons].sort((left, right) => left[1] - right[1]).slice(0, 2).map(([name]) => name); $("#game-status").textContent = `Two members are ${names[0]} and ${names[1]}.`; }
     save(); track("pokesort_hint_open", { mistakes, groups_solved: solved.length, hint_level: next });
   }
 
@@ -435,7 +439,7 @@ if ($("#puzzle-grid")) {
   globalThis.__pokesortRuntime = {
     reload: load, newInfinite, submit,
     selectIds: (ids) => { if (Array.isArray(ids)) { selected = ids.filter((id) => cards.some((card) => card.id === id)).slice(0, 4); render(); } },
-    state: () => ({ loadState, gameMode, dateKey, round, puzzleId: activePuzzleId, contentHash: activeContentHash, solved: [...solved], cards: cards.length, cardIds: cards.map(({ id }) => id), selected: [...selected], mistakes, revealed, gameOver, completionRecorded, analyticsCompletionRecorded, history: history.map((item) => ({ ...item, selectedIds: [...item.selectedIds] })), hintLevels: { ...hintLevels }, validOverlaps: [...activeValidQuartets] }),
+    state: () => ({ loadState, gameMode, dateKey, round, puzzleId: activePuzzleId, contentHash: activeContentHash, solved: [...solved], cards: cards.length, cardIds: cards.map(({ id }) => id), selected: [...selected], mistakes, revealed, gameOver, completionRecorded, analyticsCompletionSent, history: history.map((item) => ({ ...item, selectedIds: [...item.selectedIds] })), hintLevels: { ...hintLevels }, validOverlaps: [...activeValidQuartets] }),
   };
   if (gameMode === "daily") {
     const scheduleUtcRefresh = () => { const now = new Date(), nextUtc = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 1); setTimeout(async () => { await load(); scheduleUtcRefresh(); }, Math.min(2_147_000_000, Math.max(0, nextUtc - now.getTime()))); };

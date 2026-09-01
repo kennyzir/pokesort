@@ -24,7 +24,7 @@ const STRING_ENUMS = Object.freeze({
 const OUTCOMES = Object.freeze({
   pokesort_board_ready: new Set(["embedded", "api", "archive_manifest", "infinite_pool"]),
   pokesort_guess_submit: new Set(["correct", "valid_overlap", "invalid"]),
-  pokesort_game_complete: new Set(["solved", "failed", "revealed"]),
+  pokesort_game_complete: new Set(["solved"]),
 });
 
 const NUMBER_LIMITS = Object.freeze({

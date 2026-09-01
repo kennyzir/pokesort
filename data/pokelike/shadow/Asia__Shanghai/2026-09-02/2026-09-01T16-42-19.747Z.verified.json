@@ -1,0 +1,462 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-09-01T16:42:19.747Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-09-01T16:42:26.127Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-09-01T16:42:26.127Z"
+    }
+  ],
+  "consistencySha256": "f6f86408e4cae6beecef7b2dce9f980fa1ad167968cd161b9129400425646de1",
+  "samples": [
+    {
+      "capturedAt": "2026-09-01T16:42:21.798Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Tue, 01 Sep 2026 16:42:20 GMT",
+        "etag": null,
+        "bodyBytes": 48752,
+        "bodySha256": "5c2743a60dd691340a31221d435aef76942a849929a57baf71201d02901fe5fe",
+        "capturedAt": "2026-09-01T16:42:21.798Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.a53845a888.js",
+        "status": 200,
+        "date": "Tue, 01 Sep 2026 16:42:20 GMT",
+        "etag": "W/\"1df3dab5beee6b5a975239b518cd201f\"",
+        "bodyBytes": 3224599,
+        "bodySha256": "a53845a8889e4610ac1e14bd914fb3746e7ddb4decbe6b555a8755bd6c8414bb",
+        "capturedAt": "2026-09-01T16:42:21.798Z"
+      },
+      "snapshot": {
+        "day": 20698,
+        "puzzleNumber": 63,
+        "state": {
+          "slots": [
+            160,
+            72,
+            576,
+            157,
+            226,
+            477
+          ],
+          "conds": [
+            "se",
+            "gen_eq",
+            "type",
+            "stage_eq",
+            "se"
+          ],
+          "solution": [
+            72,
+            157,
+            226,
+            160,
+            477,
+            576
+          ]
+        },
+        "candidates": [
+          {
+            "id": 160,
+            "name": "Feraligatr",
+            "types": [
+              "Water"
+            ],
+            "color": "blue",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 72,
+            "name": "Tentacool",
+            "types": [
+              "Water",
+              "Poison"
+            ],
+            "color": "blue",
+            "gen": 1,
+            "stage": 0
+          },
+          {
+            "id": 576,
+            "name": "Gothitelle",
+            "types": [
+              "Psychic"
+            ],
+            "color": "purple",
+            "gen": 5,
+            "stage": 2
+          },
+          {
+            "id": 157,
+            "name": "Typhlosion",
+            "types": [
+              "Fire"
+            ],
+            "color": "yellow",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 226,
+            "name": "Mantine",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "color": "purple",
+            "gen": 2,
+            "stage": 1
+          },
+          {
+            "id": 477,
+            "name": "Dusknoir",
+            "types": [
+              "Ghost"
+            ],
+            "color": "black",
+            "gen": 4,
+            "stage": 2
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type deals super-effective damage to the RIGHT Pokémon."
+          },
+          {
+            "key": "gen_eq",
+            "label": "Gen",
+            "cmp": "=",
+            "desc": "Both were introduced in the same generation."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "stage_eq",
+            "label": "Stage",
+            "cmp": "=",
+            "desc": "Same evolution stage (unevolved, 1st or 2nd evolution)."
+          },
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type deals super-effective damage to the RIGHT Pokémon."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-09-01T16:42:25.730Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Tue, 01 Sep 2026 16:42:24 GMT",
+        "etag": null,
+        "bodyBytes": 48752,
+        "bodySha256": "5c2743a60dd691340a31221d435aef76942a849929a57baf71201d02901fe5fe",
+        "capturedAt": "2026-09-01T16:42:25.730Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.a53845a888.js",
+        "status": 200,
+        "date": "Tue, 01 Sep 2026 16:42:24 GMT",
+        "etag": "W/\"1df3dab5beee6b5a975239b518cd201f\"",
+        "bodyBytes": 3224599,
+        "bodySha256": "a53845a8889e4610ac1e14bd914fb3746e7ddb4decbe6b555a8755bd6c8414bb",
+        "capturedAt": "2026-09-01T16:42:25.730Z"
+      },
+      "snapshot": {
+        "day": 20698,
+        "puzzleNumber": 63,
+        "state": {
+          "slots": [
+            160,
+            72,
+            576,
+            157,
+            226,
+            477
+          ],
+          "conds": [
+            "se",
+            "gen_eq",
+            "type",
+            "stage_eq",
+            "se"
+          ],
+          "solution": [
+            72,
+            157,
+            226,
+            160,
+            477,
+            576
+          ]
+        },
+        "candidates": [
+          {
+            "id": 160,
+            "name": "Feraligatr",
+            "types": [
+              "Water"
+            ],
+            "color": "blue",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 72,
+            "name": "Tentacool",
+            "types": [
+              "Water",
+              "Poison"
+            ],
+            "color": "blue",
+            "gen": 1,
+            "stage": 0
+          },
+          {
+            "id": 576,
+            "name": "Gothitelle",
+            "types": [
+              "Psychic"
+            ],
+            "color": "purple",
+            "gen": 5,
+            "stage": 2
+          },
+          {
+            "id": 157,
+            "name": "Typhlosion",
+            "types": [
+              "Fire"
+            ],
+            "color": "yellow",
+            "gen": 2,
+            "stage": 2
+          },
+          {
+            "id": 226,
+            "name": "Mantine",
+            "types": [
+              "Water",
+              "Flying"
+            ],
+            "color": "purple",
+            "gen": 2,
+            "stage": 1
+          },
+          {
+            "id": 477,
+            "name": "Dusknoir",
+            "types": [
+              "Ghost"
+            ],
+            "color": "black",
+            "gen": 4,
+            "stage": 2
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type deals super-effective damage to the RIGHT Pokémon."
+          },
+          {
+            "key": "gen_eq",
+            "label": "Gen",
+            "cmp": "=",
+            "desc": "Both were introduced in the same generation."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "stage_eq",
+            "label": "Stage",
+            "cmp": "=",
+            "desc": "Same evolution stage (unevolved, 1st or 2nd evolution)."
+          },
+          {
+            "key": "se",
+            "label": "Beats",
+            "cmp": ">",
+            "desc": "The LEFT Pokémon's primary type deals super-effective damage to the RIGHT Pokémon."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-09-02",
+    "timezone": "Asia/Shanghai",
+    "day": 20698,
+    "puzzleNumber": 63,
+    "observedAt": "2026-09-01T16:42:20.000Z",
+    "verifiedAt": "2026-09-01T16:42:26.127Z",
+    "candidates": [
+      {
+        "id": 160,
+        "name": "Feraligatr",
+        "generation": 2,
+        "stage": 2,
+        "color": "blue",
+        "types": [
+          "water"
+        ]
+      },
+      {
+        "id": 72,
+        "name": "Tentacool",
+        "generation": 1,
+        "stage": 0,
+        "color": "blue",
+        "types": [
+          "water",
+          "poison"
+        ]
+      },
+      {
+        "id": 576,
+        "name": "Gothitelle",
+        "generation": 5,
+        "stage": 2,
+        "color": "purple",
+        "types": [
+          "psychic"
+        ]
+      },
+      {
+        "id": 157,
+        "name": "Typhlosion",
+        "generation": 2,
+        "stage": 2,
+        "color": "yellow",
+        "types": [
+          "fire"
+        ]
+      },
+      {
+        "id": 226,
+        "name": "Mantine",
+        "generation": 2,
+        "stage": 1,
+        "color": "purple",
+        "types": [
+          "water",
+          "flying"
+        ]
+      },
+      {
+        "id": 477,
+        "name": "Dusknoir",
+        "generation": 4,
+        "stage": 2,
+        "color": "black",
+        "types": [
+          "ghost"
+        ]
+      }
+    ],
+    "startOrder": [
+      160,
+      72,
+      576,
+      157,
+      226,
+      477
+    ],
+    "links": [
+      {
+        "relation": "se",
+        "leftId": 72,
+        "rightId": 157,
+        "explanation": "Tentacool's primary type is super-effective against Typhlosion's primary type."
+      },
+      {
+        "relation": "gen_eq",
+        "leftId": 157,
+        "rightId": 226,
+        "explanation": "Typhlosion and Mantine were introduced in generation 2."
+      },
+      {
+        "relation": "type",
+        "leftId": 226,
+        "rightId": 160,
+        "explanation": "Mantine and Feraligatr share at least one type."
+      },
+      {
+        "relation": "stage_eq",
+        "leftId": 160,
+        "rightId": 477,
+        "explanation": "Feraligatr and Dusknoir are both evolution stage 2."
+      },
+      {
+        "relation": "se",
+        "leftId": 477,
+        "rightId": 576,
+        "explanation": "Dusknoir's primary type is super-effective against Gothitelle's primary type."
+      }
+    ],
+    "solutionOrder": [
+      72,
+      157,
+      226,
+      160,
+      477,
+      576
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: The LEFT Pokémon's primary type deals super-effective damage to the RIGHT Pokémon.",
+        "Link 2: Both were introduced in the same generation.",
+        "Link 3: They share at least one type.",
+        "Link 4: Same evolution stage (unevolved, 1st or 2nd evolution).",
+        "Link 5: The LEFT Pokémon's primary type deals super-effective damage to the RIGHT Pokémon."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "5c2743a60dd691340a31221d435aef76942a849929a57baf71201d02901fe5fe",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.a53845a888.js",
+      "bundleSha256": "a53845a8889e4610ac1e14bd914fb3746e7ddb4decbe6b555a8755bd6c8414bb",
+      "stateSha256": "48418fbe9e207f45a56d303f469278f8197cc761d2fe31ce9635cd9437ddb5f7",
+      "contentSha256": "a8a53e31b2cc4b6034af383469e5682c30ff1c78af9f54ab640c766bd1d333bd"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

@@ -1,0 +1,459 @@
+{
+  "ok": true,
+  "status": "VERIFIED",
+  "timezone": "Asia/Shanghai",
+  "transitions": [
+    {
+      "state": "PENDING",
+      "at": "2026-09-02T16:26:28.993Z"
+    },
+    {
+      "state": "EXTRACTED",
+      "at": "2026-09-02T16:26:36.700Z"
+    },
+    {
+      "state": "VERIFIED",
+      "at": "2026-09-02T16:26:36.700Z"
+    }
+  ],
+  "consistencySha256": "b11f781823a0bcedd859fe1fa08edf187f281596a6cd1342653fe4d1d44cbf2f",
+  "samples": [
+    {
+      "capturedAt": "2026-09-02T16:26:31.522Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Wed, 02 Sep 2026 16:26:29 GMT",
+        "etag": null,
+        "bodyBytes": 48752,
+        "bodySha256": "5c2743a60dd691340a31221d435aef76942a849929a57baf71201d02901fe5fe",
+        "capturedAt": "2026-09-02T16:26:31.522Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.a53845a888.js",
+        "status": 200,
+        "date": "Wed, 02 Sep 2026 16:26:29 GMT",
+        "etag": "W/\"1df3dab5beee6b5a975239b518cd201f\"",
+        "bodyBytes": 3224599,
+        "bodySha256": "a53845a8889e4610ac1e14bd914fb3746e7ddb4decbe6b555a8755bd6c8414bb",
+        "capturedAt": "2026-09-02T16:26:31.522Z"
+      },
+      "snapshot": {
+        "day": 20699,
+        "puzzleNumber": 64,
+        "state": {
+          "slots": [
+            513,
+            373,
+            37,
+            570,
+            654,
+            605
+          ],
+          "conds": [
+            "color",
+            "stage_eq",
+            "gen_eq",
+            "type",
+            "gen_lt"
+          ],
+          "solution": [
+            373,
+            605,
+            570,
+            513,
+            37,
+            654
+          ]
+        },
+        "candidates": [
+          {
+            "id": 513,
+            "name": "Pansear",
+            "types": [
+              "Fire"
+            ],
+            "color": "red",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 373,
+            "name": "Salamence",
+            "types": [
+              "Dragon",
+              "Flying"
+            ],
+            "color": "blue",
+            "gen": 3,
+            "stage": 2
+          },
+          {
+            "id": 37,
+            "name": "Vulpix",
+            "types": [
+              "Fire"
+            ],
+            "color": "brown",
+            "gen": 1,
+            "stage": 0
+          },
+          {
+            "id": 570,
+            "name": "Zorua",
+            "types": [
+              "Dark"
+            ],
+            "color": "gray",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 654,
+            "name": "Braixen",
+            "types": [
+              "Fire"
+            ],
+            "color": "red",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 605,
+            "name": "Elgyem",
+            "types": [
+              "Psychic"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 0
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "color",
+            "label": "Colour",
+            "cmp": "=",
+            "desc": "Both Pokémon share the same body colour."
+          },
+          {
+            "key": "stage_eq",
+            "label": "Stage",
+            "cmp": "=",
+            "desc": "Same evolution stage (unevolved, 1st or 2nd evolution)."
+          },
+          {
+            "key": "gen_eq",
+            "label": "Gen",
+            "cmp": "=",
+            "desc": "Both were introduced in the same generation."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    },
+    {
+      "capturedAt": "2026-09-02T16:26:36.330Z",
+      "source": {
+        "url": "https://pokelike.xyz/pokesort",
+        "status": 200,
+        "date": "Wed, 02 Sep 2026 16:26:34 GMT",
+        "etag": null,
+        "bodyBytes": 48752,
+        "bodySha256": "5c2743a60dd691340a31221d435aef76942a849929a57baf71201d02901fe5fe",
+        "capturedAt": "2026-09-02T16:26:36.330Z"
+      },
+      "bundle": {
+        "url": "https://pokelike.xyz/js/bundle.a53845a888.js",
+        "status": 200,
+        "date": "Wed, 02 Sep 2026 16:26:34 GMT",
+        "etag": "W/\"1df3dab5beee6b5a975239b518cd201f\"",
+        "bodyBytes": 3224599,
+        "bodySha256": "a53845a8889e4610ac1e14bd914fb3746e7ddb4decbe6b555a8755bd6c8414bb",
+        "capturedAt": "2026-09-02T16:26:36.330Z"
+      },
+      "snapshot": {
+        "day": 20699,
+        "puzzleNumber": 64,
+        "state": {
+          "slots": [
+            513,
+            373,
+            37,
+            570,
+            654,
+            605
+          ],
+          "conds": [
+            "color",
+            "stage_eq",
+            "gen_eq",
+            "type",
+            "gen_lt"
+          ],
+          "solution": [
+            373,
+            605,
+            570,
+            513,
+            37,
+            654
+          ]
+        },
+        "candidates": [
+          {
+            "id": 513,
+            "name": "Pansear",
+            "types": [
+              "Fire"
+            ],
+            "color": "red",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 373,
+            "name": "Salamence",
+            "types": [
+              "Dragon",
+              "Flying"
+            ],
+            "color": "blue",
+            "gen": 3,
+            "stage": 2
+          },
+          {
+            "id": 37,
+            "name": "Vulpix",
+            "types": [
+              "Fire"
+            ],
+            "color": "brown",
+            "gen": 1,
+            "stage": 0
+          },
+          {
+            "id": 570,
+            "name": "Zorua",
+            "types": [
+              "Dark"
+            ],
+            "color": "gray",
+            "gen": 5,
+            "stage": 0
+          },
+          {
+            "id": 654,
+            "name": "Braixen",
+            "types": [
+              "Fire"
+            ],
+            "color": "red",
+            "gen": 6,
+            "stage": 1
+          },
+          {
+            "id": 605,
+            "name": "Elgyem",
+            "types": [
+              "Psychic"
+            ],
+            "color": "blue",
+            "gen": 5,
+            "stage": 0
+          }
+        ],
+        "conditionDefinitions": [
+          {
+            "key": "color",
+            "label": "Colour",
+            "cmp": "=",
+            "desc": "Both Pokémon share the same body colour."
+          },
+          {
+            "key": "stage_eq",
+            "label": "Stage",
+            "cmp": "=",
+            "desc": "Same evolution stage (unevolved, 1st or 2nd evolution)."
+          },
+          {
+            "key": "gen_eq",
+            "label": "Gen",
+            "cmp": "=",
+            "desc": "Both were introduced in the same generation."
+          },
+          {
+            "key": "type",
+            "label": "Type",
+            "cmp": "=",
+            "desc": "They share at least one type."
+          },
+          {
+            "key": "gen_lt",
+            "label": "Gen",
+            "cmp": "<",
+            "desc": "The LEFT Pokémon is from an earlier generation than the right."
+          }
+        ],
+        "officialSolutionCount": 1
+      }
+    }
+  ],
+  "manifest": {
+    "schemaVersion": 1,
+    "game": "pokelike-pokesort",
+    "status": "VERIFIED",
+    "localDate": "2026-09-03",
+    "timezone": "Asia/Shanghai",
+    "day": 20699,
+    "puzzleNumber": 64,
+    "observedAt": "2026-09-02T16:26:29.000Z",
+    "verifiedAt": "2026-09-02T16:26:36.700Z",
+    "candidates": [
+      {
+        "id": 513,
+        "name": "Pansear",
+        "generation": 5,
+        "stage": 0,
+        "color": "red",
+        "types": [
+          "fire"
+        ]
+      },
+      {
+        "id": 373,
+        "name": "Salamence",
+        "generation": 3,
+        "stage": 2,
+        "color": "blue",
+        "types": [
+          "dragon",
+          "flying"
+        ]
+      },
+      {
+        "id": 37,
+        "name": "Vulpix",
+        "generation": 1,
+        "stage": 0,
+        "color": "brown",
+        "types": [
+          "fire"
+        ]
+      },
+      {
+        "id": 570,
+        "name": "Zorua",
+        "generation": 5,
+        "stage": 0,
+        "color": "gray",
+        "types": [
+          "dark"
+        ]
+      },
+      {
+        "id": 654,
+        "name": "Braixen",
+        "generation": 6,
+        "stage": 1,
+        "color": "red",
+        "types": [
+          "fire"
+        ]
+      },
+      {
+        "id": 605,
+        "name": "Elgyem",
+        "generation": 5,
+        "stage": 0,
+        "color": "blue",
+        "types": [
+          "psychic"
+        ]
+      }
+    ],
+    "startOrder": [
+      513,
+      373,
+      37,
+      570,
+      654,
+      605
+    ],
+    "links": [
+      {
+        "relation": "color",
+        "leftId": 373,
+        "rightId": 605,
+        "explanation": "Salamence and Elgyem share the blue body colour."
+      },
+      {
+        "relation": "stage_eq",
+        "leftId": 605,
+        "rightId": 570,
+        "explanation": "Elgyem and Zorua are both evolution stage 0."
+      },
+      {
+        "relation": "gen_eq",
+        "leftId": 570,
+        "rightId": 513,
+        "explanation": "Zorua and Pansear were introduced in generation 5."
+      },
+      {
+        "relation": "type",
+        "leftId": 513,
+        "rightId": 37,
+        "explanation": "Pansear and Vulpix share at least one type."
+      },
+      {
+        "relation": "gen_lt",
+        "leftId": 37,
+        "rightId": 654,
+        "explanation": "Vulpix is generation 1; Braixen is generation 6."
+      }
+    ],
+    "solutionOrder": [
+      373,
+      605,
+      570,
+      513,
+      37,
+      654
+    ],
+    "hints": {
+      "noSpoiler": "Use the five displayed relation symbols as directional constraints before revealing the order.",
+      "progressive": [
+        "Link 1: Both Pokémon share the same body colour.",
+        "Link 2: Same evolution stage (unevolved, 1st or 2nd evolution).",
+        "Link 3: Both were introduced in the same generation.",
+        "Link 4: They share at least one type.",
+        "Link 5: The LEFT Pokémon is from an earlier generation than the right."
+      ]
+    },
+    "provenance": {
+      "sourceUrl": "https://pokelike.xyz/pokesort",
+      "sourceSha256": "5c2743a60dd691340a31221d435aef76942a849929a57baf71201d02901fe5fe",
+      "bundleUrl": "https://pokelike.xyz/js/bundle.a53845a888.js",
+      "bundleSha256": "a53845a8889e4610ac1e14bd914fb3746e7ddb4decbe6b555a8755bd6c8414bb",
+      "stateSha256": "e9a3dfa38866fa76aea5eef0f6a42dab016e0fe30dcc64212f705d9ccb3591fb",
+      "contentSha256": "9df6bf3dfe807c042dcaf8e259d3666a16f4e1e734c1adfdb0fa634738c234cc"
+    }
+  },
+  "verification": {
+    "localSolutionCount": 1,
+    "officialSolutionCount": 1,
+    "permutationsChecked": 720
+  }
+}

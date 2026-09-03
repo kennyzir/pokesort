@@ -3,6 +3,8 @@ import { readFile, stat } from "node:fs/promises";
 import { chromium } from "playwright";
 
 const dist = new URL("../dist/", import.meta.url);
+const runtimeDate = process.env.POKESORT_BUILD_UTC_DATE || new Date().toISOString().slice(0, 10);
+if (!/^\d{4}-\d{2}-\d{2}$/.test(runtimeDate) || new Date(`${runtimeDate}T00:00:00.000Z`).toISOString().slice(0, 10) !== runtimeDate) throw new Error("POKESORT_BUILD_UTC_DATE must be a valid UTC date");
 const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon", ".json": "application/json", ".xml": "application/xml", ".txt": "text/plain" };
 const server = http.createServer(async (request, response) => {
   try {
@@ -23,7 +25,12 @@ const launch = process.env.POKESORT_CHROME_PATH ? { executablePath: process.env.
 const browser = await chromium.launch({ headless: true, ...launch });
 const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
 await context.route("https://raw.githubusercontent.com/**", (route) => route.abort());
-await context.addInitScript(() => { Object.defineProperty(navigator, "share", { configurable: true, value: async ({ text }) => { globalThis.__pokesortShared = text; } }); });
+await context.addInitScript(({ fixedNow }) => {
+  const NativeDate = globalThis.Date;
+  class FixedDate extends NativeDate { constructor(...args) { super(...(args.length ? args : [fixedNow])); } static now() { return fixedNow; } }
+  globalThis.Date = FixedDate;
+  Object.defineProperty(navigator, "share", { configurable: true, value: async ({ text }) => { globalThis.__pokesortShared = text; } });
+}, { fixedNow: Date.parse(`${runtimeDate}T12:00:00.000Z`) });
 const page = await context.newPage(), pageErrors = [];
 page.on("pageerror", (error) => pageErrors.push(error.message));
 const assert = (value, message) => { if (!value) throw new Error(`Runtime regression: ${message}`); };
@@ -44,7 +51,7 @@ const infinitePackFor = async (round) => {
 };
 
 try {
-  const today = new Date().toISOString().slice(0, 10), dailyPack = await dailyPackFor(today);
+  const today = runtimeDate, dailyPack = await dailyPackFor(today);
   await page.goto(`${base}/`); await cards().first().waitFor();
   assert(await cards().count() === 16, "Daily must render 16 cards at 390×844");
 
@@ -90,7 +97,8 @@ try {
   });
   assert(overlapNames.length === 4 && overlapNames.every(Boolean), "Daily payload must include at least one factual overlap fixture");
   await select(overlapNames); await submit();
-  assert((await page.locator("#game-status").textContent()).includes("real canonical fact"), "a factual overlap must explain why it cannot complete the unique partition");
+  assert((await page.locator("#game-status").textContent()).includes("No mistake charged"), "a factual overlap must use the R3A no-penalty explanation");
+  assert((await page.locator("#mistakes").textContent()).includes("Mistakes remaining: 4"), "a factual overlap must not reduce remaining mistakes");
 
   await clearAndReload();
   const invalidNames = await page.evaluate(() => {
@@ -114,7 +122,7 @@ try {
   assert(await page.evaluate(() => localStorage.getItem("pokesort-wins")) === null, "Reveal must not create a Daily win");
 
   await clearAndReload();
-  const wrong = dailyPack.map((group) => group.mons[0][0]);
+  const wrong = invalidNames;
   for (let attempt = 0; attempt < 4; attempt++) { await select(wrong); await submit(); }
   assert((await page.locator("#mistakes").textContent()).includes("0"), "four failures must exhaust mistakes");
   assert(await cards().count() === 16 && await cards().evaluateAll((nodes) => nodes.every((node) => node.disabled)), "four failures must lock all cards");
@@ -161,15 +169,18 @@ try {
   assert(await page.locator(".solved-group").count() === 1, "dated route must use its exact immutable manifest");
   const outside = new Date(`${today}T00:00:00Z`); outside.setUTCDate(outside.getUTCDate() - 31);
   const outDate = outside.toISOString().slice(0, 10);
-  await page.evaluate((date) => localStorage.removeItem(`pokesort-daily-${date}`), today);
+  await page.evaluate((date) => { localStorage.removeItem(`pokesort-daily-${date}`); for (const key of Object.keys(localStorage)) if (key.startsWith("pokesort:game:v2:daily:")) localStorage.removeItem(key); }, today);
   await page.goto(`${base}/?date=${outDate}`); await cards().first().waitFor();
   assert(new URL(page.url()).searchParams.get("date") === outDate && await cards().count() === 16, "out-of-window legacy URL must remain browser-compatible");
   assert((await page.locator("#game-kicker").textContent()).includes(today) && !(await page.locator("#game-kicker").textContent()).includes(outDate), "an unavailable legacy date must honestly fall back to today's immutable board");
 
-  await page.evaluate((date) => localStorage.removeItem(`pokesort-daily-${date}`), today);
+  await page.evaluate((date) => { localStorage.removeItem(`pokesort-daily-${date}`); for (const key of Object.keys(localStorage)) if (key.startsWith("pokesort:game:v2:daily:")) localStorage.removeItem(key); }, today);
   await page.goto(`${base}/?date=2026-00-99`); await cards().first().waitFor();
   assert((await page.locator("#game-kicker").textContent()).includes(today) && !(await page.locator("#game-kicker").textContent()).includes("2026-00-99"), "invalid calendar dates must fall back to today's board");
-  await page.evaluate((date) => { localStorage.setItem("pokesort-wins", "{}"); localStorage.setItem(`pokesort-daily-${date}`, JSON.stringify({ cards: [], solved: {}, mistakes: -4 })); localStorage.setItem("pokesort-infinite-round", "not-a-round"); localStorage.removeItem("pokesort-infinite-0"); }, today);
+  await page.evaluate((date) => {
+    localStorage.setItem("pokesort-wins", "{}"); localStorage.setItem(`pokesort-daily-${date}`, JSON.stringify({ cards: [], solved: {}, mistakes: -4 })); localStorage.setItem("pokesort-infinite-round", "not-a-round"); localStorage.removeItem("pokesort-infinite-0");
+    for (const key of Object.keys(localStorage)) if (key.startsWith("pokesort:game:v2:infinite:")) localStorage.removeItem(key);
+  }, today);
   await page.goto(`${base}/`); await cards().first().waitFor();
   assert(await cards().count() === 16 && (await page.locator("#streak-count").textContent()) === "0", "corrupt saved game and wins data must safely reset");
   await page.goto(`${base}/infinite/`); await cards().first().waitFor();

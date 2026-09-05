@@ -89,8 +89,18 @@ try {
     return ids.map((id) => puzzle.cards.find((card) => card.id === id)?.name);
   });
   assert(overlapNames.length === 4 && overlapNames.every(Boolean), "Daily payload must include at least one factual overlap fixture");
+  const overlapBefore = await page.evaluate(() => globalThis.__pokesortRuntime.state());
+  const overlapCardsBefore = await cards().count();
+  const overlapSolvedBefore = await page.locator(".solved-group").count();
   await select(overlapNames); await submit();
-  assert((await page.locator("#game-status").textContent()).includes("real canonical fact"), "a factual overlap must explain why it cannot complete the unique partition");
+  const overlapAfter = await page.evaluate(() => globalThis.__pokesortRuntime.state());
+  const overlapStatus = await page.locator("#game-status").textContent();
+  assert(overlapAfter.mistakes === overlapBefore.mistakes, "a factual overlap must not consume a mistake");
+  assert(await page.locator(".solved-group").count() === overlapSolvedBefore, "a factual overlap must not solve a group");
+  assert(await cards().count() === overlapCardsBefore, "a factual overlap must not remove or lock cards");
+  assert(await page.locator('.poke-card[aria-pressed="true"]').count() === 0, "a factual overlap must clear the current selection");
+  assert(!overlapAfter.gameOver, "a factual overlap must not end the game");
+  assert(overlapStatus.includes("real canonical fact") && overlapStatus.includes("No mistake charged"), "a factual overlap must explain the valid fact and no-penalty outcome");
 
   await clearAndReload();
   const invalidNames = await page.evaluate(() => {
@@ -106,7 +116,10 @@ try {
     return [];
   });
   assert(invalidNames.length === 4, "Daily board must provide an unrelated quartet fixture");
+  const invalidBefore = await page.evaluate(() => globalThis.__pokesortRuntime.state());
   await select(invalidNames); await submit();
+  const invalidAfter = await page.evaluate(() => globalThis.__pokesortRuntime.state());
+  assert(invalidBefore.mistakes === 0 && invalidAfter.mistakes === 1, "a factually invalid quartet must consume exactly one mistake");
   assert((await page.locator("#game-status").textContent()).includes("Not the connection"), "a factually invalid quartet must retain the unrelated feedback");
 
   await clearAndReload(); await page.locator("#reveal-board").click();

@@ -239,12 +239,16 @@ if ($("#puzzle-grid")) {
       if (!gameOver) $("#game-status").textContent = "Correct connection!";
       return;
     }
+    const selectedIds = selected.map((name) => cards.find((card) => card.name === name)?.id).sort((left, right) => left - right).join("-");
+    if (activeValidQuartets.has(selectedIds)) {
+      selected = []; save(); render();
+      $("#game-status").textContent = "That quartet shares a real canonical fact, but it is not the intended group. No mistake charged.";
+      return;
+    }
     mistakes++;
     const near = pack.some((group) => selected.filter((name) => group.mons.some((monster) => monster[0] === name)).length === 3);
-    const selectedIds = selected.map((name) => cards.find((card) => card.name === name)?.id).sort((left, right) => left - right).join("-");
-    const validOverlap = activeValidQuartets.has(selectedIds);
     gameOver = mistakes >= 4; selected = []; save(); render();
-    $("#game-status").textContent = gameOver ? "No mistakes left. Reveal the board or try Infinite mode." : validOverlap ? "That quartet shares a real canonical fact, but this overlap cannot complete the board’s unique four-group solution." : near ? "One away…" : "Not the connection. Try another combination.";
+    $("#game-status").textContent = gameOver ? "No mistakes left. Reveal the board or try Infinite mode." : near ? "One away…" : "Not the connection. Try another combination.";
     if (!gameOver) { const grid = $("#puzzle-grid"); grid.classList.remove("shake"); void grid.offsetWidth; grid.classList.add("shake"); }
   }
 
